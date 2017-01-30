@@ -8,6 +8,7 @@ import javax.swing.WindowConstants;
 
 import parkeersimulator.controller.Controller;
 import parkeersimulator.controller.InitController;
+import parkeersimulator.controller.SlideController;
 import parkeersimulator.model.Model;
 import parkeersimulator.view.*;
 
@@ -16,6 +17,7 @@ public class MvcSimulator  {
 	private Model model;
 	private InitController initController;
 	private Controller controller;
+	private SlideController slideController;
 
 	private JFrame screen;
 	private CarParkView carParkView;
@@ -30,6 +32,7 @@ public class MvcSimulator  {
 
 		controller = new Controller(model);
 		initController = new InitController(model);
+		slideController = new SlideController(model);
 
 		carParkView = new CarParkView(model);
 		barGraphView = new BarGraphView(model);
@@ -50,17 +53,19 @@ public class MvcSimulator  {
 		contentPane.add(managerView);
 		contentPane.add(queueView);
 		contentPane.add(controller);
+		contentPane.add(slideController);
 		contentPane.add(initController);
 		contentPane.add(barGraphView);
 
-		carParkView.setBounds(10, 10, 800, 400);
-		pieView.setBounds(1030, 10, 200, 200);
-		managerView.setBounds(1030, 210, 200, 200);
-		queueView.setBounds(1230, 210, 200, 200);
+		carParkView.setBounds(10, 50, 800, 400);
+		pieView.setBounds(1030, 50, 200, 200);
+		managerView.setBounds(1030, 260, 200, 200);
+		queueView.setBounds(1230, 260, 200, 200);
 
 		barGraphView.setBounds(10, 500, 402, 402);
-		controller.setBounds(10, 420, 800, 30);
-		initController.setBounds(820, 10, 200, 400);
+		slideController.setBounds(10, 0, 800 , 50);
+		controller.setBounds(10, 470, 800, 30);
+		initController.setBounds(820, 60, 200, 400);
 
 		screen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		screen.setVisible(true);
