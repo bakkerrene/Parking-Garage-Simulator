@@ -66,8 +66,7 @@ public class Model extends AbstractModel implements Runnable {
     int exitSpeed = 5; // number of cars that can leave per minute
 
 	private boolean run;
-
-
+	private boolean inSim;
 
 	public Model(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
 
@@ -81,6 +80,8 @@ public class Model extends AbstractModel implements Runnable {
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
         this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
+
+        inSim = false;
 
         spotCountPerType = new int[ParkingSpot.TYPE_COUNT];
         carCountPerType = new int[ParkingSpot.TYPE_COUNT];
@@ -115,27 +116,26 @@ public class Model extends AbstractModel implements Runnable {
             }
         }
         /* temporary test */
+        /*
         for (int row = 0; row < 2; row++) {
         	for (int place = 0; place < 30; place++) {
-        		ParkingSpot spot = spots[2][row][place];
-        		spot.setType(ParkingSpot.TYPE_PASS);
-        		spotCountPerType[spot.getType()]++;
+        		Location location = new Location(2, row, place); 
+        		setSpotType(location, ParkingSpot.TYPE_PASS);
         	}
         }
         for (int row = 2; row < 4; row++) {
         	for (int place = 0; place < 30; place++) {
-        		ParkingSpot spot = spots[2][row][place];
-       			spot.setType(ParkingSpot.TYPE_HANDI);
-        		spotCountPerType[spot.getType()]++;
+        		Location location = new Location(2, row, place); 
+        		setSpotType(location, ParkingSpot.TYPE_HANDI);
         	}
         }
         for (int row = 4; row < 6; row++) {
         	for (int place = 0; place < 30; place++) {
-        		ParkingSpot spot = spots[2][row][place];
-       			spot.setType(ParkingSpot.TYPE_RES);
-        		spotCountPerType[spot.getType()]++;
+        		Location location = new Location(2, row, place); 
+        		setSpotType(location, ParkingSpot.TYPE_RES);
         	}
         }
+        */
 	}
 
 	public void reset() {
@@ -158,6 +158,12 @@ public class Model extends AbstractModel implements Runnable {
             }
         }
         notifyViews();
+        inSim = false;
+	}
+
+	public void clearSpots() {
+		initSpots();
+		reset();
 	}
 
 	public CarQueue getEntranceCarQueueNr() {
@@ -211,6 +217,10 @@ public class Model extends AbstractModel implements Runnable {
 
 	public int getNumberOfOpenSpots() {
 		return numberOfOpenSpots;
+	}
+
+	public int getTotalSpotCount() {
+		return numberOfFloors*numberOfRows*numberOfPlaces;
 	}
 
 	public void setSpotType(Location location, int type) {
@@ -441,16 +451,16 @@ public class Model extends AbstractModel implements Runnable {
     		sum = 100 / percentageHandicap;
     	}
     	if (counter <= sum)   {  	
-    		numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
+    		numberOfCars = getNumberOfCars("HOC");
     		addArrivingCars(numberOfCars, ParkingSpot.TYPE_AD_HOC); 
     		counter++;
     	} else {
-    		numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
+    		numberOfCars = getNumberOfCars("HOC");
     		addArrivingCars(numberOfCars, ParkingSpot.TYPE_HANDI);
     		counter = 0;
     	}
     	if (abonneesMax > carCountPerType[ParkingSpot.TYPE_PASS]) {
-    		numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+    		numberOfCars = getNumberOfCars("PASS");
     		addArrivingCars(numberOfCars, ParkingSpot.TYPE_PASS);
     	}
     }
@@ -623,30 +633,44 @@ public class Model extends AbstractModel implements Runnable {
     	}
     }
     //carType mee nemen zo dat je per auto de nummer autos kan toewijzen
-    private int getNumberOfCars(int weekDay, int weekend){ 
+    private int getNumberOfCars(String test){ 
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5
-                ? weekDay
-                : weekend;
-        if (day >= 0 && day <=6 && hour < 6) {
+        int averageNumberOfCarsPerHour = 100;
+        
+       // alle autos voor 6 uur
+       // als het voor alle autos geld hierin
+        if (hour < 6) {
         	averageNumberOfCarsPerHour = 20;
         }
-        
-        if (day >= 3 && day < 6 && hour >= 18) {
-        	averageNumberOfCarsPerHour = 200;
-        }
-        else if(day > 4 && day < 6){
-        	averageNumberOfCarsPerHour = 50;
-        }
-        if (day == 6 && hour >= 12 && hour < 18) {
-        	averageNumberOfCarsPerHour = 200;
-        }
-        else if (day == 6 && hour >= 6) {
-        	averageNumberOfCarsPerHour = 50;
-        }
+        else {
 
+        if(test == "PASS") {
+        	if (day > 4) {
+        		averageNumberOfCarsPerHour = 10;
+        	}
+        }
+        if(test == "HOC") {
+        	//Donderdag, Vrijdag, Zaterdag Avond dus normale autos & reserveringen
+        	if (day >= 3 && day < 6 && hour >= 18) {
+        		averageNumberOfCarsPerHour = 200;
+        	}
+        	//normale zaterdag uren voor normale autos
+        	else if(day == 5){
+        		averageNumberOfCarsPerHour = 50;
+        	}
+        	//theater op zondag middag dus normale autos & reserveringen
+        	if (day == 6 && hour >= 12 && hour < 18) {
+        		averageNumberOfCarsPerHour = 200;
+        	}
+        	//normale zaterdag uren voor normale autos
+        	else if (day == 6 && hour >= 6) {
+        		averageNumberOfCarsPerHour = 50;
+        }
+        }
+        }
+        
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
         double numberOfCarsPerHour = averageNumberOfCarsPerHour + random.nextGaussian() * standardDeviation;
@@ -708,6 +732,13 @@ public class Model extends AbstractModel implements Runnable {
 		run = false;
 	}
 
+	public boolean isRunning() {
+		return run;
+	}
+	public boolean isInSim() {
+		return inSim;
+	}
+
 	public void firstStep() {
 		advanceTime();
 		carsArriving();
@@ -721,9 +752,10 @@ public class Model extends AbstractModel implements Runnable {
 		carsLeaving();
 		handleEntrance();
 	}
-	
+
 	@Override
 	public void run() {
+		inSim = true;
 		run = true;
 		while(run) {
 			if (tickCount > 0) {

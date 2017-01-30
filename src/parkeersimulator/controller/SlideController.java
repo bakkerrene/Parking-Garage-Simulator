@@ -1,5 +1,6 @@
 package parkeersimulator.controller;
 
+
 import java.awt.GridLayout;
 
 
@@ -35,11 +36,7 @@ public class SlideController extends AbstractController{
         add(tickRate);
     }
 
-
-
-public void clickedSpot(Location location) {
-	// TODO Auto-generated method stub
-	
-}
-
+    public void clickedSpot(Location location) {
+    	// TODO Auto-generated method stub
+    }
 }
