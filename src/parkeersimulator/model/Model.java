@@ -67,6 +67,36 @@ public class Model extends AbstractModel implements Runnable {
 
 	private boolean run;
 
+
+
+	public Model(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+
+		super();
+
+		moneyHourList = new ArrayList<>();
+		moneyDayList = new ArrayList<>();
+		moneyWeekList = new ArrayList<>();
+
+        this.numberOfFloors = numberOfFloors;
+        this.numberOfRows = numberOfRows;
+        this.numberOfPlaces = numberOfPlaces;
+        this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
+
+        spotCountPerType = new int[ParkingSpot.TYPE_COUNT];
+        carCountPerType = new int[ParkingSpot.TYPE_COUNT];
+        spots = new ParkingSpot[numberOfFloors][numberOfRows][numberOfPlaces];
+
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                	spots[floor][row][place] = new ParkingSpot();
+                }
+            }
+        }
+
+        initSpots();
+	}
+	
 	public int getSpotCountForType(int type) {
 		return spotCountPerType[type];
 	}
@@ -106,34 +136,6 @@ public class Model extends AbstractModel implements Runnable {
         		spotCountPerType[spot.getType()]++;
         	}
         }
-	}
-
-	public Model(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
-
-		super();
-
-		moneyHourList = new ArrayList<>();
-		moneyDayList = new ArrayList<>();
-		moneyWeekList = new ArrayList<>();
-
-        this.numberOfFloors = numberOfFloors;
-        this.numberOfRows = numberOfRows;
-        this.numberOfPlaces = numberOfPlaces;
-        this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
-
-        spotCountPerType = new int[ParkingSpot.TYPE_COUNT];
-        carCountPerType = new int[ParkingSpot.TYPE_COUNT];
-        spots = new ParkingSpot[numberOfFloors][numberOfRows][numberOfPlaces];
-
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                	spots[floor][row][place] = new ParkingSpot();
-                }
-            }
-        }
-
-        initSpots();
 	}
 
 	public void reset() {
