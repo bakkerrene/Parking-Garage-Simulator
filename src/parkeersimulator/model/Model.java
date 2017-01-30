@@ -622,16 +622,29 @@ public class Model extends AbstractModel implements Runnable {
     		i++;
     	}
     }
-
-    private int getNumberOfCars(int weekDay, int weekend){
+    //carType mee nemen zo dat je per auto de nummer autos kan toewijzen
+    private int getNumberOfCars(int weekDay, int weekend){ 
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
         int averageNumberOfCarsPerHour = day < 5
                 ? weekDay
                 : weekend;
-        if (day == 3 && hour >= 18) {
+        if (day >= 0 && day <=6 && hour < 6) {
+        	averageNumberOfCarsPerHour = 20;
+        }
+        
+        if (day >= 3 && day < 6 && hour >= 18) {
         	averageNumberOfCarsPerHour = 200;
+        }
+        else if(day > 4 && day < 6){
+        	averageNumberOfCarsPerHour = 50;
+        }
+        if (day == 6 && hour >= 12 && hour < 18) {
+        	averageNumberOfCarsPerHour = 200;
+        }
+        else if (day == 6 && hour >= 6) {
+        	averageNumberOfCarsPerHour = 50;
         }
 
         // Calculate the number of cars that arrive this minute.
