@@ -630,6 +630,9 @@ public class Model extends AbstractModel implements Runnable {
         int averageNumberOfCarsPerHour = day < 5
                 ? weekDay
                 : weekend;
+        if (day == 3 && hour >= 18) {
+        	averageNumberOfCarsPerHour = 200;
+        }
 
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;

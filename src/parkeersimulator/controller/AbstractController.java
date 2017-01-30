@@ -13,10 +13,6 @@ public abstract class AbstractController extends JPanel {
 	public AbstractController(Model model) {
 		this.model = model;
 	}
-	
-	public Model getModel() {
-		return model;
-	}
 
 	public abstract void clickedSpot(Location location);
 }
