@@ -29,7 +29,7 @@ public class SlideController extends AbstractController{
     	});
     	
         setLayout(new GridLayout(2, 1));
-        add(new JLabel("Animation Speed", SwingConstants.CENTER));
+        add(new JLabel("TickPause", SwingConstants.CENTER));
         add(tickRate);
     }
 
