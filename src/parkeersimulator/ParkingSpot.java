@@ -1,8 +1,5 @@
 package parkeersimulator;
 
-/*
- * 
- */
 
 import java.awt.Color;
 
@@ -21,7 +18,7 @@ public class ParkingSpot {
 	private AbstractCar car;
 
 	public ParkingSpot() {
-	  car = null;
+	    car = null;
 	}
 
 	public static Color getColorForType(int type) {
@@ -58,9 +55,9 @@ public class ParkingSpot {
     		return color;
     	} else {
     		float c[] = color.getColorComponents(null);
-    		return new Color(0.6f * c[0],
-    						 0.6f * c[1],
-    						 0.6f * c[2]);
+    		return new Color(0.5f * c[0],
+    						 0.5f * c[1],
+    						 0.5f * c[2]);
     	}
     }
 }

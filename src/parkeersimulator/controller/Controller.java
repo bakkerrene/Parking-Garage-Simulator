@@ -23,7 +23,6 @@ public class Controller extends AbstractController implements ActionListener {
 	public Controller(Model model) {
 
 		super(model);
-
 		
 		GridLayout layout = new GridLayout();
 		this.setLayout(layout);
