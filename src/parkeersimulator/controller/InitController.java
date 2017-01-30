@@ -11,9 +11,7 @@ import java.awt.event.*;
 
 @SuppressWarnings("serial")
 public class InitController extends AbstractController implements ActionListener {
-	
-	private Location location;
-	
+
 	private JLabel speed;
 	private JLabel maxRes, maxAbo;
 	private JLabel perInv, aboTa;
@@ -32,35 +30,16 @@ public class InitController extends AbstractController implements ActionListener
 		int handiPer = getHandiPer();
 		int handiCount = (int)(Math.ceil(((handiPer / 100.0) * model.getTotalSpotCount())));
 		int floor = 0, row = 0, place = 0;
-		
-		for (int x = 0; x < handiCount; x++) {
-			if (x % 2 != 0) {
-			location = new Location(floor, row + 1, place-1);
-			place--;
-			}
-			else {
-			location = new Location(floor, row, place);	
-			}
-			model.setSpotType(location, ParkingSpot.TYPE_HANDI);
-			place++;
-		
-		/**	VORIGE CODE
-		 * 
-		
 		for (int x = 0; x < handiCount; x++) {
 			Location location = new Location(floor, row, place);
 			model.setSpotType(location, ParkingSpot.TYPE_HANDI);
 			place++;
-		 
-		 *
-		 */
 			if (place >= model.getNumberOfPlaces()) {
 				place = 0;
 				row++;
 				if(row >= model.getNumberOfRows()) {
 					row = 0;
 					floor++;
-		
 				}
 			}
 		}
