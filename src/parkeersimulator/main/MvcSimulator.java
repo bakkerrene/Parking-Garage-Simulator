@@ -59,7 +59,7 @@ public class MvcSimulator  {
 		queueView.setBounds(1230, 210, 200, 200);
 
 		barGraphView.setBounds(10, 500, 402, 402);
-		controller.setBounds(30, 420, 800, 50);
+		controller.setBounds(10, 420, 800, 30);
 		initController.setBounds(820, 10, 200, 400);
 
 		screen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

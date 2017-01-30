@@ -6,6 +6,7 @@ import javax.swing.*;
 import parkeersimulator.Location;
 import parkeersimulator.model.Model;
 
+import java.awt.GridLayout;
 import java.awt.event.*;
 
 @SuppressWarnings("serial")
@@ -23,8 +24,9 @@ public class Controller extends AbstractController implements ActionListener {
 
 		super(model);
 
-		setSize(800, 50);
-		setLayout(null);
+		
+		GridLayout layout = new GridLayout();
+		this.setLayout(layout);
 
 		start = new JButton("Start");
     	start.addActionListener(this);

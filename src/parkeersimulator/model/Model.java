@@ -29,6 +29,7 @@ public class Model extends AbstractModel implements Runnable {
 	private CarQueue entranceCarQueue  = new CarQueue();
 	private CarQueue entrancePassQueue = new CarQueue();
 	private CarQueue paymentCarQueue = new CarQueue();
+	private CarQueue paymentCarQueueExtra = new CarQueue();
 	private CarQueue exitCarQueue = new CarQueue();
 	private CarQueue missedCars = new CarQueue();
 	private int entranceCarQueueMax = 6;
@@ -140,6 +141,7 @@ public class Model extends AbstractModel implements Runnable {
         entranceCarQueue.clear();
         entrancePassQueue.clear();
         paymentCarQueue.clear();
+        paymentCarQueueExtra.clear();
         exitCarQueue.clear();
         missedCars.clear();
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
@@ -165,7 +167,7 @@ public class Model extends AbstractModel implements Runnable {
 	}
 
 	public CarQueue getPaymentCarQueueNr() {
-		return paymentCarQueue;
+		return paymentCarQueueExtra;
 	}
 
 	public CarQueue exitCarQueueNr() {
@@ -472,6 +474,7 @@ public class Model extends AbstractModel implements Runnable {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            paymentCarQueue.addCar(car);
+	            paymentCarQueueExtra.addCar(car);
 	        }
         	
         	else {
@@ -609,6 +612,14 @@ public class Model extends AbstractModel implements Runnable {
             i++;
     	}	
     }
+    
+    private void clearExtraPaymentQueue() {
+    	int i=0;
+    	while (paymentCarQueueExtra.carsInQueue()>0 && i <paymentSpeed) {
+    		paymentCarQueueExtra.removeCar();
+    		i++;
+    	}
+    }
 
     private int getNumberOfCars(int weekDay, int weekend){
         Random random = new Random();
@@ -679,6 +690,20 @@ public class Model extends AbstractModel implements Runnable {
 		run = false;
 	}
 
+	public void firstStep() {
+		advanceTime();
+		carsArriving();
+		carsReadyToLeave();
+		carsPaying();
+		tick();
+	}
+	
+	public void secondStep() {
+		clearExtraPaymentQueue();
+		carsLeaving();
+		handleEntrance();
+	}
+	
 	@Override
 	public void run() {
 		run = true;
@@ -687,16 +712,11 @@ public class Model extends AbstractModel implements Runnable {
 				tickCount--; 
 				if(tickCount == 0) run = false;
 			}
-			advanceTime();
-			carsArriving();
-			carsReadyToLeave();
-			carsPaying();
-			tick();
+			firstStep();
 			try {
 				Thread.sleep(tickPause);
 			} catch (Exception e) {} 
-			carsLeaving();
-			handleEntrance();
+			secondStep();
 			notifyViews();
 		}
 	}
