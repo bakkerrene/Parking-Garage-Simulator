@@ -746,6 +746,7 @@ public class Model extends AbstractModel implements Runnable {
 	}
 
 	public void firstStep() {
+
 		advanceTime();
 		carsArriving();
 		carsReadyToLeave();
