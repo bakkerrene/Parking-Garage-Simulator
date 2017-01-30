@@ -26,6 +26,25 @@ public class InitController extends AbstractController implements ActionListener
     private JFormattedTextField reserveringsTarief;
     private JButton initButton;
 
+    public void InitHandiCars() {
+		int handiPer = getHandiPer();
+		int handiCount = (int)(Math.ceil(((handiPer / 100.0) * model.getTotalSpotCount())));
+		int floor = 0, row = 0, place = 0;
+		for (int x = 0; x < handiCount; x++) {
+			Location location = new Location(floor, row, place);
+			model.setSpotType(location, ParkingSpot.TYPE_HANDI);
+			place++;
+			if (place >= model.getNumberOfPlaces()) {
+				place = 0;
+				row++;
+				if(row >= model.getNumberOfRows()) {
+					row = 0;
+					floor++;
+				}
+			}
+		}
+    }
+
     public InitController(Model model) {
 
     	super(model);
@@ -67,6 +86,8 @@ public class InitController extends AbstractController implements ActionListener
 		add(reserveringsTarief);
 		add(initButton);
 
+		InitHandiCars();
+
     	setVisible(true);
     }
 
@@ -74,30 +95,14 @@ public class InitController extends AbstractController implements ActionListener
 		try {
 			//Object sourceObject = e.getSource();
 			//if(sourceObject == initButton) {
-				int handiPer = getHandiPer();
 				model.setTickPause(getTickPause());
 				model.setReservering(getReservering());
 				model.setAbonnees(getAbonee());
-				model.setHandicapPercentage(handiPer);
+				model.setHandicapPercentage(getHandiPer());
 				model.setAbonneeTarief(getAboneeTarief());
 				model.setNormaalTarief(getNormaalTarief());
 				model.setReserveringTarief(getReserveringTarief());
-				int handiCount = (int)(Math.ceil(((handiPer / 100.0) * model.getTotalSpotCount())));
-				
-				int floor = 0, row = 0, place = 0;
-				for (int x = 0; x < handiCount; x++) {
-					Location location = new Location(floor, row, place);
-					model.setSpotType(location, ParkingSpot.TYPE_HANDI);
-					place++;
-					if (place >= model.getNumberOfPlaces()) {
-						place = 0;
-						row++;
-						if(row >= model.getNumberOfRows()) {
-							row = 0;
-							floor++;
-						}
-					}
-				}
+				InitHandiCars();
 			//}
 		} catch (Exception ex) {
 			ex.printStackTrace();

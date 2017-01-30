@@ -63,6 +63,7 @@ public class SelectController extends AbstractController implements ActionListen
 			//if (sourceObject == clearButton) {
 				if (!model.isInSim()) {
 					model.clearSpots();
+					updateList();
 				}
 			//}
 		} catch (Exception ex) {
@@ -71,9 +72,12 @@ public class SelectController extends AbstractController implements ActionListen
 	}
 
 	public void clickedSpot(Location location) {
-		if (!model.isInSim()) {
-			model.setSpotType(location, list.getSelectedIndex());
-			updateList();
+		if (model.isRunning()) return;
+		if (model.isInSim()) {
+			ParkingSpot spot = model.getParkingSpotAt(location);
+			if (spot.getCar() != null) return;
 		}
+		model.setSpotType(location, list.getSelectedIndex());
+		updateList();
 	}
 }
