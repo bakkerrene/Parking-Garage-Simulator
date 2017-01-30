@@ -12,8 +12,6 @@ import java.awt.event.*;
 @SuppressWarnings("serial")
 public class InitController extends AbstractController implements ActionListener {
 
-	private JPanel gridPanel;
-
 	private JLabel speed;
 	private JLabel maxRes, maxAbo;
 	private JLabel perInv, aboTa;
@@ -27,20 +25,6 @@ public class InitController extends AbstractController implements ActionListener
     private JFormattedTextField normaalTarief;
     private JFormattedTextField reserveringsTarief;
     private JButton initButton;
-
-	private DefaultListModel<String> listModel;
-	private JList<String> list;
-	private JScrollPane scrollPane;
-
-    private void updateList() {
-    	int selectedIndex = list.getSelectedIndex();
-    	listModel.clear();
-    	listModel.addElement("Ad Hoc (" + model.getSpotCountForType(ParkingSpot.TYPE_AD_HOC) + ")");
-    	listModel.addElement("Pass (" + model.getSpotCountForType(ParkingSpot.TYPE_PASS) + ")");
-    	listModel.addElement("Handi (" + model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + ")");
-    	listModel.addElement("Res (" + model.getSpotCountForType(ParkingSpot.TYPE_RES) + ")");
-    	list.setSelectedIndex(selectedIndex);
-    }
 
     public InitController(Model model) {
 
@@ -64,49 +48,57 @@ public class InitController extends AbstractController implements ActionListener
  		norTa = new JLabel("NormaalTarief");
  		resTa = new JLabel("ReserveringTarief");
 
-		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		setLayout(boxLayout);
-
-		listModel = new DefaultListModel<String>();
-		list = new JList<String>(listModel);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		updateList();
-		list.setSelectedIndex(0);
-		scrollPane = new JScrollPane(list);
-		add(scrollPane);
-
- 		gridPanel = new JPanel();
 		GridLayout gridLayout = new GridLayout(0,2);
-		gridPanel.setLayout(gridLayout);
-		gridPanel.add(speed);
-		gridPanel.add(tickPause);
-		gridPanel.add(maxRes);
-		gridPanel.add(aantalReserveringen);
-		gridPanel.add(maxAbo);
-		gridPanel.add(aantalAbonnees);
-		gridPanel.add(perInv);
-		gridPanel.add(percentageInvalidenplekken);
-		gridPanel.add(aboTa);
-		gridPanel.add(abonneeTarief);
-		gridPanel.add(norTa);
-		gridPanel.add(normaalTarief);
-		gridPanel.add(resTa);
-		gridPanel.add(reserveringsTarief);
-		gridPanel.add(initButton);
-		add(gridPanel);
+		setLayout(gridLayout);
+
+		add(speed);
+		add(tickPause);
+		add(maxRes);
+		add(aantalReserveringen);
+		add(maxAbo);
+		add(aantalAbonnees);
+		add(perInv);
+		add(percentageInvalidenplekken);
+		add(aboTa);
+		add(abonneeTarief);
+		add(norTa);
+		add(normaalTarief);
+		add(resTa);
+		add(reserveringsTarief);
+		add(initButton);
 
     	setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
 		try {
-			model.setTickPause(getTickPause());
-			model.setReservering(getReservering());
-			model.setAbonnees(getAbonee());
-			model.setHandicapPercentage(getHandiPer());
-			model.setAbonneeTarief(getAboneeTarief());
-			model.setNormaalTarief(getNormaalTarief());
-			model.setReserveringTarief(getReserveringTarief());
+			//Object sourceObject = e.getSource();
+			//if(sourceObject == initButton) {
+				int handiPer = getHandiPer();
+				model.setTickPause(getTickPause());
+				model.setReservering(getReservering());
+				model.setAbonnees(getAbonee());
+				model.setHandicapPercentage(handiPer);
+				model.setAbonneeTarief(getAboneeTarief());
+				model.setNormaalTarief(getNormaalTarief());
+				model.setReserveringTarief(getReserveringTarief());
+				int handiCount = (int)(Math.ceil(((handiPer / 100.0) * model.getTotalSpotCount())));
+				
+				int floor = 0, row = 0, place = 0;
+				for (int x = 0; x < handiCount; x++) {
+					Location location = new Location(floor, row, place);
+					model.setSpotType(location, ParkingSpot.TYPE_HANDI);
+					place++;
+					if (place >= model.getNumberOfPlaces()) {
+						place = 0;
+						row++;
+						if(row >= model.getNumberOfRows()) {
+							row = 0;
+							floor++;
+						}
+					}
+				}
+			//}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -141,7 +133,5 @@ public class InitController extends AbstractController implements ActionListener
 	}
 
 	public void clickedSpot(Location location) {
-		model.setSpotType(location, list.getSelectedIndex());
-		updateList();
 	}
 }

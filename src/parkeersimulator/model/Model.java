@@ -632,8 +632,11 @@ public class Model extends AbstractModel implements Runnable {
     		i++;
     	}
     }
+
     //carType mee nemen zo dat je per auto de nummer autos kan toewijzen
+
     private int getNumberOfCars(String test){ 
+
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
@@ -667,8 +670,11 @@ public class Model extends AbstractModel implements Runnable {
         	//normale zaterdag uren voor normale autos
         	else if (day == 6 && hour >= 6) {
         		averageNumberOfCarsPerHour = 50;
+        	}
         }
-        }
+
+        
+
         }
         
         // Calculate the number of cars that arrive this minute.
