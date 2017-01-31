@@ -29,15 +29,17 @@ public class LineGraphView extends AbstractView {
     
     private Color hocCarLine = new Color(255, 0, 0);
     private Color passCarLine = new Color (0, 0, 255);
+    private Color resCarLine = new Color (255, 255, 0);
 
     private static final Stroke GRAPH_STROKE = new BasicStroke(4f);
 
-	List<Integer> hocCarData, passCarData;  
+	List<Integer> hocCarData, passCarData, resCarData;  
 	
 	public LineGraphView(Model model) {
 		super(model);
 		hocCarData = new ArrayList<Integer>();
 		passCarData = new ArrayList<Integer>();
+		resCarData = new ArrayList<Integer>();
 		
 	}
 		
@@ -49,26 +51,33 @@ public class LineGraphView extends AbstractView {
 
        	int hocCar = model.getCarCountForType(ParkingSpot.TYPE_AD_HOC);
        	int passCar = model.getCarCountForType(ParkingSpot.TYPE_PASS);
+       	int resCar = model.getCarCountForType(ParkingSpot.TYPE_RES);
        	
        	
        	if (model.getHour() != hour) {
        		hocCarData.add(hocCar);
        		passCarData.add(passCar);
+       		resCarData.add(resCar);
        		if (hocCarData.size() > 168) { 
        			hocCarData.remove(0);
        			passCarData.remove(0);
+       			resCarData.remove(0);
        		}
        	}
 
        	hour = model.getHour();
        	int maxValueHoc = Collections.max(hocCarData);
        	int maxValuePass = Collections.max(passCarData);
+       	int maxValueRes = Collections.max(resCarData);
        	
-       	if (maxValueHoc > maxValuePass) {
+       	if (maxValueHoc > maxValuePass || maxValueHoc > maxValueRes) {
        		maxValue = maxValueHoc;
        	}
-       	else {
+       	else if (maxValuePass > maxValueRes) {
        		maxValue = maxValuePass;
+       	}
+       	else {
+       		maxValue = maxValueRes;
        	}
        	
 		
@@ -78,6 +87,7 @@ public class LineGraphView extends AbstractView {
         
         drawGraph(g2, hocCarData, hocCarLine);
         drawGraph(g2, passCarData, passCarLine);
+        drawGraph(g2, resCarData, resCarLine);
     }
         
 
@@ -93,10 +103,6 @@ public class LineGraphView extends AbstractView {
             graphPoints.add(new Point(x1, y1));
         }
         
-        g2.setColor(Color.BLACK);
-        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
-        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
-
         g2.setColor(lineColor);
         g2.setStroke(GRAPH_STROKE);
         for (int i = 0; i < graphPoints.size() - 1; i++) {
@@ -106,6 +112,10 @@ public class LineGraphView extends AbstractView {
             int y2 = graphPoints.get(i + 1).y;
             g2.drawLine(x1, y1, x2, y2);
         }
+        
+        g2.setColor(Color.BLACK);
+        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
+        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
 
     }
     

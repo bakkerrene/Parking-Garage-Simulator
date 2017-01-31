@@ -9,11 +9,13 @@ import java.awt.event.MouseEvent;
 
 import parkeersimulator.Location;
 import parkeersimulator.ParkingSpot;
+import parkeersimulator.car.AbstractCar;
 import parkeersimulator.controller.AbstractController;
 import parkeersimulator.model.Model;
 
 @SuppressWarnings("serial")
 public class CarParkView extends AbstractView {
+	Color color = new Color(0,0,0);
 
 	public CarParkView(Model model) {
 
@@ -58,10 +60,15 @@ public class CarParkView extends AbstractView {
             for(int row = 0; row < model.getNumberOfRows(); row++) {
                 for(int place = 0; place < model.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    //AbstractCar car = model.getCarAt(location);
-                    //Color color = car == null ? Color.white : car.getColor();
-                    ParkingSpot spot = model.getParkingSpotAt(location);
-                    Color color = spot.getColor();
+                    AbstractCar car = model.getCarAt(location);
+
+                    if (car == null) {
+                    	ParkingSpot spot = model.getParkingSpotAt(location);
+                    	color = spot.getColor();
+                    }
+                    else {
+                        color = car.getColor();
+                    }
                     drawPlace(graphics, location, color);
                 }
             }
