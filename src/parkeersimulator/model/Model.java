@@ -300,6 +300,7 @@ public class Model extends AbstractModel implements Runnable {
 
     public void setReservering(int reservering){
     	this.reserveringMax = reservering;
+    	
     }
 
     public int getReservering(){
@@ -440,6 +441,7 @@ public class Model extends AbstractModel implements Runnable {
     }
 
     public void handleEntrance() {
+    	carsEntering(entrancePassQueue, ParkingSpot.TYPE_RES);
     	carsEntering(entrancePassQueue, ParkingSpot.TYPE_PASS);
     	carsEntering(entranceCarQueue, ParkingSpot.TYPE_AD_HOC); 
     }
@@ -462,6 +464,10 @@ public class Model extends AbstractModel implements Runnable {
     	if (abonneesMax > carCountPerType[ParkingSpot.TYPE_PASS]) {
     		numberOfCars = getNumberOfCars("PASS");
     		addArrivingCars(numberOfCars, ParkingSpot.TYPE_PASS);
+    	}
+    	if (reserveringMax > carCountPerType[ParkingSpot.TYPE_RES]) {
+    		numberOfCars = getNumberOfCars("RES");
+    		addArrivingCars(numberOfCars, ParkingSpot.TYPE_RES);
     	}
     }
 
