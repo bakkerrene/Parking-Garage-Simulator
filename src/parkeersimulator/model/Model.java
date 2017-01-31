@@ -1,5 +1,5 @@
 package parkeersimulator.model;
-
+//test
 
 import java.awt.Dimension;
 import java.util.*;
@@ -465,6 +465,7 @@ public class Model extends AbstractModel implements Runnable {
     		numberOfCars = getNumberOfCars("PASS");
     		addArrivingCars(numberOfCars, ParkingSpot.TYPE_PASS);
     	}
+    	//reserveringen plaatsen toewijzen. 
     	if (reserveringMax > carCountPerType[ParkingSpot.TYPE_RES]) {
     		numberOfCars = getNumberOfCars("RES");
     		addArrivingCars(numberOfCars, ParkingSpot.TYPE_RES);
