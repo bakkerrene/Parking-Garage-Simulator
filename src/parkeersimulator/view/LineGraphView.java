@@ -2,12 +2,13 @@ package parkeersimulator.view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -100,6 +101,8 @@ public class LineGraphView extends AbstractView {
             graphPoints.add(new Point(x1, y1));
         }
         
+        
+        Stroke oldStroke = g2.getStroke();
         g2.setColor(lineColor);
         g2.setStroke(GRAPH_STROKE);
         for (int i = 0; i < graphPoints.size() - 1; i++) {
@@ -108,6 +111,16 @@ public class LineGraphView extends AbstractView {
             int x2 = graphPoints.get(i + 1).x;
             int y2 = graphPoints.get(i + 1).y;
             g2.drawLine(x1, y1, x2, y2);
+        }
+        
+        g2.setStroke(oldStroke);
+        g2.setColor(lineColor);
+        for (int i = 0; i < graphPoints.size(); i++) {
+            int x = graphPoints.get(i).x - 4 / 2;
+            int y = graphPoints.get(i).y - 4 / 2;
+            int ovalW = 4;
+            int ovalH = 4;
+            g2.fillOval(x, y, ovalW, ovalH);
         }
         
         g2.setColor(Color.BLACK);

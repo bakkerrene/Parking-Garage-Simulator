@@ -60,6 +60,7 @@ public class Model extends AbstractModel implements Runnable {
     int weekendArrivals = 200; // average number of arriving cars per hour
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
+    private double multiplier = 1; //increase the average number of arriving cars per hour with a multiplier
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
@@ -261,6 +262,16 @@ public class Model extends AbstractModel implements Runnable {
         return car;
     }
 
+    
+    public void setMultiplier(int multiplier){
+    	this.multiplier = multiplier / 100.0;
+
+    }
+
+    public double getMultiplier(){
+    	return multiplier;
+    }
+    
     public void setTickPause(int tickPause){
     	this.tickPause = tickPause;
     }
@@ -641,7 +652,7 @@ public class Model extends AbstractModel implements Runnable {
 
         if(test == "PASS") {
         	if (day > 4) {
-        		averageNumberOfCarsPerHour = 10;
+        		averageNumberOfCarsPerHour = 20;
         	}
         }
         if(test == "HOC") {
@@ -662,10 +673,11 @@ public class Model extends AbstractModel implements Runnable {
         		averageNumberOfCarsPerHour = 50;
         	}
         }
-
         
-
         }
+        
+        averageNumberOfCarsPerHour *= multiplier;
+        System.out.println("MODEL lijn 680:    " + averageNumberOfCarsPerHour + ":" + multiplier);
         
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
