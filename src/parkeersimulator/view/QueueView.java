@@ -103,6 +103,7 @@ public class QueueView extends AbstractView {
 	
 	private void setQueueColor(Graphics g, CarQueue entrance1Data) {
 		int top = 0;
+		if (entrance1Data != null) {
 		if (entrance1Data == model.getEntrancePassQueueNr()) top = 0;
 		if (entrance1Data == model.getEntrancePassQueueNr()) top = 33;
 		if (entrance1Data == model.getPaymentCarQueueNr()) top = 66;
@@ -111,6 +112,7 @@ public class QueueView extends AbstractView {
 			AbstractCar car = entrance1Data.peekCar(i);
 			g.setColor(car.getColor());
 			g.fillRect(0 + (i * 21), top, 20, 10);
+		}
 		}
 		
 	}
