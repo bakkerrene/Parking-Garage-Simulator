@@ -28,7 +28,7 @@ public class SelectController extends AbstractController implements ActionListen
 
     	super(model);
 
-    	clearButton = new JButton("Clear spots");
+    	clearButton = new JButton("Verwijder Plekken");
     	clearButton.addActionListener(this);
 
     	BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -50,10 +50,10 @@ public class SelectController extends AbstractController implements ActionListen
     private void updateList() {
     	int selectedIndex = list.getSelectedIndex();
     	listModel.clear();
-    	listModel.addElement("Ad Hoc (" + model.getSpotCountForType(ParkingSpot.TYPE_AD_HOC) + ")");
-    	listModel.addElement("Pass (" + model.getSpotCountForType(ParkingSpot.TYPE_PASS) + ")");
-    	listModel.addElement("Handi (" + model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + ")");
-    	listModel.addElement("Res (" + model.getSpotCountForType(ParkingSpot.TYPE_RES) + ")");
+    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_AD_HOC) + " Regulieren");
+    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_PASS) + " Abonnees");
+    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + " Invaliden");
+    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_RES) + " Gereserveerden");
     	list.setSelectedIndex(selectedIndex);
     }
 

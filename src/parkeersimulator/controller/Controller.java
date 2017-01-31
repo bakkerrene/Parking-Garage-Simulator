@@ -32,12 +32,12 @@ public class Controller extends AbstractController implements ActionListener {
     	add(start);
 		start.setBounds(259, 10, 70, 30);
 
-		plus1 = new JButton("1 Step");
+		plus1 = new JButton("1 Stap");
     	plus1.addActionListener(this);    
     	add(plus1);
     	plus1.setBounds(50, 10, 70, 30);
 
-    	plus100 = new JButton("100 Steps");
+    	plus100 = new JButton("100 Stappen");
     	plus100.addActionListener(this);
     	add(plus100);
 		plus100.setBounds(140, 10, 100, 30);
