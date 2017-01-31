@@ -16,7 +16,7 @@ public class SlideController extends AbstractController{
 
 	static final int minTick = 1;
 	static final int maxTick = 999;
-	private int getter = (999 - model.getTickPause());
+	private int getter = (1000 - model.getTickPause());
 	private int InitTick = getter;
 	
 	private JSlider tickRate;
@@ -27,7 +27,7 @@ public class SlideController extends AbstractController{
 
     	tickRate = new JSlider(JSlider.HORIZONTAL, minTick, maxTick,  InitTick);
     	tickRate.addChangeListener(e -> {
-    		model.setTickPause(999 - (tickRate.getValue()));
+    		model.setTickPause(1000 - (tickRate.getValue()));
     		revalidate();
     	});
     	
