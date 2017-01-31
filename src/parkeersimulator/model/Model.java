@@ -1,6 +1,6 @@
 package parkeersimulator.model;
-
-
+//test
+//test
 import java.awt.Dimension;
 import java.util.*;
 
@@ -32,6 +32,7 @@ public class Model extends AbstractModel implements Runnable {
 	private CarQueue paymentCarQueueExtra = new CarQueue();
 	private CarQueue exitCarQueue = new CarQueue();
 	private CarQueue missedCars = new CarQueue();
+	private CarQueue carsInGarage = new CarQueue();
 	private int entranceCarQueueMax = 6;
 
 	private String[] weekDay = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
@@ -46,7 +47,7 @@ public class Model extends AbstractModel implements Runnable {
     private int moneyLastDay;
     private int moneyLastWeek;
 
-    private int abonneesMax = 50;
+    private int abonneesMax = 0;
     private int reserveringMax = 0;
     private int percentageHandicap = 2;
     private int abonneeTarief = 10;
@@ -438,6 +439,10 @@ public class Model extends AbstractModel implements Runnable {
 
     public String getDay() {
     	return weekDay[day];
+    }
+    
+    public int getHour(){
+    	return hour;
     }
 
     public void handleEntrance() {

@@ -27,6 +27,7 @@ public class MvcSimulator  {
 	private PieView pieView;
 	private ManagerView managerView;
 	private QueueView queueView;
+	private LineGraphView lineGraphView;
 
 	public MvcSimulator() {
 
@@ -42,6 +43,7 @@ public class MvcSimulator  {
 		pieView = new PieView(model);
 		managerView = new ManagerView(model);
 		queueView = new QueueView(model);
+		lineGraphView = new LineGraphView(model);
 
 		carParkView.addController(selectController);
 
@@ -59,14 +61,16 @@ public class MvcSimulator  {
 		contentPane.add(slideController);
 		contentPane.add(selectController);
 		contentPane.add(initController);
-		contentPane.add(barGraphView);
-
+		//contentPane.add(barGraphView);
+		contentPane.add(lineGraphView);
+		
+		
 		carParkView.setBounds(10, 50, 800, 400);
 		pieView.setBounds(1030, 50, 200, 200);
 		managerView.setBounds(1030, 260, 200, 200);
 		queueView.setBounds(1230, 260, 200, 200);
 
-		barGraphView.setBounds(10, 500, 402, 402);
+		lineGraphView.setBounds(10, 500, 800, 400);
 		slideController.setBounds(10, 0, 800 , 50);
 		controller.setBounds(10, 470, 800, 30);
 		selectController.setBounds(820, 60, 200, 101);
