@@ -81,9 +81,6 @@ public class LineGraphView extends AbstractView {
        	}
        	
 		
-        g2.setColor(Color.WHITE);
-        g2.fillRect(padding + labelPadding, padding, getWidth() - (2 * padding) - labelPadding, getHeight() - 2 * padding - labelPadding);
-
         
         drawGraph(g2, hocCarData, hocCarLine);
         drawGraph(g2, passCarData, passCarLine);
