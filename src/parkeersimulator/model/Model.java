@@ -32,7 +32,6 @@ public class Model extends AbstractModel implements Runnable {
 	private CarQueue paymentCarQueueExtra = new CarQueue();
 	private CarQueue exitCarQueue = new CarQueue();
 	private CarQueue missedCars = new CarQueue();
-	private CarQueue carsInGarage = new CarQueue();
 	private int entranceCarQueueMax = 6;
 
 	private String[] weekDay = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
@@ -116,27 +115,6 @@ public class Model extends AbstractModel implements Runnable {
                 }
             }
         }
-        /* temporary test */
-        /*
-        for (int row = 0; row < 2; row++) {
-        	for (int place = 0; place < 30; place++) {
-        		Location location = new Location(2, row, place); 
-        		setSpotType(location, ParkingSpot.TYPE_PASS);
-        	}
-        }
-        for (int row = 2; row < 4; row++) {
-        	for (int place = 0; place < 30; place++) {
-        		Location location = new Location(2, row, place); 
-        		setSpotType(location, ParkingSpot.TYPE_HANDI);
-        	}
-        }
-        for (int row = 4; row < 6; row++) {
-        	for (int place = 0; place < 30; place++) {
-        		Location location = new Location(2, row, place); 
-        		setSpotType(location, ParkingSpot.TYPE_RES);
-        	}
-        }
-        */
 	}
 
 	public void reset() {

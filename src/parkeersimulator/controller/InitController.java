@@ -56,16 +56,16 @@ public class InitController extends AbstractController implements ActionListener
     	abonneeTarief = new JFormattedTextField(model.getAbonneeTarief());
     	normaalTarief = new JFormattedTextField(model.getNormaalTarief());   
     	reserveringsTarief = new JFormattedTextField(model.getReserveringTarief());
-    	initButton = new JButton("Submit");
+    	initButton = new JButton("Verstuur");
     	initButton.addActionListener(this);
 
-    	speed = new JLabel("TickPause");
+    	speed = new JLabel("Snelheid");
  		maxRes = new JLabel("Reserveringen");
  		maxAbo = new JLabel("Abonnees");
- 		perInv = new JLabel("percentage invalide");
- 		aboTa = new JLabel("AbonneeTarief");
- 		norTa = new JLabel("NormaalTarief");
- 		resTa = new JLabel("ReserveringTarief");
+ 		perInv = new JLabel("Invaliden (%)");
+ 		aboTa = new JLabel("Abonnee Tarief");
+ 		norTa = new JLabel("Normaal Tarief");
+ 		resTa = new JLabel("Reservering Tarief");
 
 		GridLayout gridLayout = new GridLayout(0,2);
 		setLayout(gridLayout);
