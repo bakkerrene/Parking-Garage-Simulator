@@ -1,3 +1,4 @@
+
 package parkeersimulator.model;
 //test
 //test
@@ -753,6 +754,8 @@ public class Model extends AbstractModel implements Runnable {
         	}
         }
         averageNumberOfCarsPerHour *= multiplier;
+        
+        System.out.println(averageNumberOfCarsPerHour + ":" + multiplier);
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
         double numberOfCarsPerHour = averageNumberOfCarsPerHour + random.nextGaussian() * standardDeviation;
