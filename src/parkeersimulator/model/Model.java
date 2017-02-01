@@ -29,7 +29,9 @@ public class Model extends AbstractModel implements Runnable {
 	private ParkingSpot[][][] spots;
 	private int[] spotCountPerType;
 	private int[] carCountPerType;
-
+	
+	private String buttonOption = "cars";
+	
 	private CarQueue entranceCarQueue  = new CarQueue();
 	private CarQueue entrancePassQueue = new CarQueue();
 	private CarQueue paymentCarQueue = new CarQueue();
@@ -387,6 +389,14 @@ public class Model extends AbstractModel implements Runnable {
 
     public int getReserveringTarief(){
 		return reserveringTarief;
+    }
+    
+    public void setGraphButtonInput(String buttonOption) {
+    	this.buttonOption = buttonOption;
+    }
+    
+    public String getGraphButtonInput() {
+    	return buttonOption;
     }
 
     public Location getFirstFreeTypeLocation(int type) {
@@ -755,7 +765,6 @@ public class Model extends AbstractModel implements Runnable {
         }
         averageNumberOfCarsPerHour *= multiplier;
         
-        System.out.println(averageNumberOfCarsPerHour + ":" + multiplier);
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
         double numberOfCarsPerHour = averageNumberOfCarsPerHour + random.nextGaussian() * standardDeviation;

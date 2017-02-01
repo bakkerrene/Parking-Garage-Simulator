@@ -31,16 +31,22 @@ public class LineGraphView extends AbstractView {
     private Color hocCarLine = new Color(255, 0, 0);
     private Color passCarLine = new Color (0, 0, 255);
     private Color resCarLine = new Color (255, 255, 0);
+    
+    private Color moneyLine = new Color (0, 255, 0);
 
     private static final Stroke GRAPH_STROKE = new BasicStroke(4f);
+	final static String MONEY = "money";
+	final static String CARS = "cars";
 
 	List<Integer> hocCarData, passCarData, resCarData;  
+	List<Integer> moneyPerHourData;
 	
 	public LineGraphView(Model model) {
 		super(model);
 		hocCarData = new ArrayList<Integer>();
 		passCarData = new ArrayList<Integer>();
 		resCarData = new ArrayList<Integer>();
+		moneyPerHourData = new ArrayList<Integer>();
 		
 	}
 		
@@ -49,43 +55,61 @@ public class LineGraphView extends AbstractView {
        	Graphics2D g2 = (Graphics2D) g;
        	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
        	
-
+       	String type_Graph = model.getGraphButtonInput();
+              	       	
        	int hocCar = model.getCarCountForType(ParkingSpot.TYPE_AD_HOC);
        	int passCar = model.getCarCountForType(ParkingSpot.TYPE_PASS);
        	int resCar = model.getCarCountForType(ParkingSpot.TYPE_RES);
+       	int moneyLastHour = model.getMoneyLastHour();
        	
-       	
-       	if (model.getHour() != hour) {
+       	if (model.getHour() != hour || hocCarData.size() == 0) {
        		hocCarData.add(hocCar);
        		passCarData.add(passCar);
        		resCarData.add(resCar);
+       		moneyPerHourData.add(moneyLastHour);
        		if (hocCarData.size() > 168) { 
        			hocCarData.remove(0);
        			passCarData.remove(0);
        			resCarData.remove(0);
+       			moneyPerHourData.remove(0);
        		}
        	}
-
        	hour = model.getHour();
-       	int maxValueHoc = Collections.max(hocCarData);
-       	int maxValuePass = Collections.max(passCarData);
-       	int maxValueRes = Collections.max(resCarData);
+       		
+       	if (type_Graph.equals(CARS)) {
+       		int maxValueHoc = Collections.max(hocCarData);
+       		int maxValuePass = Collections.max(passCarData);
+       		int maxValueRes = Collections.max(resCarData);
        	
-       	if (maxValueHoc > maxValuePass || maxValueHoc > maxValueRes) {
-       		maxValue = maxValueHoc;
+       		if (maxValueHoc > maxValuePass || maxValueHoc > maxValueRes) {
+       			maxValue = maxValueHoc;
+       		}
+       		else if (maxValuePass > maxValueRes) {
+       			maxValue = maxValuePass;
+       		}
+       		else {
+       			maxValue = maxValueRes;
+       		}
+       		drawGraph(g2, hocCarData, hocCarLine);
+       		drawGraph(g2, passCarData, passCarLine);
+       		drawGraph(g2, resCarData, resCarLine);
        	}
-       	else if (maxValuePass > maxValueRes) {
-       		maxValue = maxValuePass;
+       	else if(type_Graph.equals(MONEY)) {
+       		
+
+       		
+       		if (model.getHour() != hour || moneyPerHourData.size() == 0) {
+
+       			if (moneyPerHourData.size() > 168) {
+
+       			}
+       		}
+       		hour = model.getHour();
+       		
+       		maxValue = Collections.max(moneyPerHourData);
+       		
+       		drawGraph(g2, moneyPerHourData, moneyLine);
        	}
-       	else {
-       		maxValue = maxValueRes;
-       	}
-       	
-		
-        
-        drawGraph(g2, hocCarData, hocCarLine);
-        drawGraph(g2, passCarData, passCarLine);
-        drawGraph(g2, resCarData, resCarLine);
     }
         
 
