@@ -26,7 +26,7 @@ public class CarQueue {
     }
 
     public AbstractCar peekCar(int i) {
-        return ((LinkedList<AbstractCar>) queue).get(i);
+        return ((LinkedList<AbstractCar>) queue).get(i); //<--- niet echt optimaal met hoge snelheid...
     }
 
     public int carsInQueue(){

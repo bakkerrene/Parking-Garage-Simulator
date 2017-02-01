@@ -58,7 +58,10 @@ public class Model extends AbstractModel implements Runnable {
     private int abonneeTarief = 10;
     private int normaalTarief = 1;
     private int reserveringTarief = 10;
-
+    
+    private int totalPassCar = 0;
+    private int totalRessCar = 0;
+    
     private int tickCount = 0;
     private int tickPause = 100;
 
@@ -711,8 +714,15 @@ public class Model extends AbstractModel implements Runnable {
         // Let cars leave.
     	int i=0;
     	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
-            exitCarQueue.removeCar();
+            AbstractCar car = exitCarQueue.removeCar();
+            if (car.getType() == ParkingSpot.TYPE_RES) {
+            	totalRessCar--;
+            }
+            if (car.getType() == ParkingSpot.TYPE_PASS) {
+            	totalPassCar--;
+            }
             i++;
+            
     	}	
     }
     
@@ -781,7 +791,7 @@ public class Model extends AbstractModel implements Runnable {
             	}
             	else {
             		missedCars.addCar(new AdHocCar());
-            		throw new ParkeerException ("Test!");
+            		//throw new ParkeerException ("Test!"); <-- beetje irritant
             	}
             }
             break;
@@ -792,23 +802,25 @@ public class Model extends AbstractModel implements Runnable {
     			}
             	else {
             		missedCars.addCar(new HandiCar());
-            		throw new ParkeerException ("Test!");
+            		//throw new ParkeerException ("Test!");
             	}
     		}
     		break;
     	case ParkingSpot.TYPE_PASS:
 
             for (int i = 0; i < numberOfCars; i++) {
-        		if (getNumberOfCars("PASS") < abonneesMax) {
-            	entrancePassQueue.addCar(new ParkingPassCar());
+        		if (totalPassCar < abonneesMax) {
+        			entrancePassQueue.addCar(new ParkingPassCar());
+        			totalPassCar++;
             }
     		}
             break;	
     	case ParkingSpot.TYPE_RES:
 
     		for (int i = 0; i < numberOfCars; i++) {
-        		if (getNumberOfCars("RES") < reserveringMax) {
-    			entrancePassQueue.addCar(new ResCar());
+        		if (totalRessCar < reserveringMax) {
+        			entrancePassQueue.addCar(new ResCar());
+        			totalRessCar++;
     		}
     		break;
     	}
