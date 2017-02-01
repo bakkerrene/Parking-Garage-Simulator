@@ -1,12 +1,14 @@
-package parkeersimulator.car;
 
+package parkeersimulator.car;
 
 import java.awt.Color;
 
 import parkeersimulator.Location;
+import parkeersimulator.ParkingSpot;
 
 public abstract class AbstractCar {
 
+	protected int type;
     private Location location;
     private int minutesLeft;
     private int totalMinutes = 0;
@@ -17,6 +19,11 @@ public abstract class AbstractCar {
      * Constructor for objects of class Car
      */
     public AbstractCar() {
+    	type = ParkingSpot.TYPE_AD_HOC;
+    }
+
+    public int getType() {
+    	return type;    	
     }
 
     public Location getLocation() {
@@ -63,6 +70,6 @@ public abstract class AbstractCar {
         minutesLeft--;
         totalMinutes++;
     }
-    
+
     public abstract Color getColor();
 }

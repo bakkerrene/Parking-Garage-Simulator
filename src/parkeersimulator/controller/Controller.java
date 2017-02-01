@@ -18,8 +18,6 @@ public class Controller extends AbstractController implements ActionListener {
 	private JButton stop;
 	private JButton reset;
 
-	private boolean inSim = false;
-
 	public Controller(Model model) {
 
 		super(model);
@@ -63,28 +61,31 @@ public class Controller extends AbstractController implements ActionListener {
 		Object sourceObject = e.getSource();
 
 		if (sourceObject == plus1) {
-			inSim = true;
 			model.start(1);
 		} else if (sourceObject == plus100) {
-			inSim = true;
 			model.start(100);
 		} else if (sourceObject == start) {
-			inSim = true;
 			model.start(0);
 		} else if (sourceObject == stop) {
-			inSim = false;
 			model.stop();
 		} else if (sourceObject == reset) {
 			model.reset();
 		}
-
-		plus1.setEnabled(!inSim);
-		plus100.setEnabled(!inSim);
-		start.setEnabled(!inSim);;
-		stop.setEnabled(inSim);
-		reset.setEnabled(!inSim);
 	}
 
-	public void clickedSpot(Location location) {
+	private void enableOrDisable(boolean value) {
+		plus1.setEnabled(value);
+		plus100.setEnabled(value);
+		start.setEnabled(value);
+		stop.setEnabled(!value);
+		reset.setEnabled(value);
+	}
+
+	public void simStarted() {
+		enableOrDisable(false);
+	}
+
+	public void simStopped() {
+		enableOrDisable(true);
 	}
 }

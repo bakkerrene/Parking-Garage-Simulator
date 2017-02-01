@@ -1,5 +1,5 @@
-package parkeersimulator.controller;
 
+package parkeersimulator.controller;
 
 import javax.swing.*;
 
@@ -12,12 +12,12 @@ import java.awt.event.*;
 @SuppressWarnings("serial")
 public class InitController extends AbstractController implements ActionListener {
 
-	private JLabel increaseCarsPerHour;
+	private JLabel speed;
 	private JLabel maxRes, maxAbo;
 	private JLabel perInv, aboTa;
 	private JLabel norTa, resTa;
 
-	private JFormattedTextField multiplier;
+	private JFormattedTextField tickPause;
 	private JFormattedTextField aantalReserveringen;
     private JFormattedTextField aantalAbonnees;
     private JFormattedTextField percentageInvalidenplekken;
@@ -26,40 +26,34 @@ public class InitController extends AbstractController implements ActionListener
     private JFormattedTextField reserveringsTarief;
     private JButton initButton;
 
-    public void InitHandiCars() {
-		int handiPer = getHandiPer();
-		int handiCount = (int)(Math.ceil(((handiPer / 100.0) * model.getTotalSpotCount())));
-		int floor = 0, row = 0, place = 0;
-		for (int x = 0; x < handiCount; x++) {
-			Location location = new Location(floor, row, place);
-			model.setSpotType(location, ParkingSpot.TYPE_HANDI);
-			place++;
-			if (place >= model.getNumberOfPlaces()) {
-				place = 0;
-				row++;
-				if(row >= model.getNumberOfRows()) {
-					row = 0;
-					floor++;
-				}
-			}
-		}
+    private void updateValues() {
+    	tickPause.setValue(model.getTickPause());
+    	aantalReserveringen.setValue(model.getReservering());
+    	aantalAbonnees.setValue(model.getAbonnees());
+    	percentageInvalidenplekken.setValue(model.getHandicapPercentage());
+    	abonneeTarief.setValue(model.getAbonneeTarief());
+    	normaalTarief.setValue(model.getNormaalTarief());   
+    	reserveringsTarief.setValue(model.getReserveringTarief());
     }
 
     public InitController(Model model) {
 
     	super(model);
 
-    	multiplier = new JFormattedTextField((model.getMultiplier() * 100));
-    	aantalReserveringen = new JFormattedTextField(model.getReservering());
-    	aantalAbonnees = new JFormattedTextField(model.getAbonnees());
-    	percentageInvalidenplekken = new JFormattedTextField(model.getHandicapPercentage());
-    	abonneeTarief = new JFormattedTextField(model.getAbonneeTarief());
-    	normaalTarief = new JFormattedTextField(model.getNormaalTarief());   
-    	reserveringsTarief = new JFormattedTextField(model.getReserveringTarief());
+    	tickPause = new JFormattedTextField();
+    	aantalReserveringen = new JFormattedTextField();
+    	aantalAbonnees = new JFormattedTextField();
+    	percentageInvalidenplekken = new JFormattedTextField();
+    	abonneeTarief = new JFormattedTextField();
+    	normaalTarief = new JFormattedTextField();   
+    	reserveringsTarief = new JFormattedTextField();
+
+    	updateValues();
+
     	initButton = new JButton("Verstuur");
     	initButton.addActionListener(this);
 
-    	increaseCarsPerHour = new JLabel("Auto Multiplier(%)");
+    	speed = new JLabel("Snelheid");
  		maxRes = new JLabel("Reserveringen");
  		maxAbo = new JLabel("Abonnees");
  		perInv = new JLabel("Invaliden (%)");
@@ -70,8 +64,8 @@ public class InitController extends AbstractController implements ActionListener
 		GridLayout gridLayout = new GridLayout(0,2);
 		setLayout(gridLayout);
 
-		add(increaseCarsPerHour);
-		add(multiplier);
+		add(speed);
+		add(tickPause);
 		add(maxRes);
 		add(aantalReserveringen);
 		add(maxAbo);
@@ -86,8 +80,6 @@ public class InitController extends AbstractController implements ActionListener
 		add(reserveringsTarief);
 		add(initButton);
 
-		InitHandiCars();
-
     	setVisible(true);
     }
 
@@ -95,22 +87,22 @@ public class InitController extends AbstractController implements ActionListener
 		try {
 			//Object sourceObject = e.getSource();
 			//if(sourceObject == initButton) {
-				model.setMultiplier(getMultiplier());
+				model.setTickPause(getTickPause());
 				model.setReservering(getReservering());
 				model.setAbonnees(getAbonee());
 				model.setHandicapPercentage(getHandiPer());
 				model.setAbonneeTarief(getAboneeTarief());
 				model.setNormaalTarief(getNormaalTarief());
 				model.setReserveringTarief(getReserveringTarief());
-				InitHandiCars();
+				model.initDefaultSpots();
 			//}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	private int getMultiplier() throws NumberFormatException {
-		return Integer.parseInt(multiplier.getText());
+	private int getTickPause() throws NumberFormatException {
+		return Integer.parseInt(tickPause.getText());
 	}
 
 	private int getReservering() throws NumberFormatException {
@@ -137,6 +129,26 @@ public class InitController extends AbstractController implements ActionListener
 		return Integer.parseInt(reserveringsTarief.getText());
 	}
 
-	public void clickedSpot(Location location) {
+	private void enableOrDisable(boolean value) {
+		tickPause.setEnabled(value);
+		aantalReserveringen.setEnabled(value);
+		aantalAbonnees.setEnabled(value);
+		percentageInvalidenplekken.setEnabled(value);
+		abonneeTarief.setEnabled(value);
+		normaalTarief.setEnabled(value);
+		reserveringsTarief.setEnabled(value);
+		initButton.setEnabled(value);
+	}
+
+	public void simStarted() {
+		enableOrDisable(false);
+	}
+
+	public void simStopped() {
+		enableOrDisable(true);
+	}
+
+	public void spotsChanged() {
+		updateValues();
 	}
 }

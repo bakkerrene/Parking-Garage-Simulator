@@ -23,7 +23,6 @@ public class SlideController extends AbstractController{
 	
     public SlideController(Model model) {
     	super(model);
-    	
 
     	tickRate = new JSlider(JSlider.HORIZONTAL, minTick, maxTick,  InitTick);
     	tickRate.addChangeListener(e -> {
@@ -34,9 +33,5 @@ public class SlideController extends AbstractController{
         setLayout(new GridLayout(2, 1));
         add(new JLabel("Snelheid", SwingConstants.CENTER));
         add(tickRate);
-    }
-
-    public void clickedSpot(Location location) {
-    	// TODO Auto-generated method stub
     }
 }

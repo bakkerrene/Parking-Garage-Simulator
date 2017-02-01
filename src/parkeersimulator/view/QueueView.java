@@ -103,19 +103,16 @@ public class QueueView extends AbstractView {
 	
 	private void setQueueColor(Graphics g, CarQueue entrance1Data) {
 		int top = 0;
-		
 		if (entrance1Data == model.getEntrancePassQueueNr()) top = 0;
 		if (entrance1Data == model.getEntrancePassQueueNr()) top = 33;
 		if (entrance1Data == model.getPaymentCarQueueNr()) top = 66;
 		if (entrance1Data == model.exitCarQueueNr()) top = 99;
 		for (int i =0; i < entrance1Data.carsInQueue(); i++) {
 			if (!(i >= entrance1Data.carsInQueue())) {
-			AbstractCar car = entrance1Data.peekCar(i); // <---- error bij hoge tickrate... lijkt of de queue al gedelete is in Model step 2 voordat ie klaar is met step 1
-			g.setColor(car.getColor());
-			g.fillRect(0 + (i * 21), top, 20, 10);
+				AbstractCar car = entrance1Data.peekCar(i);
+				g.setColor(car.getColor());
+				g.fillRect(0 + (i * 21), top, 20, 10);
 			}
 		}
 	}
-		
-
 }

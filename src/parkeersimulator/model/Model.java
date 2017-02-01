@@ -8,6 +8,7 @@ import parkeersimulator.CarQueue;
 import parkeersimulator.Location;
 import parkeersimulator.ParkingSpot;
 import parkeersimulator.car.*;
+import parkeersimulator.controller.AbstractController;
 import parkeersimulator.view.AbstractView;
 
 import java.awt.Image;
@@ -46,8 +47,8 @@ public class Model extends AbstractModel implements Runnable {
     private int moneyLastDay;
     private int moneyLastWeek;
 
-    private int abonneesMax = 0;
-    private int reserveringMax = 0;
+    private int abonneesMax = 50;
+    private int reserveringMax = 15;
     private int percentageHandicap = 2;
     private int abonneeTarief = 10;
     private int normaalTarief = 1;
@@ -60,7 +61,6 @@ public class Model extends AbstractModel implements Runnable {
     int weekendArrivals = 200; // average number of arriving cars per hour
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
-    private double multiplier = 1; //increase the average number of arriving cars per hour with a multiplier
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
@@ -97,6 +97,7 @@ public class Model extends AbstractModel implements Runnable {
         }
 
         initSpots();
+        initDefaultSpots();
 	}
 	
 	public int getSpotCountForType(int type) {
@@ -118,7 +119,58 @@ public class Model extends AbstractModel implements Runnable {
         }
 	}
 
+    public void initDefaultSpots() {
+
+		int handiCount = (int)(Math.ceil(((this.getHandicapPercentage() / 100.0) * getTotalSpotCount())));
+
+		int floor = 0, row = 0, place = 0;
+
+		for (int x = 0; x < getAbonnees(); x++) {
+			Location location = new Location(floor, row, place);
+			internalSetSpotType(location, ParkingSpot.TYPE_PASS);
+			place++;
+			if (place >= getNumberOfPlaces()) {
+				place = 0;
+				row++;
+				if(row >= getNumberOfRows()) {
+					row = 0;
+					floor++;
+				}
+			}
+		}
+
+		for (int x = 0; x < handiCount; x++) {
+			Location location = new Location(floor, row, place);
+			internalSetSpotType(location, ParkingSpot.TYPE_HANDI);
+			place++;
+			if (place >= getNumberOfPlaces()) {
+				place = 0;
+				row++;
+				if(row >= getNumberOfRows()) {
+					row = 0;
+					floor++;
+				}
+			}
+		}
+
+		for (int x = 0; x < getReservering(); x++) {
+			Location location = new Location(floor, row, place);
+			internalSetSpotType(location, ParkingSpot.TYPE_RES);
+			place++;
+			if (place >= getNumberOfPlaces()) {
+				place = 0;
+				row++;
+				if(row >= getNumberOfRows()) {
+					row = 0;
+					floor++;
+				}
+			}
+		}
+		for(AbstractController c: controllers) c.spotsChanged();
+    }
+
 	public void reset() {
+		stop();
 		day = hour = minute = 0;
         entranceCarQueue.clear();
         entrancePassQueue.clear();
@@ -203,12 +255,20 @@ public class Model extends AbstractModel implements Runnable {
 		return numberOfFloors*numberOfRows*numberOfPlaces;
 	}
 
-	public void setSpotType(Location location, int type) {
+	private void internalSetSpotType(Location location, int type) {
 		ParkingSpot spot = getParkingSpotAt(location);
 		spotCountPerType[spot.getType()]--;
 		spotCountPerType[type]++;
 		spot.setType(type);
 		notifyViews();
+	}
+
+	public void setSpotType(Location location, int type) {
+		internalSetSpotType(location, type);
+	    abonneesMax = spotCountPerType[ParkingSpot.TYPE_PASS];
+	    reserveringMax = spotCountPerType[ParkingSpot.TYPE_RES];
+	    percentageHandicap = (int)(((double)spotCountPerType[ParkingSpot.TYPE_HANDI] / (double)getTotalSpotCount()) * 100.0);
+		for(AbstractController c: controllers) c.spotsChanged();
 	}
 
 	public ParkingSpot getParkingSpotAt(Location location) {
@@ -262,16 +322,6 @@ public class Model extends AbstractModel implements Runnable {
         return car;
     }
 
-    
-    public void setMultiplier(int multiplier){
-    	this.multiplier = multiplier / 100.0;
-
-    }
-
-    public double getMultiplier(){
-    	return multiplier;
-    }
-    
     public void setTickPause(int tickPause){
     	this.tickPause = tickPause;
     }
@@ -290,7 +340,6 @@ public class Model extends AbstractModel implements Runnable {
 
     public void setReservering(int reservering){
     	this.reserveringMax = reservering;
-    	
     }
 
     public int getReservering(){
@@ -435,9 +484,8 @@ public class Model extends AbstractModel implements Runnable {
     }
 
     public void handleEntrance() {
-    	carsEntering(entrancePassQueue, ParkingSpot.TYPE_RES);
-    	carsEntering(entrancePassQueue, ParkingSpot.TYPE_PASS);
-    	carsEntering(entranceCarQueue, ParkingSpot.TYPE_AD_HOC); 
+    	carsEntering(entrancePassQueue);
+    	carsEntering(entranceCarQueue); 
     }
 
     private void carsArriving() {
@@ -466,15 +514,16 @@ public class Model extends AbstractModel implements Runnable {
     	}
     }
 
-    private void carsEntering(CarQueue queue, int type) {
+    private void carsEntering(CarQueue queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
     	while (queue.carsInQueue() > 0 && i < enterSpeed) {
-    		Location freeLocation = getFirstFreeTypeLocation(type);
+    		AbstractCar car = queue.removeCar();
+    		Location freeLocation = getFirstFreeTypeLocation(car.getType());
     		if(freeLocation == null) {
+    			queue.addCar(car);
     			break;
     		}
-            AbstractCar car = queue.removeCar();
             setCarAt(freeLocation, car);
             i++;
         }
@@ -636,7 +685,7 @@ public class Model extends AbstractModel implements Runnable {
 
     //carType mee nemen zo dat je per auto de nummer autos kan toewijzen
 
-    private int getNumberOfCars(String test){ 
+    private int getNumberOfCars(String test) {
 
         Random random = new Random();
 
@@ -649,35 +698,30 @@ public class Model extends AbstractModel implements Runnable {
         	averageNumberOfCarsPerHour = 20;
         }
         else {
-
-        if(test == "PASS") {
-        	if (day > 4) {
-        		averageNumberOfCarsPerHour = 20;
+        	if(test == "PASS") {
+        		if (day > 4) {
+        			averageNumberOfCarsPerHour = 10;
+        		}
+        	}
+        	if(test == "HOC") {
+        		//Donderdag, Vrijdag, Zaterdag Avond dus normale autos & reserveringen
+        		if (day >= 3 && day < 6 && hour >= 18) {
+        			averageNumberOfCarsPerHour = 200;
+        		}
+        		// normale zaterdag uren voor normale autos
+        		else if(day == 5){
+        			averageNumberOfCarsPerHour = 50;
+        		}
+        		// theater op zondag middag dus normale autos & reserveringen
+        		if (day == 6 && hour >= 12 && hour < 18) {
+        			averageNumberOfCarsPerHour = 200;
+        		}
+        		// normale zaterdag uren voor normale autos
+        		else if (day == 6 && hour >= 6) {
+        			averageNumberOfCarsPerHour = 50;
+        		}
         	}
         }
-        if(test == "HOC") {
-        	//Donderdag, Vrijdag, Zaterdag Avond dus normale autos & reserveringen
-        	if (day >= 3 && day < 6 && hour >= 18) {
-        		averageNumberOfCarsPerHour = 200;
-        	}
-        	//normale zaterdag uren voor normale autos
-        	else if(day == 5){
-        		averageNumberOfCarsPerHour = 50;
-        	}
-        	//theater op zondag middag dus normale autos & reserveringen
-        	if (day == 6 && hour >= 12 && hour < 18) {
-        		averageNumberOfCarsPerHour = 200;
-        	}
-        	//normale zaterdag uren voor normale autos
-        	else if (day == 6 && hour >= 6) {
-        		averageNumberOfCarsPerHour = 50;
-        	}
-        }
-        
-        }
-        
-        averageNumberOfCarsPerHour *= multiplier;
-        System.out.println("MODEL lijn 680:    " + averageNumberOfCarsPerHour + ":" + multiplier);
         
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
@@ -732,6 +776,8 @@ public class Model extends AbstractModel implements Runnable {
 			System.out.println("Already running");
 		} else {
 			this.tickCount = tickCount;
+			inSim = true;
+			run = true;
 			new Thread(this).start();
 		}
 	}
@@ -748,7 +794,6 @@ public class Model extends AbstractModel implements Runnable {
 	}
 
 	public void firstStep() {
-
 		advanceTime();
 		carsArriving();
 		carsReadyToLeave();
@@ -764,8 +809,7 @@ public class Model extends AbstractModel implements Runnable {
 
 	@Override
 	public void run() {
-		inSim = true;
-		run = true;
+		for(AbstractController c: controllers) c.simStarted();
 		while(run) {
 			if (tickCount > 0) {
 				tickCount--; 
@@ -778,5 +822,6 @@ public class Model extends AbstractModel implements Runnable {
 			secondStep();
 			notifyViews();
 		}
+		for(AbstractController c: controllers) c.simStopped();
 	}
 }

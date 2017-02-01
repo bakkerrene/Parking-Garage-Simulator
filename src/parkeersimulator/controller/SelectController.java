@@ -63,6 +63,7 @@ public class SelectController extends AbstractController implements ActionListen
 			//if (sourceObject == clearButton) {
 				if (!model.isInSim()) {
 					model.clearSpots();
+					model.initDefaultSpots();
 					updateList();
 				}
 			//}
@@ -79,5 +80,19 @@ public class SelectController extends AbstractController implements ActionListen
 		}
 		model.setSpotType(location, list.getSelectedIndex());
 		updateList();
+	}
+
+	private void enableOrDisable(boolean value) {
+		clearButton.setEnabled(value);
+		list.setEnabled(value);
+		scrollPane.setEnabled(value);
+	}
+
+	public void simStarted() {
+		enableOrDisable(false);
+	}
+
+	public void simStopped() {
+		enableOrDisable(true);
 	}
 }

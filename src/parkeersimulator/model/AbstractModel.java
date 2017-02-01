@@ -1,5 +1,5 @@
-package parkeersimulator.model;
 
+package parkeersimulator.model;
 
 import java.util.*;
 
@@ -12,16 +12,14 @@ public abstract class AbstractModel {
 	protected List<AbstractController> controllers;
 
 	public AbstractModel() {
-		views=new ArrayList<AbstractView>();
+		views = new ArrayList<AbstractView>();
 		controllers = new ArrayList<AbstractController>();
 	}
-
-	
 	
 	public void addView(AbstractView view) {
 		views.add(view);
 	}
-	
+
     public void addController(AbstractController controller) {
     	controllers.add(controller);
     }
