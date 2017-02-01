@@ -9,6 +9,7 @@ import parkeersimulator.Location;
 import parkeersimulator.ParkingSpot;
 import parkeersimulator.car.*;
 import parkeersimulator.controller.AbstractController;
+import parkeersimulator.exception.ParkeerException;
 import parkeersimulator.view.AbstractView;
 
 import java.awt.Image;
@@ -496,21 +497,41 @@ public class Model extends AbstractModel implements Runnable {
     	}
     	if (counter <= sum)   {  	
     		numberOfCars = getNumberOfCars("HOC");
-    		addArrivingCars(numberOfCars, ParkingSpot.TYPE_AD_HOC); 
+    		try {
+				addArrivingCars(numberOfCars, ParkingSpot.TYPE_AD_HOC);
+			} catch (ParkeerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
     		counter++;
     	} else {
     		numberOfCars = getNumberOfCars("HOC");
-    		addArrivingCars(numberOfCars, ParkingSpot.TYPE_HANDI);
+    		try {
+				addArrivingCars(numberOfCars, ParkingSpot.TYPE_HANDI);
+			} catch (ParkeerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     		counter = 0;
     	}
     	if (abonneesMax > carCountPerType[ParkingSpot.TYPE_PASS]) {
     		numberOfCars = getNumberOfCars("PASS");
-    		addArrivingCars(numberOfCars, ParkingSpot.TYPE_PASS);
+    		try {
+				addArrivingCars(numberOfCars, ParkingSpot.TYPE_PASS);
+			} catch (ParkeerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     	//reserveringen plaatsen toewijzen. 
     	if (reserveringMax > carCountPerType[ParkingSpot.TYPE_RES]) {
     		numberOfCars = getNumberOfCars("RES");
-    		addArrivingCars(numberOfCars, ParkingSpot.TYPE_RES);
+    		try {
+				addArrivingCars(numberOfCars, ParkingSpot.TYPE_RES);
+			} catch (ParkeerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     }
 
@@ -722,14 +743,13 @@ public class Model extends AbstractModel implements Runnable {
         		}
         	}
         }
-        
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
         double numberOfCarsPerHour = averageNumberOfCarsPerHour + random.nextGaussian() * standardDeviation;
         return (int)Math.round(numberOfCarsPerHour / 60);	
     }
 
-    private void addArrivingCars(int numberOfCars, int type){
+    private void addArrivingCars(int numberOfCars, int type) throws ParkeerException{
         // Add the cars to the back of the queue.
     	switch(type) {
     	case ParkingSpot.TYPE_AD_HOC: 
@@ -739,6 +759,7 @@ public class Model extends AbstractModel implements Runnable {
             	}
             	else {
             		missedCars.addCar(new AdHocCar());
+            		throw new ParkeerException ("Test!");
             	}
             }
             break;
@@ -749,6 +770,7 @@ public class Model extends AbstractModel implements Runnable {
     			}
             	else {
             		missedCars.addCar(new HandiCar());
+            		throw new ParkeerException ("Test!");
             	}
     		}
     		break;
