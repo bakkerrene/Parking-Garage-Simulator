@@ -42,21 +42,21 @@ public class PieView extends AbstractView {
 		yellowCount = (int) (percent * yellowCount);
 
 		g.setColor(Color.YELLOW);
-		g.fillArc(10, 10, 180, 180, 90 + whiteCount + redCount + blueCount + 0, 360);
-
+		g.fillArc(10, 10, 180, 180, 0, 360);
+		int sum = 90;
 		g.setColor(Color.WHITE);
-		g.fillArc(10, 10, 180, 180, 90, whiteCount);
-
+		g.fillArc(10, 10, 180, 180, sum, whiteCount);
+		sum += whiteCount;
 		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_AD_HOC));
-		g.fillArc(10, 10, 180, 180, 90 + whiteCount, redCount);
-
+		g.fillArc(10, 10, 180, 180, sum, redCount);
+		sum += redCount;
 		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_PASS));
-		g.fillArc(10, 10, 180, 180, 90 + whiteCount + redCount, blueCount);
-
+		g.fillArc(10, 10, 180, 180, sum, blueCount);
+		sum += blueCount;
 		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_HANDI));
-		g.fillArc(10, 10, 180, 180, 90 + whiteCount + redCount + blueCount, greenCount);
-
+		g.fillArc(10, 10, 180, 180, sum, greenCount);
+		sum += greenCount;
 		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_RES));
-		g.fillArc(10, 10, 180, 180, 90 + whiteCount + redCount + blueCount + greenCount, yellowCount);
+		g.fillArc(10, 10, 180, 180, sum, yellowCount);
 	}	
 }
