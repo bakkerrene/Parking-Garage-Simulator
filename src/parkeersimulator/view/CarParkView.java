@@ -1,3 +1,5 @@
+
+
 package parkeersimulator.view;
 
 
@@ -114,4 +116,5 @@ public class CarParkView extends AbstractView {
                 20 - 1,
                 10 - 1); // TODO use dynamic size or constants
     }
+
 }
