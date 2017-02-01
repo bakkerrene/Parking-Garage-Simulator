@@ -130,7 +130,6 @@ public class InitController extends AbstractController implements ActionListener
 	}
 
 	private void enableOrDisable(boolean value) {
-		multiplierAmount.setEnabled(value);
 		aantalReserveringen.setEnabled(value);
 		aantalAbonnees.setEnabled(value);
 		percentageInvalidenplekken.setEnabled(value);
