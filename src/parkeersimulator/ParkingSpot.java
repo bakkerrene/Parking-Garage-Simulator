@@ -56,7 +56,7 @@ public class ParkingSpot {
     	if (car != null) {
     		alpha = 1.0f;
     	} else {
-    		alpha = 0.1f;
+    		alpha = 0.3f;
     	}
     	return new Color(c[0], c[1], c[2], alpha);
     }
