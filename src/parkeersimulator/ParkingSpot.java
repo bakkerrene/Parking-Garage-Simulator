@@ -1,5 +1,5 @@
-package parkeersimulator;
 
+package parkeersimulator;
 
 import java.awt.Color;
 
@@ -51,13 +51,13 @@ public class ParkingSpot {
     }
 
     public Color getColor() {
+    	float c[] = color.getColorComponents(null);
+    	float alpha;
     	if (car != null) {
-    		return color;
+    		alpha = 1.0f;
     	} else {
-    		float c[] = color.getColorComponents(null);
-    		return new Color(0.5f * c[0],
-    						 0.5f * c[1],
-    						 0.5f * c[2]);
+    		alpha = 0.1f;
     	}
+    	return new Color(c[0], c[1], c[2], alpha);
     }
 }

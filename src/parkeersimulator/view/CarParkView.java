@@ -32,9 +32,7 @@ public class CarParkView extends AbstractView {
 				*/
 				Location location = getLocationForPoint(e.getX(), e.getY());
 				if (location != null) {
-					for(AbstractController c: controllers) {
-						c.clickedSpot(location);
-					}
+					for(AbstractController c: controllers) c.clickedSpot(location);
 				}
 			}
 		});
@@ -44,30 +42,32 @@ public class CarParkView extends AbstractView {
 
     	super.paintComponent(g);
 
+    	Dimension dim = model.getSize();
+
         if (model.getCarParkImage() == null) {
-        	Image carParkImage = createImage(model.getSize().width, model.getSize().height);
+        	Image carParkImage = createImage(dim.width, dim.height);
         	model.setCarParkImage(carParkImage);
         }
         // Create a new car park image if the size has changed.
         if (!model.getSize().equals(getSize())) {
         	model.setSize(model.getSize());
-            Image carParkImage = createImage(model.getSize().width, model.getSize().height);
+            Image carParkImage = createImage(dim.width, dim.height);
             model.setCarParkImage(carParkImage);
         }
 
         Graphics graphics = model.getCarParkImage().getGraphics();
+        graphics.clearRect(0, 0, dim.width, dim.height);
         for(int floor = 0; floor < model.getNumberOfFloors(); floor++) {
             for(int row = 0; row < model.getNumberOfRows(); row++) {
                 for(int place = 0; place < model.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
                     AbstractCar car = model.getCarAt(location);
-
                     if (car == null) {
                     	ParkingSpot spot = model.getParkingSpotAt(location);
                     	color = spot.getColor();
                     }
                     else {
-                        color = car.getColor();
+                    	color = car.getColor();
                     }
                     drawPlace(graphics, location, color);
                 }
@@ -112,6 +112,6 @@ public class CarParkView extends AbstractView {
                 40 + 260 * location.getFloor() + 75 * (int)Math.floor(0.5 * location.getRow()) + 20 * (location.getRow() % 2),
                 10 + 11 * location.getPlace(),
                 20 - 1,
-                10); // TODO use dynamic size or constants
+                10 - 1); // TODO use dynamic size or constants
     }
 }

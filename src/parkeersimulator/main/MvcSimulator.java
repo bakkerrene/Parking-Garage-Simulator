@@ -38,6 +38,10 @@ public class MvcSimulator  {
 		initController = new InitController(model);
 		slideController = new SlideController(model);
 
+		model.addController(controller);
+		model.addController(selectController);
+		model.addController(initController);
+
 		carParkView = new CarParkView(model);
 		barGraphView = new BarGraphView(model);
 		pieView = new PieView(model);
