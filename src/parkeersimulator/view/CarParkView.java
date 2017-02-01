@@ -17,6 +17,7 @@ import parkeersimulator.model.Model;
 public class CarParkView extends AbstractView {
 	Color color = new Color(0,0,0);
 
+	private Dimension dim;
 	public CarParkView(Model model) {
 
 		super(model);
@@ -42,7 +43,7 @@ public class CarParkView extends AbstractView {
 
     	super.paintComponent(g);
 
-    	Dimension dim = model.getSize();
+    	dim = model.getSize();
 
         if (model.getCarParkImage() == null) {
         	Image carParkImage = createImage(dim.width, dim.height);
@@ -110,9 +111,9 @@ public class CarParkView extends AbstractView {
         graphics.setColor(color);
         graphics.fillRect(
                 40 + 260 * location.getFloor() + 75 * (int)Math.floor(0.5 * location.getRow()) + 20 * (location.getRow() % 2),
-                10 + 11 * location.getPlace(),
+                (dim.height / model.getNumberOfPlaces()) * location.getPlace(),
                 20 - 1,
-                10 - 1); // TODO use dynamic size or constants
+                (dim.height / model.getNumberOfPlaces()) - 1); // TODO use dynamic size or constants
     }
 
 }

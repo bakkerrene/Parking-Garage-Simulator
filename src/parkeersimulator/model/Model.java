@@ -37,6 +37,7 @@ public class Model extends AbstractModel implements Runnable {
 	private CarQueue paymentCarQueue = new CarQueue();
 	private CarQueue paymentCarQueueExtra = new CarQueue();
 	private CarQueue exitCarQueue = new CarQueue();
+	
 	private CarQueue missedCars = new CarQueue();
 	private int entranceCarQueueMax = 6;
 

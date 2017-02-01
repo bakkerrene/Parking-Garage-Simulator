@@ -30,16 +30,16 @@ public class MvcSimulator  {
 
 	public MvcSimulator() {
 
-		model = new Model(3, 6, 30);
-
+		model = new Model(3, 6, 40); // 200 is max bij 400 height, 400 / 200 = 1px voor gap en 1px voor de spot
+									 // 400 /150  = ook 1px voor gap en 1px voor spot. 400 /133 is 2px voor spot 1 px voor gap
 		controller = new Controller(model);
 		selectController = new SelectController(model);
 		initController = new InitController(model);
 		slideController = new SlideController(model);
 		graphController = new GraphController(model);
 
-		model.addController(controller);
-		model.addController(selectController);
+		model.addController(controller);// \\\ //<<\
+		model.addController(selectController);// <<<\
 		model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
 
 		carParkView = new CarParkView(model);

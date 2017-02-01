@@ -22,6 +22,7 @@ public class QueueView extends AbstractView {
 	private JLabel exit, exitData;
 	private JLabel missedCars, missedCarsNr, missedMoney, missedCarsMoney;
 
+
 	public QueueView(Model model) {
 
 		super(model);
@@ -69,20 +70,17 @@ public class QueueView extends AbstractView {
 		super.paintComponent(g);
 		paymentCarsInQueue = 0;
 
-		CarQueue entrance1Nr = model.getEntranceCarQueueNr();
-		CarQueue entrance2Nr = model.getEntrancePassQueueNr();
-		CarQueue paymentNr = model.getPaymentCarQueueNr();
-		CarQueue exitNr = model.exitCarQueueNr();
-		setMissedCarsInfo();
-		setQueueColor(g, entrance1Nr);
-		setQueueColor(g, entrance2Nr);
-		setQueueColor(g, paymentNr);
-		setQueueColor(g, exitNr);
 
-		entrance1Data.setText(""+ entrance1Nr.carsInQueue());
-		entrance2Data.setText(""+ entrance2Nr.carsInQueue());
-		paymentData.setText(""+ paymentNr.carsInQueue());
-		exitData.setText(""+ exitNr.carsInQueue());
+		setMissedCarsInfo();
+		setQueueColor(g, model.getEntranceCarQueueNr());
+		setQueueColor(g, model.getEntrancePassQueueNr());
+		setQueueColor(g, model.getPaymentCarQueueNr());
+		setQueueColor(g, model.exitCarQueueNr());
+
+		entrance1Data.setText(""+ model.getEntranceCarQueueNr().carsInQueue());
+		entrance2Data.setText(""+ model.getEntrancePassQueueNr().carsInQueue());
+		paymentData.setText(""+ model.getPaymentCarQueueNr().carsInQueue());
+		exitData.setText(""+ model.exitCarQueueNr().carsInQueue());
 		missedCarsNr.setText(""+ totalMissedCars);
 		missedCarsMoney.setText(""+ totalMissedMoney);
 	}
