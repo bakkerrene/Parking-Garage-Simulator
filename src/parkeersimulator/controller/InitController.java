@@ -137,7 +137,6 @@ public class InitController extends AbstractController implements ActionListener
 		abonneeTarief.setEnabled(value);
 		normaalTarief.setEnabled(value);
 		reserveringsTarief.setEnabled(value);
-		initButton.setEnabled(value);
 	}
 
 	public void simStarted() {
