@@ -1,6 +1,7 @@
 
 package parkeersimulator.controller;
 
+
 import javax.swing.*;
 
 import parkeersimulator.Location;
@@ -151,5 +152,4 @@ public class InitController extends AbstractController implements ActionListener
 		updateValues();
 	}
 }
-
 
