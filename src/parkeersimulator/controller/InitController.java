@@ -12,12 +12,12 @@ import java.awt.event.*;
 @SuppressWarnings("serial")
 public class InitController extends AbstractController implements ActionListener {
 
-	private JLabel speed;
+	private JLabel multiplier;
 	private JLabel maxRes, maxAbo;
 	private JLabel perInv, aboTa;
 	private JLabel norTa, resTa;
 
-	private JFormattedTextField tickPause;
+	private JFormattedTextField multiplierAmount;
 	private JFormattedTextField aantalReserveringen;
     private JFormattedTextField aantalAbonnees;
     private JFormattedTextField percentageInvalidenplekken;
@@ -27,7 +27,7 @@ public class InitController extends AbstractController implements ActionListener
     private JButton initButton;
 
     private void updateValues() {
-    	tickPause.setValue(model.getTickPause());
+    	multiplierAmount.setValue(model.getMultiplier() * 100);
     	aantalReserveringen.setValue(model.getReservering());
     	aantalAbonnees.setValue(model.getAbonnees());
     	percentageInvalidenplekken.setValue(model.getHandicapPercentage());
@@ -40,7 +40,7 @@ public class InitController extends AbstractController implements ActionListener
 
     	super(model);
 
-    	tickPause = new JFormattedTextField();
+    	multiplierAmount = new JFormattedTextField();
     	aantalReserveringen = new JFormattedTextField();
     	aantalAbonnees = new JFormattedTextField();
     	percentageInvalidenplekken = new JFormattedTextField();
@@ -53,7 +53,7 @@ public class InitController extends AbstractController implements ActionListener
     	initButton = new JButton("Verstuur");
     	initButton.addActionListener(this);
 
-    	speed = new JLabel("Snelheid");
+    	multiplier = new JLabel("Multiplier");
  		maxRes = new JLabel("Reserveringen");
  		maxAbo = new JLabel("Abonnees");
  		perInv = new JLabel("Invaliden (%)");
@@ -64,8 +64,8 @@ public class InitController extends AbstractController implements ActionListener
 		GridLayout gridLayout = new GridLayout(0,2);
 		setLayout(gridLayout);
 
-		add(speed);
-		add(tickPause);
+		add(multiplier);
+		add(multiplierAmount);
 		add(maxRes);
 		add(aantalReserveringen);
 		add(maxAbo);
@@ -87,7 +87,7 @@ public class InitController extends AbstractController implements ActionListener
 		try {
 			//Object sourceObject = e.getSource();
 			//if(sourceObject == initButton) {
-				model.setTickPause(getTickPause());
+				model.setMultiplier(getMultiplier());
 				model.setReservering(getReservering());
 				model.setAbonnees(getAbonee());
 				model.setHandicapPercentage(getHandiPer());
@@ -101,8 +101,8 @@ public class InitController extends AbstractController implements ActionListener
 		}
 	}
 
-	private int getTickPause() throws NumberFormatException {
-		return Integer.parseInt(tickPause.getText());
+	private double getMultiplier() throws NumberFormatException {
+		return Double.parseDouble(multiplierAmount.getText());
 	}
 
 	private int getReservering() throws NumberFormatException {
@@ -130,7 +130,7 @@ public class InitController extends AbstractController implements ActionListener
 	}
 
 	private void enableOrDisable(boolean value) {
-		tickPause.setEnabled(value);
+		multiplierAmount.setEnabled(value);
 		aantalReserveringen.setEnabled(value);
 		aantalAbonnees.setEnabled(value);
 		percentageInvalidenplekken.setEnabled(value);
