@@ -153,7 +153,7 @@ public class LineGraphView extends AbstractView {
         }
         
         for (int i = 0; i <7; i++) {
-        	 g2.drawLine(padding + labelPadding + (i * (7 +(getWidth() / 7))), getHeight() - padding - labelPadding, padding + labelPadding  + (i * (7 + (getWidth() / 7))), padding);
+        	 g2.drawLine(padding + labelPadding + (i * (4+(getWidth() / 8))), getHeight() - padding - labelPadding, padding + labelPadding  + (i * (4+(getWidth() / 8))), padding);
         }
         
         
