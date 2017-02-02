@@ -65,8 +65,7 @@ public class LineGraphView extends AbstractView {
 		resCarData = new ArrayList<Integer>();
 		moneyPerHourData = new ArrayList<Integer>();
 		
-		diff = 36;
-		
+		diff = 36;		
 		setLayout(null);
 		for(int i = 0; i < collection.length; i++) {
 			collection[i] = new JLabel("0");
@@ -142,7 +141,7 @@ public class LineGraphView extends AbstractView {
         g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
         g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
         
-        
+        diff = (getHeight() - padding - labelPadding + 10) / 10;
         
         for (int i = 0; i < 10; i++) {
             g2.drawLine(padding + labelPadding - 10 , ((getHeight() - padding - labelPadding) - diff * i), getWidth() - padding ,((getHeight() - padding - labelPadding) - diff * i));
@@ -151,6 +150,10 @@ public class LineGraphView extends AbstractView {
             collection[i].setText(""+ text);
             }
             
+        }
+        
+        for (int i = 0; i <7; i++) {
+        	 g2.drawLine(padding + labelPadding + (i * (7 +(getWidth() / 7))), getHeight() - padding - labelPadding, padding + labelPadding  + (i * (7 + (getWidth() / 7))), padding);
         }
         
         
@@ -169,7 +172,7 @@ public class LineGraphView extends AbstractView {
             graphPoints.add(new Point(x1, y1));
         }
 
-        diff = (getHeight() - padding - labelPadding + 10) / 10;
+
         
         Stroke oldStroke = g2.getStroke();
         g2.setColor(lineColor);
