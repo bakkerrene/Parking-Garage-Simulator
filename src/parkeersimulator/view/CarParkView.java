@@ -93,14 +93,14 @@ public class CarParkView extends AbstractView {
     	int block = floorX / 75; 
     	int blockX = floorX % 75;
     	int row = 2 * block + (blockX / 20);
-    	int place = (y - 10) / 11;
+    	int place = (y - (dim.height / model.getNumberOfPlaces())) / (dim.height / model.getNumberOfPlaces()) + 1;
     	Location location = new Location(floor, row, place);
     	if(getModel().locationIsValid(location))
     	{
     		int rectX0 = 40 + 260 * floor + 75 * (int)Math.floor(0.5 * row) + 20 * (row % 2);
     		int rectY0 = 10 + 11 * place;
     		int rectX1 = rectX0 + 20 - 1;
-    		int rectY1 = rectY0 + 10 - 1;
+    		int rectY1 = rectY0 + (dim.height / model.getNumberOfPlaces()) - 1;
     		if (rectX0 <= x && rectY0 <= y && x < rectX1 && y < rectY1)
     			return location;
     	}

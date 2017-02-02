@@ -11,9 +11,10 @@ import java.awt.Stroke;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-
+import javax.swing.JLabel;
 
 import parkeersimulator.ParkingSpot;
 
@@ -27,6 +28,22 @@ public class LineGraphView extends AbstractView {
 	private int minValue = 0;
     private int padding = 25;
     private int labelPadding = 25;
+    
+    private int diff;
+    
+    private JLabel lbl1;
+    private JLabel lbl2;
+    private JLabel lbl3;
+    private JLabel lbl4;
+    private JLabel lbl5;
+    private JLabel lbl6;
+    private JLabel lbl7;
+    private JLabel lbl8;
+    private JLabel lbl9;
+    private JLabel lbl10;
+    
+    JLabel[] collection = {lbl1, lbl2, lbl3, lbl4, lbl5, lbl6, lbl7, lbl8, lbl9, lbl10};
+    HashMap<String, Integer> carCounter;
     
     private Color hocCarLine = new Color(255, 0, 0);
     private Color passCarLine = new Color (0, 0, 255);
@@ -48,18 +65,27 @@ public class LineGraphView extends AbstractView {
 		resCarData = new ArrayList<Integer>();
 		moneyPerHourData = new ArrayList<Integer>();
 		
+		diff = 36;		
+		setLayout(null);
+		for(int i = 0; i < collection.length; i++) {
+			collection[i] = new JLabel("0");
+			add(collection[i]);
+			collection[i].setBounds(10, 10 + (i * diff), 50, 30 );
+		}
+		
+		
 	}
 		
     public void paintComponent(Graphics g) {
        	super.paintComponent(g);
        	Graphics2D g2 = (Graphics2D) g;
        	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-       	
+       	carCounter = model.getTotalCars();
        	String type_Graph = model.getGraphButtonInput();
               	       	
-       	int hocCar = model.getCarCountForType(ParkingSpot.TYPE_AD_HOC);
-       	int passCar = model.getCarCountForType(ParkingSpot.TYPE_PASS);
-       	int resCar = model.getCarCountForType(ParkingSpot.TYPE_RES);
+       	int hocCar = carCounter.get("adhoc");
+       	int passCar = carCounter.get("pass");
+       	int resCar = carCounter.get("res");
        	int moneyLastHour = model.getMoneyLastHour();
        	
        	if (model.getHour() != hour || hocCarData.size() == 0) {
@@ -110,6 +136,27 @@ public class LineGraphView extends AbstractView {
        		
        		drawGraph(g2, moneyPerHourData, moneyLine);
        	}
+       	
+        g2.setColor(Color.BLACK);
+        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
+        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
+        
+        diff = (getHeight() - padding - labelPadding + 10) / 10;
+        
+        for (int i = 0; i < 10; i++) {
+            g2.drawLine(padding + labelPadding - 10 , ((getHeight() - padding - labelPadding) - diff * i), getWidth() - padding ,((getHeight() - padding - labelPadding) - diff * i));
+            if (i != 9) {
+            int text = maxValue - (i * (maxValue / 9)); 
+            collection[i].setText(""+ text);
+            }
+            
+        }
+        
+        for (int i = 0; i <7; i++) {
+        	 g2.drawLine(padding + labelPadding + (i * (7 +(getWidth() / 7))), getHeight() - padding - labelPadding, padding + labelPadding  + (i * (7 + (getWidth() / 7))), padding);
+        }
+        
+        
     }
         
 
@@ -124,7 +171,8 @@ public class LineGraphView extends AbstractView {
             int y1 = (int) ((maxValue - list.get(i)) * yScale + padding);
             graphPoints.add(new Point(x1, y1));
         }
-        
+
+
         
         Stroke oldStroke = g2.getStroke();
         g2.setColor(lineColor);
@@ -147,9 +195,7 @@ public class LineGraphView extends AbstractView {
             g2.fillOval(x, y, ovalW, ovalH);
         }
         
-        g2.setColor(Color.BLACK);
-        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
-        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
+
 
     }
     
