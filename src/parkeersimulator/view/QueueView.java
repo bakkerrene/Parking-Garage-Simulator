@@ -85,7 +85,7 @@ public class QueueView extends AbstractView {
 		missedCarsMoney.setText(""+ totalMissedMoney);
 	}
 	
-	public void setMissedCarsInfo() {
+	private void setMissedCarsInfo() {
 		CarQueue missedCars = model.getmissedCars();
 		for(int i = 0; i < missedCars.carsInQueue(); i++) {
 			totalMissedCars++;
