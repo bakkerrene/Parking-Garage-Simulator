@@ -71,7 +71,7 @@ public class Model extends AbstractModel implements Runnable {
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
 
-    int enterSpeed = 3; // number of cars that can enter per minute
+    int enterSpeed = 5; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
@@ -432,7 +432,7 @@ public class Model extends AbstractModel implements Runnable {
         return null;
     }
 
-    public AbstractCar getFirstLeavingCar() {
+    private AbstractCar getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
@@ -447,7 +447,7 @@ public class Model extends AbstractModel implements Runnable {
         return null;
     }
 
-    public void tick() {
+    private void tick() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
@@ -471,7 +471,7 @@ public class Model extends AbstractModel implements Runnable {
         return true;
     }
 
-    public void advanceTime(){
+    private void advanceTime(){
         // Advance the time by one minute.
         minute++;
         while (minute > 59) {

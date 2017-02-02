@@ -14,6 +14,10 @@ public class ResCar extends AbstractCar {
     	int stayMinutes = (int) (15 + random.nextFloat() * 3 * 60);
         this.setMinutesLeft(stayMinutes);
         this.setHasToPay(false);
+        
+        //random nr tussen 0 en 23 ran
+        
+        
     }
     public Color getColor(){
     	return COLOR;

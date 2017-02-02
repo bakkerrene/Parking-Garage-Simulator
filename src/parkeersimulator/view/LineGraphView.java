@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+import javax.swing.JLabel;
 
 import parkeersimulator.ParkingSpot;
 
@@ -27,6 +27,21 @@ public class LineGraphView extends AbstractView {
 	private int minValue = 0;
     private int padding = 25;
     private int labelPadding = 25;
+    
+    private int diff = (getHeight() - padding - labelPadding + 10) / 10;
+    
+    private JLabel lbl1;
+    private JLabel lbl2;
+    private JLabel lbl3;
+    private JLabel lbl4;
+    private JLabel lbl5;
+    private JLabel lbl6;
+    private JLabel lbl7;
+    private JLabel lbl8;
+    private JLabel lbl9;
+    private JLabel lbl10;
+    
+    JLabel[] collection = {lbl1, lbl2, lbl3, lbl4, lbl5, lbl6, lbl7, lbl8, lbl9, lbl10};
     
     private Color hocCarLine = new Color(255, 0, 0);
     private Color passCarLine = new Color (0, 0, 255);
@@ -47,6 +62,16 @@ public class LineGraphView extends AbstractView {
 		passCarData = new ArrayList<Integer>();
 		resCarData = new ArrayList<Integer>();
 		moneyPerHourData = new ArrayList<Integer>();
+		
+		diff = 36;
+		
+		setLayout(null);
+		for(int i = 0; i < collection.length; i++) {
+			collection[i] = new JLabel("0");
+			add(collection[i]);
+			collection[i].setBounds(10, 10 + (i * diff), 50, 30 );
+		}
+		
 		
 	}
 		
@@ -124,7 +149,8 @@ public class LineGraphView extends AbstractView {
             int y1 = (int) ((maxValue - list.get(i)) * yScale + padding);
             graphPoints.add(new Point(x1, y1));
         }
-        
+
+        diff = (getHeight() - padding - labelPadding + 10) / 10;
         
         Stroke oldStroke = g2.getStroke();
         g2.setColor(lineColor);
@@ -150,6 +176,15 @@ public class LineGraphView extends AbstractView {
         g2.setColor(Color.BLACK);
         g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
         g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
+ 
+        for (int i = 0; i < 10; i++) {
+            g2.drawLine(padding + labelPadding - 10 , ((getHeight() - padding - labelPadding) - diff * i), getWidth() - padding ,((getHeight() - padding - labelPadding) - diff * i));
+            if (i != 9) {
+            int text = maxValue - (i * (maxValue / 9)); 
+            collection[i].setText(""+ text);
+            }
+            
+        }
 
     }
     
