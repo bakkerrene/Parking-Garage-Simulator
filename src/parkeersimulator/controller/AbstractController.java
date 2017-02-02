@@ -17,6 +17,7 @@ public abstract class AbstractController extends JPanel {
 	public void clickedSpot(Location location) {}
 
 	public void simStarted() {}
+	
 	public void simStopped() {}
 
 	public void spotsChanged() {}

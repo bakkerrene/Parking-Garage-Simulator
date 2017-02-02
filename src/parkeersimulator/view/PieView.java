@@ -2,12 +2,15 @@ package parkeersimulator.view;
 
 
 import java.awt.*;
+import java.util.HashMap;
 
 import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
 
 @SuppressWarnings("serial")
 public class PieView extends AbstractView {
+	
+	HashMap<String, Integer> carCounter;
 
 	public PieView(Model model) {
 		super(model);
@@ -17,12 +20,14 @@ public class PieView extends AbstractView {
 
 		super.paintComponent(g);
 
+		carCounter = model.getTotalCars();
+		
 		int whiteCount = model.getNumberOfOpenSpots();
 
-		int redCount = model.getCarCountForType(ParkingSpot.TYPE_AD_HOC);
-		int blueCount = model.getCarCountForType(ParkingSpot.TYPE_PASS);
-		int greenCount = model.getCarCountForType(ParkingSpot.TYPE_HANDI);
-		int yellowCount = model.getCarCountForType(ParkingSpot.TYPE_RES);
+		int redCount = carCounter.get("adhoc");
+		int blueCount = carCounter.get("pass");
+		int greenCount = carCounter.get("handi");
+		int yellowCount = carCounter.get("res");
 
 		if ((redCount == 0) && (blueCount == 0) && (greenCount == 0) && (yellowCount == 0)) {
 			whiteCount = 0;

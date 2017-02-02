@@ -62,6 +62,10 @@ public class Model extends AbstractModel implements Runnable {
     
     private int totalPassCar = 0;
     private int totalRessCar = 0;
+    private int totalAdhocCar = 0;
+    private int totalHandiCar = 0;
+    
+    private HashMap<String, Integer> carCounter;
     
     private int tickCount = 0;
     private int tickPause = 100;
@@ -71,7 +75,7 @@ public class Model extends AbstractModel implements Runnable {
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
 
-    int enterSpeed = 5; // number of cars that can enter per minute
+    int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
@@ -262,6 +266,15 @@ public class Model extends AbstractModel implements Runnable {
 
 	public int getTotalSpotCount() {
 		return numberOfFloors*numberOfRows*numberOfPlaces;
+	}
+	
+	public HashMap<String, Integer> getTotalCars() {
+		carCounter = new HashMap<>();
+		carCounter.put("adhoc", totalAdhocCar);
+		carCounter.put("pass", totalPassCar);
+		carCounter.put("handi", totalHandiCar);
+		carCounter.put("res", totalRessCar);
+		return carCounter;
 	}
 
 	private void internalSetSpotType(Location location, int type) {
@@ -529,7 +542,7 @@ public class Model extends AbstractModel implements Runnable {
 			} 
     		counter++;
     	} else {
-    		numberOfCars = getNumberOfCars("HOC");
+    		numberOfCars = getNumberOfCars("HANDI");
     		try {
 				addArrivingCars(numberOfCars, ParkingSpot.TYPE_HANDI);
 			} catch (ParkeerException e) {
@@ -722,6 +735,12 @@ public class Model extends AbstractModel implements Runnable {
             if (car.getType() == ParkingSpot.TYPE_PASS) {
             	totalPassCar--;
             }
+            if (car.getType() == ParkingSpot.TYPE_AD_HOC) {
+            	totalAdhocCar--;
+            }
+            if (car.getType() == ParkingSpot.TYPE_HANDI) {
+            	totalHandiCar--;
+            }
             i++;
             
     	}	
@@ -765,7 +784,7 @@ public class Model extends AbstractModel implements Runnable {
         			averageNumberOfCarsPerHour = 50;
         		}
         		// theater op zondag middag dus normale autos & reserveringen
-        		if (day == 6 && hour >= 12 && hour < 18) {
+        		else if (day == 6 && hour >= 12 && hour < 18) {
         			averageNumberOfCarsPerHour = 200;
         		}
         		// normale zaterdag uren voor normale autos
@@ -789,6 +808,7 @@ public class Model extends AbstractModel implements Runnable {
             for (int i = 0; i < numberOfCars; i++) {
             	if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
             		entranceCarQueue.addCar(new AdHocCar());
+            		totalAdhocCar++;
             	}
             	else {
             		missedCars.addCar(new AdHocCar());
@@ -800,6 +820,7 @@ public class Model extends AbstractModel implements Runnable {
     		for (int i = 0; i < numberOfCars; i++) {
         		if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
     				entranceCarQueue.addCar(new HandiCar());
+    				totalHandiCar++;
     			}
             	else {
             		missedCars.addCar(new HandiCar());

@@ -7,6 +7,7 @@ import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
 
 import java.awt.*;
+import java.util.HashMap;
 
 @SuppressWarnings("serial")
 public class ManagerView extends AbstractView {
@@ -20,6 +21,8 @@ public class ManagerView extends AbstractView {
 	private JLabel blue, blueCar;
 	private JLabel yellow, yellowCar;
 	private JLabel green, greenCar;
+	
+	HashMap<String, Integer> carCounter;
 
 	public ManagerView(Model model) {
 
@@ -82,6 +85,8 @@ public class ManagerView extends AbstractView {
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
+		
+		carCounter = model.getTotalCars();
 
 		int hour = model.getMoneyLastHour();
 		int day = model.getMoneyLastDay();
@@ -95,10 +100,10 @@ public class ManagerView extends AbstractView {
 		labelDataWeek.setText(""+week);
 		labelDataInGarage.setText(""+inGarage);
 
-		int redCount = model.getCarCountForType(ParkingSpot.TYPE_AD_HOC);
-		int blueCount = model.getCarCountForType(ParkingSpot.TYPE_PASS);
-		int greenCount = model.getCarCountForType(ParkingSpot.TYPE_HANDI);
-		int yellowCount = model.getCarCountForType(ParkingSpot.TYPE_RES);
+		int redCount = carCounter.get("adhoc");
+		int blueCount = carCounter.get("pass");
+		int greenCount = carCounter.get("handi");
+		int yellowCount = carCounter.get("res");
 
 		redCar.setText("" + redCount);
 		blueCar.setText("" + blueCount); //mag nooit groter zijn dan max abonnees

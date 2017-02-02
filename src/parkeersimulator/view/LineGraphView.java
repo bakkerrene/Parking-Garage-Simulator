@@ -11,6 +11,7 @@ import java.awt.Stroke;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -28,7 +29,7 @@ public class LineGraphView extends AbstractView {
     private int padding = 25;
     private int labelPadding = 25;
     
-    private int diff = (getHeight() - padding - labelPadding + 10) / 10;
+    private int diff;
     
     private JLabel lbl1;
     private JLabel lbl2;
@@ -42,6 +43,7 @@ public class LineGraphView extends AbstractView {
     private JLabel lbl10;
     
     JLabel[] collection = {lbl1, lbl2, lbl3, lbl4, lbl5, lbl6, lbl7, lbl8, lbl9, lbl10};
+    HashMap<String, Integer> carCounter;
     
     private Color hocCarLine = new Color(255, 0, 0);
     private Color passCarLine = new Color (0, 0, 255);
@@ -79,12 +81,12 @@ public class LineGraphView extends AbstractView {
        	super.paintComponent(g);
        	Graphics2D g2 = (Graphics2D) g;
        	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-       	
+       	carCounter = model.getTotalCars();
        	String type_Graph = model.getGraphButtonInput();
               	       	
-       	int hocCar = model.getCarCountForType(ParkingSpot.TYPE_AD_HOC);
-       	int passCar = model.getCarCountForType(ParkingSpot.TYPE_PASS);
-       	int resCar = model.getCarCountForType(ParkingSpot.TYPE_RES);
+       	int hocCar = carCounter.get("adhoc");
+       	int passCar = carCounter.get("pass");
+       	int resCar = carCounter.get("res");
        	int moneyLastHour = model.getMoneyLastHour();
        	
        	if (model.getHour() != hour || hocCarData.size() == 0) {
@@ -135,6 +137,23 @@ public class LineGraphView extends AbstractView {
        		
        		drawGraph(g2, moneyPerHourData, moneyLine);
        	}
+       	
+        g2.setColor(Color.BLACK);
+        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
+        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
+        
+        
+        
+        for (int i = 0; i < 10; i++) {
+            g2.drawLine(padding + labelPadding - 10 , ((getHeight() - padding - labelPadding) - diff * i), getWidth() - padding ,((getHeight() - padding - labelPadding) - diff * i));
+            if (i != 9) {
+            int text = maxValue - (i * (maxValue / 9)); 
+            collection[i].setText(""+ text);
+            }
+            
+        }
+        
+        
     }
         
 
@@ -173,18 +192,7 @@ public class LineGraphView extends AbstractView {
             g2.fillOval(x, y, ovalW, ovalH);
         }
         
-        g2.setColor(Color.BLACK);
-        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
-        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
- 
-        for (int i = 0; i < 10; i++) {
-            g2.drawLine(padding + labelPadding - 10 , ((getHeight() - padding - labelPadding) - diff * i), getWidth() - padding ,((getHeight() - padding - labelPadding) - diff * i));
-            if (i != 9) {
-            int text = maxValue - (i * (maxValue / 9)); 
-            collection[i].setText(""+ text);
-            }
-            
-        }
+
 
     }
     
