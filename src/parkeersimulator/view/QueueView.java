@@ -14,7 +14,6 @@ public class QueueView extends AbstractView {
 
 	private int totalMissedMoney = 0;
 	private int totalMissedCars = 0;
-	private int paymentCarsInQueue = 0;
 
 	private JLabel entrance1, entrance1Data;
 	private JLabel entrance2, entrance2Data;
@@ -68,8 +67,6 @@ public class QueueView extends AbstractView {
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
-		paymentCarsInQueue = 0;
-
 
 		setMissedCarsInfo();
 		setQueueColor(g, model.getEntranceCarQueueNr());

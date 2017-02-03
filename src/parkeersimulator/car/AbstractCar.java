@@ -18,8 +18,8 @@ public abstract class AbstractCar {
     /**
      * Constructor for objects of class Car
      */
-    public AbstractCar() {
-    	type = ParkingSpot.TYPE_AD_HOC;
+    public AbstractCar(int type) {
+    	this.type = type;
     }
 
     public int getType() {

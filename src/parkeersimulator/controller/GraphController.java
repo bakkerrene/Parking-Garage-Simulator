@@ -1,3 +1,4 @@
+
 package parkeersimulator.controller;
 
 import java.awt.GridLayout;
@@ -15,43 +16,41 @@ public class GraphController extends AbstractController implements ActionListene
 
 	final static String MONEY = "money";
 	final static String CARS = "cars";
-	
-	
+
 	private JRadioButton showCars;
 	private JRadioButton showMoney;
 	private ButtonGroup buttonGroup;
 
     public GraphController(Model model) {
+
     	super(model);
     	GridLayout layout = new GridLayout();
     	this.setLayout(layout);
-    	
-    	
+
     	showMoney = new JRadioButton("Geld");
+    	showMoney.setHorizontalAlignment(JRadioButton.LEFT);
+    	showMoney.setActionCommand(MONEY);
+    	showMoney.addActionListener(this);
+
     	showCars = new JRadioButton("Auto's");
-    	
+    	showCars.setHorizontalAlignment(JRadioButton.LEFT);
+    	showCars.setActionCommand(CARS);
+    	showCars.addActionListener(this);
+
     	buttonGroup = new ButtonGroup();
-    	
     	buttonGroup.add(showMoney);
     	buttonGroup.add(showCars);
-    	
-    	showMoney.setActionCommand(MONEY);
-    	showCars.setActionCommand(CARS);
-    	showMoney.addActionListener(this);
-    	showCars.addActionListener(this);
-    	
-    	
+
+    	buttonGroup.clearSelection();
+    	showMoney.setSelected(true);
 
     	add(showMoney);
     	add(showCars);
-    	
-    	  	
-}
+    }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String string = e.getActionCommand();
-		
 		if (string.equals(MONEY)) {
 			model.setGraphButtonInput(MONEY);
 		}
@@ -60,7 +59,4 @@ public class GraphController extends AbstractController implements ActionListene
 		}
 		revalidate();
 	}
-	
 }
-
-

@@ -17,8 +17,8 @@ import java.awt.Image;
 
 public class Model extends AbstractModel implements Runnable {
 
-	private int counter = 0;
-	private double multiplier = 1;
+	private int counter;
+	private double multiplier;
 	
 	private int numberOfFloors;
     private int numberOfRows;
@@ -29,22 +29,21 @@ public class Model extends AbstractModel implements Runnable {
 	private ParkingSpot[][][] spots;
 	private int[] spotCountPerType;
 	private int[] carCountPerType;
-	
+
 	private String buttonOption = "cars";
-	
-	private CarQueue entranceCarQueue  = new CarQueue();
-	private CarQueue entrancePassQueue = new CarQueue();
-	private CarQueue paymentCarQueue = new CarQueue();
-	private CarQueue paymentCarQueueExtra = new CarQueue();
-	private CarQueue exitCarQueue = new CarQueue();
-	
-	private CarQueue missedCars = new CarQueue();
-	private int entranceCarQueueMax = 6;
+
+	private CarQueue entranceCarQueue;
+	private CarQueue entrancePassQueue;
+	private CarQueue paymentCarQueue;
+	private CarQueue paymentCarQueueExtra;
+	private CarQueue exitCarQueue;
+	private CarQueue missedCars;
+	private int entranceCarQueueMax;
 
 	private String[] weekDay = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
-    private int day = 0;
-    private int hour = 0;
-    private int minute = 0;
+    private int day;
+    private int hour;
+    private int minute;
 
     private List<Integer> moneyHourList;
     private List<Integer> moneyDayList;
@@ -59,14 +58,17 @@ public class Model extends AbstractModel implements Runnable {
     private int abonneeTarief = 10;
     private int normaalTarief = 1;
     private int reserveringTarief = 10;
-    
-    private int totalPassCar = 0;
-    private int totalRessCar = 0;
-    private int totalAdhocCar = 0;
-    private int totalHandiCar = 0;
-    
+
+    private int totalPassCar;
+    private int totalRessCar;
+    private int totalAdhocCar;
+    private int totalHandiCar;
+
     private HashMap<String, Integer> carCounter;
     
+    
+
+
     private int tickCount = 0;
     private int tickPause = 100;
 
@@ -82,18 +84,27 @@ public class Model extends AbstractModel implements Runnable {
 	private boolean run;
 	private boolean inSim;
 
-	public Model(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+	private void init() {
+		counter = 0;
 
-		super();
+		entranceCarQueue  = new CarQueue();
+		entrancePassQueue = new CarQueue();
+		paymentCarQueue = new CarQueue();
+		paymentCarQueueExtra = new CarQueue();
+		exitCarQueue = new CarQueue();
+		missedCars = new CarQueue();
+		entranceCarQueueMax = 6;
+
+	    day = hour = minute = 0;
 
 		moneyHourList = new ArrayList<>();
 		moneyDayList = new ArrayList<>();
 		moneyWeekList = new ArrayList<>();
 
-        this.numberOfFloors = numberOfFloors;
-        this.numberOfRows = numberOfRows;
-        this.numberOfPlaces = numberOfPlaces;
-        this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
+	    totalPassCar = 0;
+	    totalRessCar = 0;
+	    totalAdhocCar = 0;
+	    totalHandiCar = 0;
 
         inSim = false;
 
@@ -108,9 +119,22 @@ public class Model extends AbstractModel implements Runnable {
                 }
             }
         }
-
         initSpots();
         initDefaultSpots();
+	}
+
+	public Model(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+
+		super();
+
+		multiplier = 1;
+
+        this.numberOfFloors = numberOfFloors;
+        this.numberOfRows = numberOfRows;
+        this.numberOfPlaces = numberOfPlaces;
+        numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
+
+		init();
 	}
 	
 	public int getSpotCountForType(int type) {
@@ -132,78 +156,67 @@ public class Model extends AbstractModel implements Runnable {
         }
 	}
 
+	private void addSpotsOfType(int type, int count) {
+		for (int x = 0; x < count; x++) {
+			Location location = getFirstFreeTypeLocation(ParkingSpot.TYPE_AD_HOC);
+			if (location == null) {
+				break;
+			}
+			internalSetSpotType(location, type);
+		}
+	}
+
+	private void removeSpotsOfType(int type, int count) {
+		for (int x = 0; x < count; x++) {
+			Location location = getFirstFreeTypeLocation(type);
+			if (location == null) {
+				break;
+			}
+			internalSetSpotType(location, ParkingSpot.TYPE_AD_HOC);
+		}
+	}
+
+	/* TODO: Wat te doen met bezette parkeerplaatsen? Mischien is het beter om alleen aanpassingen toe te laten
+			 als alle parkeerplaatsen leeg zijn? */
     public void initDefaultSpots() {
 
+    	int handiSpotCount = getSpotCountForType(ParkingSpot.TYPE_HANDI);
 		int handiCount = (int)(Math.ceil(((this.getHandicapPercentage() / 100.0) * getTotalSpotCount())));
-
-		int floor = 0, row = 0, place = 0;
-
-		for (int x = 0; x < getAbonnees(); x++) {
-			Location location = new Location(floor, row, place);
-			internalSetSpotType(location, ParkingSpot.TYPE_PASS);
-			place++;
-			if (place >= getNumberOfPlaces()) {
-				place = 0;
-				row++;
-				if(row >= getNumberOfRows()) {
-					row = 0;
-					floor++;
-				}
-			}
+		if (handiCount < handiSpotCount) {
+			handiSpotCount -= handiCount;
+			removeSpotsOfType(ParkingSpot.TYPE_HANDI, handiSpotCount);
+		} else {
+			handiCount -= handiSpotCount;
+			addSpotsOfType(ParkingSpot.TYPE_HANDI, handiCount);
 		}
 
-		for (int x = 0; x < handiCount; x++) {
-			Location location = new Location(floor, row, place);
-			internalSetSpotType(location, ParkingSpot.TYPE_HANDI);
-			place++;
-			if (place >= getNumberOfPlaces()) {
-				place = 0;
-				row++;
-				if(row >= getNumberOfRows()) {
-					row = 0;
-					floor++;
-				}
-			}
+    	int abboSpotCount = getSpotCountForType(ParkingSpot.TYPE_PASS);
+    	int abboCount = getAbonnees();
+    	if (abboCount < abboSpotCount) {
+    		abboSpotCount -= abboCount;
+    		removeSpotsOfType(ParkingSpot.TYPE_PASS, abboSpotCount);
+    	} else {
+    		abboCount -= abboSpotCount;
+    		addSpotsOfType(ParkingSpot.TYPE_PASS, abboCount);
+    	}
+
+		int resSpotCount = getSpotCountForType(ParkingSpot.TYPE_RES);
+		int resCount = getReservering();
+		if (resCount < resSpotCount) {
+			resSpotCount -= resCount;
+			removeSpotsOfType(ParkingSpot.TYPE_RES, resSpotCount);
+		} else {
+			resCount -= resSpotCount;
+			addSpotsOfType(ParkingSpot.TYPE_RES, resCount);
 		}
 
-		for (int x = 0; x < getReservering(); x++) {
-			Location location = new Location(floor, row, place);
-			internalSetSpotType(location, ParkingSpot.TYPE_RES);
-			place++;
-			if (place >= getNumberOfPlaces()) {
-				place = 0;
-				row++;
-				if(row >= getNumberOfRows()) {
-					row = 0;
-					floor++;
-				}
-			}
-		}
 		for(AbstractController c: controllers) c.spotsChanged();
     }
 
 	public void reset() {
 		stop();
-		day = hour = minute = 0;
-        entranceCarQueue.clear();
-        entrancePassQueue.clear();
-        paymentCarQueue.clear();
-        paymentCarQueueExtra.clear();
-        exitCarQueue.clear();
-        missedCars.clear();
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    AbstractCar car = getCarAt(location);
-                    if (car != null) {
-                        removeCarAt(location);
-                    }
-                }
-            }
-        }
-        notifyViews();
-        inSim = false;
+		init();
+		notifyViews();
 	}
 
 	public void clearSpots() {
@@ -321,7 +334,7 @@ public class Model extends AbstractModel implements Runnable {
         if (oldCar == null) {
         	spot.setCar(car);
             car.setLocation(location);
-            carCountPerType[spot.getType()]++;
+            carCountPerType[car.getType()]++;
             numberOfOpenSpots--;
             return true;
         }
@@ -339,7 +352,7 @@ public class Model extends AbstractModel implements Runnable {
         }
         spot.setCar(null);
         car.setLocation(null);
-        carCountPerType[spot.getType()]--;
+        carCountPerType[car.getType()]--;
         numberOfOpenSpots++;
         return car;
     }
@@ -560,7 +573,7 @@ public class Model extends AbstractModel implements Runnable {
 				e.printStackTrace();
 			}
     	}
-    	//reserveringen plaatsen toewijzen. 
+    	// reserveringen plaatsen toewijzen. 
     	if (reserveringMax > carCountPerType[ParkingSpot.TYPE_RES]) {
     		numberOfCars = getNumberOfCars("RES");
     		try {
@@ -579,8 +592,14 @@ public class Model extends AbstractModel implements Runnable {
     		AbstractCar car = queue.removeCar();
     		Location freeLocation = getFirstFreeTypeLocation(car.getType());
     		if(freeLocation == null) {
-    			queue.addCar(car);
-    			break;
+    			/* Gebruik reguliere parkeerplaatsen als alle invalide plaatsen bezet zijn */
+    			if (car.getType() == ParkingSpot.TYPE_HANDI) {
+    				freeLocation = getFirstFreeTypeLocation(ParkingSpot.TYPE_AD_HOC);
+    			}
+    			if(freeLocation == null) {
+    				queue.addCar(car);
+    				break;
+    			}
     		}
             setCarAt(freeLocation, car);
             i++;
