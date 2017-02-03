@@ -52,7 +52,7 @@ public class MvcSimulator  {
 		carParkView.addController(selectController); // <<<----- wat doet dit hier  ????????????????
 
 		screen = new JFrame("Parking Simulator");
-		screen.setSize(1600, 1000);
+		screen.setSize(1920, 1080);
 		screen.setResizable(false);
 		screen.setLayout(null);
 
@@ -79,8 +79,8 @@ public class MvcSimulator  {
 		initController.setBounds(820, 200, 300, 250);
 
 		pieView.setBounds(1030 + 100, 50, 200, 200);
-		managerView.setBounds(1030 + 100, 260, 200, 200);
-		queueView.setBounds(1230, 260, 200, 200);
+		managerView.setBounds(1130 + 100, 260, 200, 200);
+		queueView.setBounds(1430, 260, 200, 200);
 
 		screen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		screen.setVisible(true);
