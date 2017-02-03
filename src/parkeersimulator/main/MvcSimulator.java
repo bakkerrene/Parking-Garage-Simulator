@@ -14,6 +14,8 @@ import javax.swing.JTabbedPane;
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.GridLayout;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 public class MvcSimulator  {
 
@@ -33,6 +35,8 @@ public class MvcSimulator  {
 	private LineGraphView lineGraphView;
 	private JTabbedPane tabbedPane;
 	private LegendaView legendaView;
+	private LegendaView legendaView_1;
+	private JTextField txtnnBlanco;
 
 	public MvcSimulator() {
 
@@ -63,7 +67,8 @@ public class MvcSimulator  {
 		managerView = new ManagerView(model);
 		queueView = new QueueView(model);
 		lineGraphView = new LineGraphView(model);
-		legendaView = new LegendaView(model);
+		legendaView_1 = new LegendaView(model);
+		legendaView_1.setBackground(Color.YELLOW);
 
 		carParkView.addController(selectController); // <<<----- wat doet dit hier  ????????????????
 
@@ -90,10 +95,12 @@ public class MvcSimulator  {
 				barGraphView = new BarGraphView(model);
 				tabbedPane.addTab("Staaf diagram", null, barGraphView, null);
 				barGraphView.setToolTipText("Bar Grafiek");
+				
+				
 		contentPane.add(controller);
 		contentPane.add(selectController);
 		controller.setBounds(10, 449, 800, 30);
-		contentPane.add(legendaView);
+		contentPane.add(legendaView_1);
 
 		selectController.setBounds(1030, 260, 189, 92);
 		queueView = new QueueView(model);
@@ -118,7 +125,9 @@ public class MvcSimulator  {
 						managerView.setBounds(809, 249, 200, 200);
 						screen.getContentPane().add(managerView);
 						managerView.setBackground(SystemColor.control);
-		legendaView.setBounds(1230,460 , 200, 200 );
+		legendaView_1.setBounds(1030,49 , 200, 200 );
+		
+
 
 		screen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		screen.setVisible(true);
