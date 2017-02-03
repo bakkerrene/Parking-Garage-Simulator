@@ -27,6 +27,7 @@ public class MvcSimulator  {
 	private ManagerView managerView;
 	private QueueView queueView;
 	private LineGraphView lineGraphView;
+	private LegendaView legendaView;
 
 	public MvcSimulator() {
 
@@ -48,6 +49,7 @@ public class MvcSimulator  {
 		managerView = new ManagerView(model);
 		queueView = new QueueView(model);
 		lineGraphView = new LineGraphView(model);
+		legendaView = new LegendaView(model);
 
 		carParkView.addController(selectController); // <<<----- wat doet dit hier  ????????????????
 
@@ -68,6 +70,7 @@ public class MvcSimulator  {
 		contentPane.add(graphController);
 		//contentPane.add(barGraphView);
 		contentPane.add(lineGraphView);
+		contentPane.add(legendaView);
 
 		slideController.setBounds(10, 0, 800, 100);
 		carParkView.setBounds(10, 100, 800, 400);
@@ -81,6 +84,7 @@ public class MvcSimulator  {
 		pieView.setBounds(1030 + 100, 50, 200, 200);
 		managerView.setBounds(1130 + 100, 260, 200, 200);
 		queueView.setBounds(1430, 260, 200, 200);
+		legendaView.setBounds(1230,460 , 200, 200 );
 
 		screen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		screen.setVisible(true);
