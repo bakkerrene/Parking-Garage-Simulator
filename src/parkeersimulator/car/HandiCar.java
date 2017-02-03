@@ -9,7 +9,7 @@ import parkeersimulator.ParkingSpot;
 public class HandiCar extends AbstractCar {
 	private static final Color COLOR=Color.green;
     public HandiCar() {
-    	this.type = ParkingSpot.TYPE_HANDI;
+    	super(ParkingSpot.TYPE_HANDI);
     	Random random = new Random();
     	int stayMinutes = (int) (15 + random.nextFloat() * 3 * 60);
         this.setMinutesLeft(stayMinutes);

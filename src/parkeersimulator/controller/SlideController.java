@@ -1,14 +1,12 @@
+
 package parkeersimulator.controller;
 
-
 import java.awt.GridLayout;
-
 
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 
-import parkeersimulator.Location;
 import parkeersimulator.model.Model;
 
 @SuppressWarnings("serial")
@@ -29,7 +27,12 @@ public class SlideController extends AbstractController{
     		model.setTickPause(1000 - (tickRate.getValue()));
     		revalidate();
     	});
-    	
+
+    	tickRate.setMajorTickSpacing(998);
+    	//tickRate.setMinorTickSpacing(1);
+    	tickRate.setPaintTicks(true);
+    	tickRate.setPaintLabels(true);
+
         setLayout(new GridLayout(2, 1));
         add(new JLabel("Snelheid", SwingConstants.CENTER));
         add(tickRate);

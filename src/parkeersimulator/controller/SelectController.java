@@ -1,12 +1,14 @@
 package parkeersimulator.controller;
 
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -18,21 +20,24 @@ import parkeersimulator.model.Model;
 @SuppressWarnings("serial")
 public class SelectController extends AbstractController implements ActionListener {
 
-    private JButton clearButton;
+	private JLabel label;
 
 	private DefaultListModel<String> listModel;
 	private JList<String> list;
 	private JScrollPane scrollPane;
 
+    private JButton clearButton;
+
     public SelectController(Model model) {
 
     	super(model);
 
-    	clearButton = new JButton("Verwijder Plekken");
-    	clearButton.addActionListener(this);
-
     	BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(boxLayout);
+
+		label = new JLabel("Parkeerplekken");
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(label);
 
 		listModel = new DefaultListModel<String>();
 		list = new JList<String>(listModel);
@@ -40,8 +45,12 @@ public class SelectController extends AbstractController implements ActionListen
 		updateList();
 		list.setSelectedIndex(0);
 		scrollPane = new JScrollPane(list);
+		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(scrollPane);
 
+    	clearButton = new JButton("Verwijder Plekken");
+    	clearButton.addActionListener(this);
+    	clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(clearButton);
 
     	setVisible(true);
@@ -50,9 +59,10 @@ public class SelectController extends AbstractController implements ActionListen
     private void updateList() {
     	int selectedIndex = list.getSelectedIndex();
     	listModel.clear();
-    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_AD_HOC) + " Regulieren");
+    	//listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_AD_HOC) + " Regulieren");
+    	listModel.addElement("Clear");
     	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_PASS) + " Abonnees");
-    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + " Invaliden");
+    	//listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + " Invaliden");
     	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_RES) + " Gereserveerden");
     	list.setSelectedIndex(selectedIndex);
     }
@@ -78,7 +88,13 @@ public class SelectController extends AbstractController implements ActionListen
 			ParkingSpot spot = model.getParkingSpotAt(location);
 			if (spot.getCar() != null) return;
 		}
-		model.setSpotType(location, list.getSelectedIndex());
+		int spotType = ParkingSpot.TYPE_AD_HOC;
+		switch (list.getSelectedIndex()) {
+		case 0: spotType = ParkingSpot.TYPE_AD_HOC; break;
+		case 1: spotType = ParkingSpot.TYPE_PASS; break;
+		case 2: spotType = ParkingSpot.TYPE_RES; break;
+		}
+		model.setSpotType(location, spotType);
 		updateList();
 	}
 
@@ -86,6 +102,10 @@ public class SelectController extends AbstractController implements ActionListen
 		clearButton.setEnabled(value);
 		list.setEnabled(value);
 		scrollPane.setEnabled(value);
+	}
+
+	public void spotsChanged() {
+		updateList();
 	}
 
 	public void simStarted() {

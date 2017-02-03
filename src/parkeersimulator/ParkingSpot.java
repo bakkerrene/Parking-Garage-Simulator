@@ -23,13 +23,13 @@ public class ParkingSpot {
 	public static Color getColorForType(int type) {
     	switch (type) {
     	case TYPE_AD_HOC:
-    		return Color.red;
+    		return new Color(255, 255, 255, 255);
     	case TYPE_PASS:
-    		return Color.blue;
+    		return new Color(0, 0, 255, 64);
     	case TYPE_HANDI:
-    		return Color.green;
+    		return new Color(0, 255, 0, 64);
     	case TYPE_RES:
-    		return Color.yellow;
+    		return new Color(255, 255, 0, 64);
     	}
     	return Color.black;
 	}
@@ -50,13 +50,6 @@ public class ParkingSpot {
     }
 
     public Color getColor() {
-    	float c[] = color.getColorComponents(null);
-    	float alpha;
-    	if (car != null) {
-    		alpha = 1.0f;
-    	} else {
-    		alpha = 0.3f;
-    	}
-    	return new Color(c[0], c[1], c[2], alpha);
+    	return color;
     }
 }

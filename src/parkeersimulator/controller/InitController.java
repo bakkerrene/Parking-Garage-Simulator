@@ -18,6 +18,9 @@ public class InitController extends AbstractController implements ActionListener
 	private JLabel perInv, aboTa;
 	private JLabel norTa, resTa;
 
+	private JLabel label;
+	private JPanel panel;
+
 	private JFormattedTextField multiplierAmount;
 	private JFormattedTextField aantalReserveringen;
     private JFormattedTextField aantalAbonnees;
@@ -26,8 +29,22 @@ public class InitController extends AbstractController implements ActionListener
     private JFormattedTextField normaalTarief;
     private JFormattedTextField reserveringsTarief;
     private JButton initButton;
+    private JButton resetValues;
 
-    private void updateValues() {
+    private void setDefaultValues() {
+
+        model.setMultiplier(100);
+        model.setReservering(15);
+        model.setAbonnees(50);
+        model.setAbonneeTarief(10);
+        model.setNormaalTarief(1);
+        model.setReserveringTarief(10);
+        model.setHandicapPercentage(2);
+
+        updateTextFieldValues();
+    }
+
+    private void updateTextFieldValues() {
     	multiplierAmount.setValue(model.getMultiplier() * 100);
     	aantalReserveringen.setValue(model.getReservering());
     	aantalAbonnees.setValue(model.getAbonnees());
@@ -49,10 +66,13 @@ public class InitController extends AbstractController implements ActionListener
     	normaalTarief = new JFormattedTextField();   
     	reserveringsTarief = new JFormattedTextField();
 
-    	updateValues();
+    	setDefaultValues();
 
     	initButton = new JButton("Verstuur");
     	initButton.addActionListener(this);
+
+    	resetValues = new JButton("Reset waarden");
+    	resetValues.addActionListener(this);
 
     	multiplier = new JLabel("Multiplier");
  		maxRes = new JLabel("Reserveringen");
@@ -62,32 +82,43 @@ public class InitController extends AbstractController implements ActionListener
  		norTa = new JLabel("Normaal Tarief");
  		resTa = new JLabel("Reservering Tarief");
 
-		GridLayout gridLayout = new GridLayout(0,2);
-		setLayout(gridLayout);
+    	BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+		setLayout(boxLayout);
 
-		add(multiplier);
-		add(multiplierAmount);
-		add(maxRes);
-		add(aantalReserveringen);
-		add(maxAbo);
-		add(aantalAbonnees);
-		add(perInv);
-		add(percentageInvalidenplekken);
-		add(aboTa);
-		add(abonneeTarief);
-		add(norTa);
-		add(normaalTarief);
-		add(resTa);
-		add(reserveringsTarief);
-		add(initButton);
+		label = new JLabel("Waarden");
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(label);
+
+    	panel = new JPanel();
+		GridLayout gridLayout = new GridLayout(0,2);
+		panel.setLayout(gridLayout);
+
+		panel.add(multiplier);
+		panel.add(multiplierAmount);
+		panel.add(maxRes);
+		panel.add(aantalReserveringen);
+		panel.add(maxAbo);
+		panel.add(aantalAbonnees);
+		panel.add(perInv);
+		panel.add(percentageInvalidenplekken);
+		panel.add(aboTa);
+		panel.add(abonneeTarief);
+		panel.add(norTa);
+		panel.add(normaalTarief);
+		panel.add(resTa);
+		panel.add(reserveringsTarief);
+		panel.add(initButton);
+		panel.add(resetValues);
+
+		add(panel);
 
     	setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
 		try {
-			//Object sourceObject = e.getSource();
-			//if(sourceObject == initButton) {
+			Object sourceObject = e.getSource();
+			if (sourceObject == initButton) {
 				model.setMultiplier(getMultiplier());
 				model.setReservering(getReservering());
 				model.setAbonnees(getAbonee());
@@ -96,7 +127,9 @@ public class InitController extends AbstractController implements ActionListener
 				model.setNormaalTarief(getNormaalTarief());
 				model.setReserveringTarief(getReserveringTarief());
 				model.initDefaultSpots();
-			//}
+			} else if (sourceObject == resetValues) {
+				setDefaultValues();
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -148,7 +181,6 @@ public class InitController extends AbstractController implements ActionListener
 	}
 
 	public void spotsChanged() {
-		updateValues();
+		updateTextFieldValues();
 	}
 }
-

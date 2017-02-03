@@ -68,19 +68,19 @@ public class MvcSimulator  {
 		contentPane.add(graphController);
 		//contentPane.add(barGraphView);
 		contentPane.add(lineGraphView);
-		
-		
-		carParkView.setBounds(10, 50, 800, 400);
-		pieView.setBounds(1030, 50, 200, 200);
-		managerView.setBounds(1030, 260, 200, 200);
-		queueView.setBounds(1230, 260, 200, 200);
 
-		lineGraphView.setBounds(110, 500, 800, 400);
-		graphController.setBounds(0, 500, 110, 400);
-		slideController.setBounds(10, 0, 800 , 50);
-		controller.setBounds(10, 470, 800, 30);
-		selectController.setBounds(820, 60, 200, 101);
-		initController.setBounds(820, 165, 200, 200);
+		slideController.setBounds(10, 0, 800, 100);
+		carParkView.setBounds(10, 100, 800, 400);
+		controller.setBounds(10, 500, 800, 30);
+		graphController.setBounds(0, 530, 800, 30);
+		lineGraphView.setBounds(0, 560, 800, 400);
+
+		selectController.setBounds(820, 90, 300, 101);
+		initController.setBounds(820, 200, 300, 250);
+
+		pieView.setBounds(1030 + 100, 50, 200, 200);
+		managerView.setBounds(1030 + 100, 260, 200, 200);
+		queueView.setBounds(1230, 260, 200, 200);
 
 		screen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		screen.setVisible(true);

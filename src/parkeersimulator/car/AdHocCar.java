@@ -11,7 +11,7 @@ public class AdHocCar extends AbstractCar {
 	private static final Color COLOR=Color.red;
 	
     public AdHocCar() {
-    	this.type = ParkingSpot.TYPE_AD_HOC;
+    	super(ParkingSpot.TYPE_AD_HOC);
     	Random random = new Random();
     	int stayMinutes = (int) (15 + random.nextFloat() * 3 * 60);
         this.setMinutesLeft(stayMinutes);
