@@ -45,32 +45,10 @@ public class MvcSimulator  {
 		controller = new Controller(model);
 		selectController = new SelectController(model);
 
-		model.addController(controller);// \\\ //<<\
-		model.addController(selectController);// <<<\
+		model.addController(controller);// \\\ //<<\\
 
-		model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
-
-		carParkView = new CarParkView(model);
-		barGraphView = new BarGraphView(model);
-		pieView = new PieView(model);
-		managerView = new ManagerView(model);
-		queueView = new QueueView(model);
-		lineGraphView = new LineGraphView(model);
 		legendaView = new LegendaView(model);
 
-		carParkView.addController(selectController); // <<<----- wat doet dit hier  ????????????????
-		model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
-
-		carParkView = new CarParkView(model);
-		barGraphView = new BarGraphView(model);
-		pieView = new PieView(model);
-		managerView = new ManagerView(model);
-		queueView = new QueueView(model);
-		lineGraphView = new LineGraphView(model);
-		legendaView_1 = new LegendaView(model);
-		legendaView_1.setBackground(Color.YELLOW);
-
-		carParkView.addController(selectController); // <<<----- wat doet dit hier  ????????????????
 
 		screen = new JFrame("Parking Simulator");
 		screen.setSize(1366, 800);
@@ -100,7 +78,7 @@ public class MvcSimulator  {
 		contentPane.add(controller);
 		contentPane.add(selectController);
 		controller.setBounds(10, 449, 800, 30);
-		contentPane.add(legendaView_1);
+		contentPane.add(legendaView);
 
 		selectController.setBounds(1030, 260, 189, 92);
 		queueView = new QueueView(model);
@@ -125,7 +103,7 @@ public class MvcSimulator  {
 						managerView.setBounds(809, 249, 200, 200);
 						screen.getContentPane().add(managerView);
 						managerView.setBackground(SystemColor.control);
-		legendaView_1.setBounds(1030,49 , 200, 200 );
+		legendaView.setBounds(1030,49 , 200, 200 );
 		
 
 
