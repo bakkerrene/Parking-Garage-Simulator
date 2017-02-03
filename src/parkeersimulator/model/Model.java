@@ -65,9 +65,6 @@ public class Model extends AbstractModel implements Runnable {
     private int totalHandiCar;
 
     private HashMap<String, Integer> carCounter;
-    
-    
-
 
     private int tickCount = 0;
     private int tickPause = 100;
