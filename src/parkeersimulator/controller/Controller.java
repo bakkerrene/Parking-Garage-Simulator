@@ -78,7 +78,7 @@ public class Controller extends AbstractController implements ActionListener {
 		plus100.setEnabled(value);
 		start.setEnabled(value);
 		stop.setEnabled(!value);
-		//reset.setEnabled(value);
+		reset.setEnabled(value);
 	}
 
 	public void simStarted() {

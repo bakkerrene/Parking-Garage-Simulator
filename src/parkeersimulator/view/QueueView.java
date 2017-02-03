@@ -103,11 +103,12 @@ public class QueueView extends AbstractView {
 		if (entrance1Data == model.getPaymentCarQueueNr()) top = 66;
 		if (entrance1Data == model.exitCarQueueNr()) top = 99;
 		for (int i =0; i < entrance1Data.carsInQueue(); i++) {
-			if (!(i >= entrance1Data.carsInQueue())) {
+			if (entrance1Data.peekCar(i) != null) {
 				AbstractCar car = entrance1Data.peekCar(i);
 				g.setColor(car.getColor());
 				g.fillRect(0 + (i * 21), top, 20, 10);
-			}
 		}
+		}
+		
 	}
 }

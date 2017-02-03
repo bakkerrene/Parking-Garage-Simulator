@@ -762,16 +762,13 @@ public class Model extends AbstractModel implements Runnable {
     	}	
     }
     
-    private void clearExtraPaymentQueue() {
-    	int i=0;
-    	while (paymentCarQueueExtra.carsInQueue()>0 && i <paymentSpeed) {
+    private void clearPaymentQueue() {
+    	int i = 0;
+    	while (paymentCarQueueExtra.carsInQueue() > 0 && i < paymentSpeed) {
     		paymentCarQueueExtra.removeCar();
-    		i++;
     	}
     }
-
-    //carType mee nemen zo dat je per auto de nummer autos kan toewijzen
-
+    
     private int getNumberOfCars(String test) {
 
         Random random = new Random();
@@ -903,7 +900,7 @@ public class Model extends AbstractModel implements Runnable {
 	}
 	
 	private void secondStep() {
-		clearExtraPaymentQueue();
+		clearPaymentQueue();
 		carsLeaving();
 		handleEntrance();
 	}

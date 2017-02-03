@@ -10,13 +10,17 @@ import parkeersimulator.controller.Controller;
 import parkeersimulator.controller.*;
 import parkeersimulator.model.Model;
 import parkeersimulator.view.*;
+import javax.swing.JTabbedPane;
+import java.awt.Color;
+import java.awt.SystemColor;
+import java.awt.GridLayout;
 
 public class MvcSimulator  {
 
 	private Model model;
 	private SelectController selectController;
-	private InitController initController;
-	private Controller controller;
+	private InitController 	initController;
+	private Controller 		controller;
 	private SlideController slideController;
 	private GraphController graphController;
 
@@ -27,6 +31,8 @@ public class MvcSimulator  {
 	private ManagerView managerView;
 	private QueueView queueView;
 	private LineGraphView lineGraphView;
+	private JTabbedPane tabbedPane;
+	private LegendaView legendaView;
 
 	public MvcSimulator() {
 
@@ -34,12 +40,10 @@ public class MvcSimulator  {
 									 // 400 /150  = ook 1px voor gap en 1px voor spot. 400 /133 is 2px voor spot 1 px voor gap
 		controller = new Controller(model);
 		selectController = new SelectController(model);
-		initController = new InitController(model);
-		slideController = new SlideController(model);
-		graphController = new GraphController(model);
 
 		model.addController(controller);// \\\ //<<\
 		model.addController(selectController);// <<<\
+
 		model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
 
 		carParkView = new CarParkView(model);
@@ -48,39 +52,73 @@ public class MvcSimulator  {
 		managerView = new ManagerView(model);
 		queueView = new QueueView(model);
 		lineGraphView = new LineGraphView(model);
+		legendaView = new LegendaView(model);
+
+		carParkView.addController(selectController); // <<<----- wat doet dit hier  ????????????????
+		model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
+
+		carParkView = new CarParkView(model);
+		barGraphView = new BarGraphView(model);
+		pieView = new PieView(model);
+		managerView = new ManagerView(model);
+		queueView = new QueueView(model);
+		lineGraphView = new LineGraphView(model);
+		legendaView = new LegendaView(model);
 
 		carParkView.addController(selectController); // <<<----- wat doet dit hier  ????????????????
 
 		screen = new JFrame("Parking Simulator");
-		screen.setSize(1920, 1080);
+		screen.setSize(1366, 800);
 		screen.setResizable(false);
-		screen.setLayout(null);
+		screen.getContentPane().setLayout(null);
 
 		Container contentPane = screen.getContentPane();
-		contentPane.add(carParkView);
-		contentPane.add(pieView);
-		contentPane.add(managerView);
-		contentPane.add(queueView);
+		
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		tabbedPane.setBounds(10, 484, 800, 234);
+		screen.getContentPane().add(tabbedPane);
+				lineGraphView = new LineGraphView(model);
+				lineGraphView.setToolTipText("lijn Grafiek");
+				tabbedPane.addTab("Lijn grafiek", null, lineGraphView, null);
+				graphController = new GraphController(model);
+				graphController.setBounds(642, 183, 153, 23);
+				lineGraphView.add(graphController);
+				pieView = new PieView(model);
+				pieView.setToolTipText("Circel Diagram");
+				tabbedPane.addTab("Circel diagram", null, pieView, null);
+				barGraphView = new BarGraphView(model);
+				tabbedPane.addTab("Staaf diagram", null, barGraphView, null);
+				barGraphView.setToolTipText("Bar Grafiek");
 		contentPane.add(controller);
-		contentPane.add(slideController);
 		contentPane.add(selectController);
-		contentPane.add(initController);
-		contentPane.add(graphController);
-		//contentPane.add(barGraphView);
-		contentPane.add(lineGraphView);
+		controller.setBounds(10, 449, 800, 30);
+		contentPane.add(legendaView);
 
-		slideController.setBounds(10, 0, 800, 100);
-		carParkView.setBounds(10, 100, 800, 400);
-		controller.setBounds(10, 500, 800, 30);
-		graphController.setBounds(0, 530, 800, 30);
-		lineGraphView.setBounds(0, 560, 800, 400);
-
-		selectController.setBounds(820, 90, 300, 101);
-		initController.setBounds(820, 200, 300, 250);
-
-		pieView.setBounds(1030 + 100, 50, 200, 200);
-		managerView.setBounds(1130 + 100, 260, 200, 200);
-		queueView.setBounds(1430, 260, 200, 200);
+		selectController.setBounds(1030, 260, 189, 92);
+		queueView = new QueueView(model);
+		queueView.setBounds(809, 49, 200, 200);
+		screen.getContentPane().add(queueView);
+		initController = new InitController(model);
+		initController.setBounds(820, 510, 200, 208);
+		screen.getContentPane().add(initController);
+		model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
+		slideController = new SlideController(model);
+		slideController.setBounds(10, 11, 800, 39);
+		screen.getContentPane().add(slideController);
+		slideController.setLayout(new GridLayout(2, 0, 0, 0));
+		
+				carParkView = new CarParkView(model);
+				carParkView.setBounds(10, 49, 800, 400);
+				screen.getContentPane().add(carParkView);
+				carParkView.setBackground(Color.WHITE);
+				
+						carParkView.addController(selectController); // <<<----- wat doet dit hier  ????????????????
+						managerView = new ManagerView(model);
+						managerView.setBounds(809, 249, 200, 200);
+						screen.getContentPane().add(managerView);
+						managerView.setBackground(SystemColor.control);
+		legendaView.setBounds(1230,460 , 200, 200 );
 
 		screen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		screen.setVisible(true);

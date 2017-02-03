@@ -26,8 +26,8 @@ public class LineGraphView extends AbstractView {
 	private int hour = 25;
 	private int maxValue = model.getNumberOfOpenSpots();
 	private int minValue = 0;
-    private int padding = 25;
-    private int labelPadding = 25;
+    private int padding = 15;
+    private int labelPadding = 15;
     
     private int diff;
     
@@ -65,12 +65,12 @@ public class LineGraphView extends AbstractView {
 		resCarData = new ArrayList<Integer>();
 		moneyPerHourData = new ArrayList<Integer>();
 		
-		diff = 36;		
+		diff = 18;		
 		setLayout(null);
 		for(int i = 0; i < collection.length; i++) {
 			collection[i] = new JLabel("0");
 			add(collection[i]);
-			collection[i].setBounds(10, 10 + (i * diff), 50, 30 );
+			collection[i].setBounds(5, 0 + (i * diff), 35, 30 );
 		}
 		
 		
@@ -152,8 +152,8 @@ public class LineGraphView extends AbstractView {
             
         }
         
-        for (int i = 0; i <7; i++) {
-        	 g2.drawLine(padding + labelPadding + (i * (4+(getWidth() / 8))), getHeight() - padding - labelPadding, padding + labelPadding  + (i * (4+(getWidth() / 8))), padding);
+        for (int i = 0; i <8; i++) {
+        	 g2.drawLine(padding + labelPadding + (i * (8+(getWidth() / 8))), getHeight() - padding - labelPadding, padding + labelPadding  + (i * (8+(getWidth() / 8))), padding);
         }
         
         

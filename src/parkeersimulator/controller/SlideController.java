@@ -28,10 +28,10 @@ public class SlideController extends AbstractController{
     		revalidate();
     	});
 
-    	tickRate.setMajorTickSpacing(998);
-    	//tickRate.setMinorTickSpacing(1);
+    	tickRate.setMajorTickSpacing(100);
+    	//tickRate.setMinorTickSpacing();
     	tickRate.setPaintTicks(true);
-    	tickRate.setPaintLabels(true);
+
 
         setLayout(new GridLayout(2, 1));
         add(new JLabel("Snelheid", SwingConstants.CENTER));

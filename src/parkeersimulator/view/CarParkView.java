@@ -111,7 +111,7 @@ public class CarParkView extends AbstractView {
         graphics.setColor(color);
         graphics.fillRect(
                 40 + 260 * location.getFloor() + 75 * (int)Math.floor(0.5 * location.getRow()) + 20 * (location.getRow() % 2),
-                (dim.height / model.getNumberOfPlaces()) * location.getPlace(),
+                5+(dim.height / model.getNumberOfPlaces()) * location.getPlace(),
                 20 - 1,
                 (dim.height / model.getNumberOfPlaces()) - 1); // TODO use dynamic size or constants
     }
