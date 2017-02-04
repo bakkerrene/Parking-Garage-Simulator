@@ -34,9 +34,7 @@ public class MvcSimulator  {
 	private QueueView queueView;
 	private LineGraphView lineGraphView;
 	private JTabbedPane tabbedPane;
-	private LegendaView legendaView;
-	private LegendaView legendaView_1;
-	private JTextField txtnnBlanco;
+
 
 	public MvcSimulator() {
 
@@ -56,7 +54,7 @@ public class MvcSimulator  {
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		tabbedPane.setBounds(10, 630, 800, 234);
+		tabbedPane.setBounds(10, 482, 800, 234);
 		screen.getContentPane().add(tabbedPane);
 				lineGraphView = new LineGraphView(model);
 				tabbedPane.addTab("Lijndiagram", null, lineGraphView, null);
@@ -71,33 +69,48 @@ public class MvcSimulator  {
 				
 				
 		contentPane.add(controller);
-		controller.setBounds(180, 447, 800, 30);
+
+		controller.setBounds(10, 448, 800, 30);
+
+
+
+
 		slideController = new SlideController(model);
-		slideController.setBounds(180, 11, 800, 39);
+
+		slideController.setBounds(10, 11, 800, 40);
+
 		screen.getContentPane().add(slideController);
 		slideController.setLayout(new GridLayout(2, 0, 0, 0));
+
+		
+				
+
 						managerView = new ManagerView(model);
-						managerView.setBounds(15, 49, 155, 200);
+
+						managerView.setBounds(814, 506, 202, 210);
+
 						screen.getContentPane().add(managerView);
 						managerView.setBackground(SystemColor.control);
+
 		
 				carParkView = new CarParkView(model);
-				carParkView.setBounds(180, 49, 800, 398);
+				carParkView.setBounds(10, 50, 800, 398);
 				screen.getContentPane().add(carParkView);
 				carParkView.setBackground(Color.WHITE);
 						initController = new InitController(model);
-						initController.setBounds(990, 363, 200, 224);
+						initController.setBounds(814, 253, 200, 224);
 						screen.getContentPane().add(initController);
 						model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
 						queueView = new QueueView(model);
-						queueView.setBounds(990, 49, 200, 200);
+						queueView.setBounds(814, 49, 200, 200);
 						screen.getContentPane().add(queueView);
 						selectController = new SelectController(model);
-						selectController.setBounds(990, 260, 200, 92);
+						selectController.setBounds(1024, 248, 200, 92);
 						screen.getContentPane().add(selectController);
 						
 								carParkView.addController(selectController);
-		
+
+
 
 
 		screen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

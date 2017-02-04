@@ -48,7 +48,7 @@ public class SelectController extends AbstractController implements ActionListen
 		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(scrollPane);
 
-    	clearButton = new JButton("Verwijder Plekken");
+    	clearButton = new JButton("Reset Plekken");
     	clearButton.addActionListener(this);
     	clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(clearButton);
@@ -63,7 +63,7 @@ public class SelectController extends AbstractController implements ActionListen
     	listModel.addElement("Clear");
     	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_PASS) + " Abonnees");
     	//listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + " Invaliden");
-    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_RES) + " Gereserveerden");
+    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + " Invaliden");
     	list.setSelectedIndex(selectedIndex);
     }
 

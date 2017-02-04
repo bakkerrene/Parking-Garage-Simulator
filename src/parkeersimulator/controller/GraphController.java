@@ -42,7 +42,7 @@ public class GraphController extends AbstractController implements ActionListene
     	buttonGroup.add(showCars);
 
     	buttonGroup.clearSelection();
-    	showMoney.setSelected(true);
+    	showCars.setSelected(true);
 
     	add(showMoney);
     	add(showCars);
