@@ -50,7 +50,7 @@ public class MvcSimulator  {
 		legendaView = new LegendaView(model);
 
 
-		screen = new JFrame("Parking Simulator");
+		screen = new JFrame("Parkeer Simulator");
 		screen.setSize(1366, 800);
 		screen.setResizable(false);
 		screen.getContentPane().setLayout(null);
@@ -62,17 +62,17 @@ public class MvcSimulator  {
 		tabbedPane.setBounds(10, 484, 800, 234);
 		screen.getContentPane().add(tabbedPane);
 				lineGraphView = new LineGraphView(model);
-				lineGraphView.setToolTipText("lijn Grafiek");
-				tabbedPane.addTab("Lijn grafiek", null, lineGraphView, null);
+				lineGraphView.setToolTipText("Lijn Grafiek");
+				tabbedPane.addTab("Lijn Grafiek", null, lineGraphView, null);
 				graphController = new GraphController(model);
 				graphController.setBounds(642, 183, 153, 23);
 				lineGraphView.add(graphController);
 				pieView = new PieView(model);
-				pieView.setToolTipText("Circel Diagram");
-				tabbedPane.addTab("Circel diagram", null, pieView, null);
+				pieView.setToolTipText("Cirkeldiagram");
+				tabbedPane.addTab("Cirkeldiagram", null, pieView, null);
 				barGraphView = new BarGraphView(model);
-				tabbedPane.addTab("Staaf diagram", null, barGraphView, null);
-				barGraphView.setToolTipText("Bar Grafiek");
+				tabbedPane.addTab("Staaf Diagram", null, barGraphView, null);
+				barGraphView.setToolTipText("Staaf Diagram");
 				
 				
 		contentPane.add(controller);

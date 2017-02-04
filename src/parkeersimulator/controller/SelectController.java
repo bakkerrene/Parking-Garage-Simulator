@@ -48,7 +48,7 @@ public class SelectController extends AbstractController implements ActionListen
 		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(scrollPane);
 
-    	clearButton = new JButton("Verwijder Plekken");
+    	clearButton = new JButton("Reset Plekken");
     	clearButton.addActionListener(this);
     	clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(clearButton);

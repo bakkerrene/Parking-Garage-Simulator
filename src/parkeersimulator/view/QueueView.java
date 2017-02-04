@@ -30,21 +30,21 @@ public class QueueView extends AbstractView {
 
 		GridLayout layout = new GridLayout(0,2);
 
-		entrance1 = new JLabel("Entrance1 ");
+		entrance1 = new JLabel("1e Ingang:");
 		entrance1Data = new JLabel("0");
 
-		entrance2 = new JLabel("Entrance2");
+		entrance2 = new JLabel("2e Ingang:");
 		entrance2Data = new JLabel("0");		
 
-		payment = new JLabel("Payment");
+		payment = new JLabel("Betaling:");
 		paymentData = new JLabel("0");
 
-		exit = new JLabel("Exit");
+		exit = new JLabel("Uitgang:");
 		exitData = new JLabel("0");
 
-		missedCars = new JLabel("Missed Cars:");
+		missedCars = new JLabel("Gemiste Auto's:");
 		missedCarsNr = new JLabel("0");
-		missedMoney = new JLabel("Missed Money");
+		missedMoney = new JLabel("Gemiste Inkomsten:");
 		missedCarsMoney = new JLabel("0");
 
 		this.setLayout(layout);	

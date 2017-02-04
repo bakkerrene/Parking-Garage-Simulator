@@ -71,10 +71,10 @@ public class InitController extends AbstractController implements ActionListener
     	initButton = new JButton("Verstuur");
     	initButton.addActionListener(this);
 
-    	resetValues = new JButton("Reset waarden");
+    	resetValues = new JButton("Reset Waarden");
     	resetValues.addActionListener(this);
 
-    	multiplier = new JLabel("Multiplier");
+    	multiplier = new JLabel("Vermenigvuldiger (%)");
  		maxRes = new JLabel("Reserveringen");
  		maxAbo = new JLabel("Abonnees");
  		perInv = new JLabel("Invaliden (%)");

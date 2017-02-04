@@ -36,28 +36,28 @@ public class ManagerView extends AbstractView {
 		time = new JLabel(model.getDay());
 		labelDataTijd = new JLabel("00:00");
 
-		labelUur = new JLabel("Laatse uur: ");
+		labelUur = new JLabel("Laatse Uur: ");
 		labelDataUur = new JLabel("0");		
 
-		labelDag = new JLabel("Laatse dag: ");
+		labelDag = new JLabel("Laatse Dag: ");
 		labelDataDag = new JLabel("0");
 
-		labelWeek = new JLabel("Laatse week: ");
+		labelWeek = new JLabel("Laatse Week: ");
 		labelDataWeek = new JLabel("0");
 
-		labelInGarage = new JLabel("In garage: ");
+		labelInGarage = new JLabel("Geld In Garage: ");
 		labelDataInGarage = new JLabel("0");		
 
-		red = new JLabel("ADHOC");
+		red = new JLabel("Normaal:");
 		redCar = new JLabel("0");		
 
-		blue = new JLabel("PASS");
+		blue = new JLabel("Abonnee:");
 		blueCar = new JLabel("0");
 
-		yellow = new JLabel("RES");
+		yellow = new JLabel("Reservering:");
 		yellowCar = new JLabel("0");
 
-		green = new JLabel("INVA");
+		green = new JLabel("Invalide:");
 		greenCar = new JLabel("0");	
 
 		add(time);
