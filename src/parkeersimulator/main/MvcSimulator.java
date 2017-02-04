@@ -43,15 +43,12 @@ public class MvcSimulator  {
 		model = new Model(3, 6, 30); // 200 is max bij 400 height, 400 / 200 = 1px voor gap en 1px voor de spot
 									 // 400 /150  = ook 1px voor gap en 1px voor spot. 400 /133 is 2px voor spot 1 px voor gap
 		controller = new Controller(model);
-		selectController = new SelectController(model);
 
-		model.addController(controller);// \\\ //<<\\
-
-		legendaView = new LegendaView(model);
+		model.addController(controller);
 
 
-		screen = new JFrame("Parking Simulator");
-		screen.setSize(1366, 800);
+		screen = new JFrame("Parkeer Simulator");
+		screen.setSize(1350, 925);
 		screen.setResizable(false);
 		screen.getContentPane().setLayout(null);
 
@@ -59,51 +56,47 @@ public class MvcSimulator  {
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		tabbedPane.setBounds(10, 484, 800, 234);
+		tabbedPane.setBounds(10, 630, 800, 234);
 		screen.getContentPane().add(tabbedPane);
 				lineGraphView = new LineGraphView(model);
-				lineGraphView.setToolTipText("lijn Grafiek");
-				tabbedPane.addTab("Lijn grafiek", null, lineGraphView, null);
+				tabbedPane.addTab("Lijndiagram", null, lineGraphView, null);
 				graphController = new GraphController(model);
 				graphController.setBounds(642, 183, 153, 23);
 				lineGraphView.add(graphController);
 				pieView = new PieView(model);
-				pieView.setToolTipText("Circel Diagram");
-				tabbedPane.addTab("Circel diagram", null, pieView, null);
+				tabbedPane.addTab("Cirkeldiagram", null, pieView, null);
 				barGraphView = new BarGraphView(model);
-				tabbedPane.addTab("Staaf diagram", null, barGraphView, null);
-				barGraphView.setToolTipText("Bar Grafiek");
+				tabbedPane.addTab("Staafdiagram", null, barGraphView, null);
+
 				
 				
 		contentPane.add(controller);
-		contentPane.add(selectController);
-		controller.setBounds(10, 449, 800, 30);
-		contentPane.add(legendaView);
-
-		selectController.setBounds(1030, 260, 189, 92);
-		queueView = new QueueView(model);
-		queueView.setBounds(809, 49, 200, 200);
-		screen.getContentPane().add(queueView);
-		initController = new InitController(model);
-		initController.setBounds(820, 510, 200, 208);
-		screen.getContentPane().add(initController);
-		model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
+		controller.setBounds(180, 447, 800, 30);
 		slideController = new SlideController(model);
-		slideController.setBounds(10, 11, 800, 39);
+		slideController.setBounds(180, 11, 800, 39);
 		screen.getContentPane().add(slideController);
 		slideController.setLayout(new GridLayout(2, 0, 0, 0));
-		
-				carParkView = new CarParkView(model);
-				carParkView.setBounds(10, 49, 800, 400);
-				screen.getContentPane().add(carParkView);
-				carParkView.setBackground(Color.WHITE);
-				
-						carParkView.addController(selectController); // <<<----- wat doet dit hier  ????????????????
 						managerView = new ManagerView(model);
-						managerView.setBounds(809, 249, 200, 200);
+						managerView.setBounds(15, 49, 155, 200);
 						screen.getContentPane().add(managerView);
 						managerView.setBackground(SystemColor.control);
-		legendaView.setBounds(1030,49 , 200, 200 );
+		
+				carParkView = new CarParkView(model);
+				carParkView.setBounds(180, 49, 800, 398);
+				screen.getContentPane().add(carParkView);
+				carParkView.setBackground(Color.WHITE);
+						initController = new InitController(model);
+						initController.setBounds(990, 363, 200, 224);
+						screen.getContentPane().add(initController);
+						model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
+						queueView = new QueueView(model);
+						queueView.setBounds(990, 49, 200, 200);
+						screen.getContentPane().add(queueView);
+						selectController = new SelectController(model);
+						selectController.setBounds(990, 260, 200, 92);
+						screen.getContentPane().add(selectController);
+						
+								carParkView.addController(selectController);
 		
 
 

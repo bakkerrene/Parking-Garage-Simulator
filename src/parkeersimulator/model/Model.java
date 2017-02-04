@@ -766,6 +766,7 @@ public class Model extends AbstractModel implements Runnable {
     	int i = 0;
     	while (paymentCarQueueExtra.carsInQueue() > 0 && i < paymentSpeed) {
     		paymentCarQueueExtra.removeCar();
+    		i++;
     	}
     }
     
