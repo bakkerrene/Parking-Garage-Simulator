@@ -38,8 +38,8 @@ public class MvcSimulator  {
 
 	public MvcSimulator() {
 
-		model = new Model(3, 6, 30); // 200 is max bij 400 height, 400 / 200 = 1px voor gap en 1px voor de spot
-									 // 400 /150  = ook 1px voor gap en 1px voor spot. 400 /133 is 2px voor spot 1 px voor gap
+		model = new Model(3, 6, 30);
+		
 		controller = new Controller(model);
 
 		model.addController(controller);
