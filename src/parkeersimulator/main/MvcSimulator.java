@@ -62,17 +62,15 @@ public class MvcSimulator  {
 		tabbedPane.setBounds(10, 484, 800, 234);
 		screen.getContentPane().add(tabbedPane);
 				lineGraphView = new LineGraphView(model);
-				lineGraphView.setToolTipText("Lijn Grafiek");
 				tabbedPane.addTab("Lijn Grafiek", null, lineGraphView, null);
 				graphController = new GraphController(model);
 				graphController.setBounds(642, 183, 153, 23);
 				lineGraphView.add(graphController);
 				pieView = new PieView(model);
-				pieView.setToolTipText("Cirkeldiagram");
 				tabbedPane.addTab("Cirkeldiagram", null, pieView, null);
 				barGraphView = new BarGraphView(model);
 				tabbedPane.addTab("Staaf Diagram", null, barGraphView, null);
-				barGraphView.setToolTipText("Staaf Diagram");
+
 				
 				
 		contentPane.add(controller);
