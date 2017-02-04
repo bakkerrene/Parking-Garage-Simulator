@@ -21,8 +21,8 @@ public class MvcSimulator  {
 
 	private Model model;
 	private SelectController selectController;
-	private InitController 	initController;
-	private Controller 		controller;
+	private InitController initController;
+	private Controller controller;
 	private SlideController slideController;
 	private GraphController graphController;
 
@@ -92,14 +92,14 @@ public class MvcSimulator  {
 						screen.getContentPane().add(managerView);
 						managerView.setBackground(SystemColor.control);
 						initController = new InitController(model);
-						initController.setBounds(1055, 275, 260, 225);
+						initController.setBounds(1055, 235, 260, 225);
 						screen.getContentPane().add(initController);
 						model.addController(initController); // <<<----- wat doet dit hier  ??????????????????
 						queueView = new QueueView(model);
-						queueView.setBounds(1080, 650, 235, 200);
+						queueView.setBounds(1080, 655, 235, 200);
 						screen.getContentPane().add(queueView);
 						selectController = new SelectController(model);
-						selectController.setBounds(1055, 140, 260, 100);
+						selectController.setBounds(1055, 120, 260, 100);
 						screen.getContentPane().add(selectController);
 						
 								

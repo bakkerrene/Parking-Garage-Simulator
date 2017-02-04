@@ -59,10 +59,8 @@ public class SelectController extends AbstractController implements ActionListen
     private void updateList() {
     	int selectedIndex = list.getSelectedIndex();
     	listModel.clear();
-    	//listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_AD_HOC) + " Regulieren");
     	listModel.addElement("Clear");
     	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_PASS) + " Abonnees");
-    	//listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + " Invaliden");
     	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + " Invaliden");
     	list.setSelectedIndex(selectedIndex);
     }
@@ -92,7 +90,7 @@ public class SelectController extends AbstractController implements ActionListen
 		switch (list.getSelectedIndex()) {
 		case 0: spotType = ParkingSpot.TYPE_AD_HOC; break;
 		case 1: spotType = ParkingSpot.TYPE_PASS; break;
-		case 2: spotType = ParkingSpot.TYPE_RES; break;
+		case 2: spotType = ParkingSpot.TYPE_HANDI; break;
 		}
 		model.setSpotType(location, spotType);
 		updateList();
