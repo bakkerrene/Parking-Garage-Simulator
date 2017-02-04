@@ -2,6 +2,7 @@
 package parkeersimulator.controller;
 
 import java.awt.GridLayout;
+import java.util.Hashtable;
 
 import javax.swing.JLabel;
 import javax.swing.JSlider;
@@ -18,6 +19,7 @@ public class SlideController extends AbstractController{
 	private int InitTick = getter;
 	
 	private JSlider tickRate;
+	private Hashtable labels;
 	
     public SlideController(Model model) {
     	super(model);
@@ -28,10 +30,16 @@ public class SlideController extends AbstractController{
     		revalidate();
     	});
 
-    	tickRate.setMajorTickSpacing(100);
-    	//tickRate.setMinorTickSpacing();
+    	tickRate.setMajorTickSpacing(998);
     	tickRate.setPaintTicks(true);
 
+    	labels = new Hashtable();
+    	labels.put(new Integer (1), new JLabel("Langzaam"));
+    	labels.put(new Integer (999), new JLabel("Snel"));
+    	
+    	tickRate.setLabelTable(labels);
+    	tickRate.setPaintLabels(true);
+    	
 
         setLayout(new GridLayout(2, 1));
         add(new JLabel("Snelheid", SwingConstants.CENTER));
