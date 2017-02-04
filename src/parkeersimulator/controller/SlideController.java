@@ -30,12 +30,12 @@ public class SlideController extends AbstractController{
     		revalidate();
     	});
 
-    	//tickRate.setMajorTickSpacing(998);
-    	//tickRate.setPaintTicks(true);
+    	tickRate.setMajorTickSpacing(998);
+    	tickRate.setPaintTicks(true);
 
-    	//labels = new Hashtable<Integer, JLabel>();
-    	//labels.put(new Integer (1), new JLabel("Langzaam"));
-    	//labels.put(new Integer (999), new JLabel("Snel"));
+    	labels = new Hashtable<Integer, JLabel>();
+    	labels.put(new Integer (1), new JLabel("Langzaam"));
+    	labels.put(new Integer (999), new JLabel("Snel"));
     	
     	tickRate.setLabelTable(labels);
     	tickRate.setPaintLabels(true);
