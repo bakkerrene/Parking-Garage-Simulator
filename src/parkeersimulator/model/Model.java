@@ -470,7 +470,7 @@ public class Model extends AbstractModel implements Runnable {
     }
 
     private Location getFirstFreeTypeLocation(int type) {
-    	if(type == ParkingSpot.TYPE_AD_HOC && this.freeAdHocSpots <= resList.size()) {
+    	if(type == ParkingSpot.TYPE_AD_HOC && freeAdHocSpots <= resTimeList.size()) {
     		return null;
     	}
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
@@ -514,11 +514,10 @@ public class Model extends AbstractModel implements Runnable {
     /*--------------------------*/
 
     private void addReservering(int resDay, int resHour, int resMinute) {
-    	if(this.getSpotCountForType(ParkingSpot.TYPE_RES) >= reserveringMax || resList.size() >= reserveringMax) {
-    		return;
+    	if(freeAdHocSpots > resTimeList.size()) {
+    	    int resTime = 24*60*resDay + 60*resHour + resMinute;
+    	    resTimeList.add(resTime);
     	}
-    	int resTime = 24*60*resDay + 60*resHour + resMinute;
-    	resTimeList.add(resTime);
     }
 
     private void checkReserveringen() {
@@ -532,20 +531,25 @@ public class Model extends AbstractModel implements Runnable {
 	    		it.remove();
 
 	        	Location location = getFirstFreeTypeLocation(ParkingSpot.TYPE_AD_HOC);
-	    		setSpotType(location, ParkingSpot.TYPE_RES);
+	            if(location != null) {
+	            	setSpotType(location, ParkingSpot.TYPE_RES);
 
-	    		Reservation res = new Reservation();
-	    	    res.location = location;
-	    		double p = randomGen.nextDouble();
-	    		if(p > 0.01 * resPercentKomtNooit) {
-	    			p = randomGen.nextDouble();
-		    	    res.timeOfArrival = curTime + (int)(p * 30.0);
-	    		} else {
-	    			p = randomGen.nextDouble();
-		    	    res.timeOfArrival = curTime + 60;
-	    		}
-	    	    res.timeOfExpiration = curTime + 30;
-	    		resList.add(res);
+	            	Reservation res = new Reservation();
+	            	res.location = location;
+	            	double p = randomGen.nextDouble();
+	            	if(p > 0.01 * resPercentKomtNooit) {
+	            		p = randomGen.nextDouble();
+	            		res.timeOfArrival = curTime + (int)(p * 30.0);
+	            	} else {
+	            		p = randomGen.nextDouble();
+	            		res.timeOfArrival = curTime + 60;
+	            	}
+	            	res.timeOfExpiration = curTime + 30;
+	            	resList.add(res);
+	            } else {
+	            	/* Als het goed is komt dit nooit voor */
+	            	System.out.println("location == null");
+	            }
 	    	}
 	    }
 
@@ -1020,3 +1024,4 @@ public class Model extends AbstractModel implements Runnable {
 		for(AbstractController c: controllers) c.runStopped();
 	}
 }
+
