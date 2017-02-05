@@ -77,7 +77,7 @@ public class SelectController extends AbstractController {
 	}
 
 	public void spotsChanged() {
-		updateList();
+//		updateList();
 	}
 
 	public void simStarted() {
