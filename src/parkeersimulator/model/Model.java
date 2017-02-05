@@ -173,7 +173,7 @@ public class Model extends AbstractModel implements Runnable {
 	    try
 	    {
 	        Clip clip = AudioSystem.getClip();
-	        clip.open(AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") +"\\src\\audio\\" + file)));
+	        clip.open(AudioSystem.getAudioInputStream(new File("./src/audio/" + file)));
 	        clip.start();
 	    }
 	    catch (Exception exc)
