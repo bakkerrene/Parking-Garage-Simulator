@@ -104,6 +104,8 @@ public class Model extends AbstractModel implements Runnable {
 	private void init() {
 		counter = 0;
 
+		numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
+
 		entranceCarQueue  = new CarQueue();
 		entrancePassQueue = new CarQueue();
 		paymentCarQueue = new CarQueue();
@@ -157,7 +159,6 @@ public class Model extends AbstractModel implements Runnable {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
-        numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
 
         specialResWeek = 0;
 	    specialResDag = 0;
@@ -514,9 +515,11 @@ public class Model extends AbstractModel implements Runnable {
     /*--------------------------*/
 
     private void addReservering(int resDay, int resHour, int resMinute) {
-    	if(freeAdHocSpots > resTimeList.size()) {
-    	    int resTime = 24*60*resDay + 60*resHour + resMinute;
-    	    resTimeList.add(resTime);
+    	if(resTimeList.size() + this.getSpotCountForType(ParkingSpot.TYPE_RES) < reserveringMax) {
+    		if(freeAdHocSpots > resTimeList.size()) {
+    			int resTime = 24*60*resDay + 60*resHour + resMinute;
+    			resTimeList.add(resTime);
+    		}
     	}
     }
 
