@@ -31,6 +31,20 @@ public class InitController extends AbstractController implements ActionListener
     private JButton initButton;
     private JButton resetValues;
 
+    private void initFocusListener(JFormattedTextField textField)
+    {
+    	textField.addFocusListener(new java.awt.event.FocusAdapter() {
+    		public void focusGained(java.awt.event.FocusEvent evt) {
+    			SwingUtilities.invokeLater(new Runnable() {
+    				@Override
+    				public void run() {
+    					textField.selectAll();
+    				}
+    			});
+    		}
+    	});
+    }
+
     private void setDefaultValues() {
 
         model.setMultiplier(100);
@@ -65,6 +79,14 @@ public class InitController extends AbstractController implements ActionListener
     	abonneeTarief = new JFormattedTextField();
     	normaalTarief = new JFormattedTextField();   
     	reserveringsTarief = new JFormattedTextField();
+
+    	initFocusListener(multiplierAmount);
+    	initFocusListener(aantalReserveringen);
+    	initFocusListener(aantalAbonnees);
+    	initFocusListener(percentageInvalidenplekken);
+    	initFocusListener(abonneeTarief);
+    	initFocusListener(normaalTarief);
+    	initFocusListener(reserveringsTarief);
 
     	setDefaultValues();
 
@@ -164,12 +186,15 @@ public class InitController extends AbstractController implements ActionListener
 	}
 
 	private void enableOrDisable(boolean value) {
+		multiplierAmount.setEnabled(value);
 		aantalReserveringen.setEnabled(value);
 		aantalAbonnees.setEnabled(value);
 		percentageInvalidenplekken.setEnabled(value);
 		abonneeTarief.setEnabled(value);
 		normaalTarief.setEnabled(value);
 		reserveringsTarief.setEnabled(value);
+	    initButton.setEnabled(value);
+	    resetValues.setEnabled(value);
 	}
 
 	public void simStarted() {

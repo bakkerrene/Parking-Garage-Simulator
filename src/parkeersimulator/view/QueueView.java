@@ -12,8 +12,8 @@ import java.awt.*;
 @SuppressWarnings("serial")
 public class QueueView extends AbstractView {
 
-	private int totalMissedMoney = 0;
-	private int totalMissedCars = 0;
+	private int totalMissedMoney;
+	private int totalMissedCars;
 
 	private JLabel entrance1, entrance1Data;
 	private JLabel entrance2, entrance2Data;
@@ -21,10 +21,17 @@ public class QueueView extends AbstractView {
 	private JLabel exit, exitData;
 	private JLabel missedCars, missedCarsNr, missedMoney, missedCarsMoney;
 
+	private void init()
+	{
+		totalMissedMoney = 0;
+		totalMissedCars = 0;
+	}
 
 	public QueueView(Model model) {
 
 		super(model);
+
+		init();
 
 		setSize(200, 200);
 
@@ -65,6 +72,10 @@ public class QueueView extends AbstractView {
 	}
 
 	public void paintComponent(Graphics g) {
+
+		if(!model.isInSim()) {
+			init();
+		}
 
 		super.paintComponent(g);
 
@@ -108,8 +119,7 @@ public class QueueView extends AbstractView {
 				AbstractCar car = entrance1Data.peekCar(i);
 				g.setColor(car.getColor());
 				g.fillRect(0 + (i * 21), top, 20, 10);
+			}
 		}
-		}
-		
 	}
 }

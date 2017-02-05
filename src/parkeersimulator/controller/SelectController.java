@@ -4,6 +4,9 @@ package parkeersimulator.controller;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -12,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import parkeersimulator.Location;
 import parkeersimulator.ParkingSpot;
@@ -48,7 +53,22 @@ public class SelectController extends AbstractController implements ActionListen
 		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(scrollPane);
 
-    	clearButton = new JButton("Reset Plekken");
+		ListSelectionListener selectionListener = new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if(!e.getValueIsAdjusting()) {
+					int spotType = ParkingSpot.TYPE_AD_HOC;
+					switch (list.getSelectedIndex()) {
+					case 0: spotType = ParkingSpot.TYPE_AD_HOC; break;
+					case 1: spotType = ParkingSpot.TYPE_PASS; break;
+					case 2: spotType = ParkingSpot.TYPE_HANDI; break;
+					}
+					model.setSelectedSpotType(spotType);
+				}
+			}
+		};
+		list.addListSelectionListener(selectionListener);
+
+    	clearButton = new JButton("Verwijder Plekken");
     	clearButton.addActionListener(this);
     	clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(clearButton);
@@ -78,22 +98,6 @@ public class SelectController extends AbstractController implements ActionListen
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
-
-	public void clickedSpot(Location location) {
-		if (model.isRunning()) return;
-		if (model.isInSim()) {
-			ParkingSpot spot = model.getParkingSpotAt(location);
-			if (spot.getCar() != null) return;
-		}
-		int spotType = ParkingSpot.TYPE_AD_HOC;
-		switch (list.getSelectedIndex()) {
-		case 0: spotType = ParkingSpot.TYPE_AD_HOC; break;
-		case 1: spotType = ParkingSpot.TYPE_PASS; break;
-		case 2: spotType = ParkingSpot.TYPE_HANDI; break;
-		}
-		model.setSpotType(location, spotType);
-		updateList();
 	}
 
 	private void enableOrDisable(boolean value) {

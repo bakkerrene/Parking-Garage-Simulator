@@ -20,8 +20,7 @@ import java.awt.Image;
 import java.io.File;
 
 public class Model extends AbstractModel implements Runnable {
-	
-	
+
 	private int steps = 0;
 	private int counter;
 	private double multiplier;
@@ -84,6 +83,8 @@ public class Model extends AbstractModel implements Runnable {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    int selectedSpotType = ParkingSpot.TYPE_AD_HOC;
+
 	private boolean run;
 	private boolean inSim;
 
@@ -103,6 +104,10 @@ public class Model extends AbstractModel implements Runnable {
 		moneyHourList = new ArrayList<>();
 		moneyDayList = new ArrayList<>();
 		moneyWeekList = new ArrayList<>();
+
+	    moneyLastHour = 0;
+	    moneyLastDay = 0;
+	    moneyLastWeek = 0;
 
 	    totalPassCar = 0;
 	    totalRessCar = 0;
@@ -140,7 +145,6 @@ public class Model extends AbstractModel implements Runnable {
 		init();
 	}
 	
-	
 	public void playSound(String file)
 	{
 	    try
@@ -155,12 +159,6 @@ public class Model extends AbstractModel implements Runnable {
 	        exc.printStackTrace(System.out);
 	    }
 	}
-    
-    
-    
-    
-    
-    
 	
 	public int getSpotCountForType(int type) {
 		return spotCountPerType[type];
@@ -201,8 +199,6 @@ public class Model extends AbstractModel implements Runnable {
 		}
 	}
 
-	/* TODO: Wat te doen met bezette parkeerplaatsen? Mischien is het beter om alleen aanpassingen toe te laten
-			 als alle parkeerplaatsen leeg zijn? */
     public void initDefaultSpots() {
 
     	int handiSpotCount = getSpotCountForType(ParkingSpot.TYPE_HANDI);
@@ -225,16 +221,6 @@ public class Model extends AbstractModel implements Runnable {
     		addSpotsOfType(ParkingSpot.TYPE_PASS, abboCount);
     	}
 
-		int resSpotCount = getSpotCountForType(ParkingSpot.TYPE_RES);
-		int resCount = getReservering();
-		if (resCount < resSpotCount) {
-			resSpotCount -= resCount;
-			removeSpotsOfType(ParkingSpot.TYPE_RES, resSpotCount);
-		} else {
-			resCount -= resSpotCount;
-			addSpotsOfType(ParkingSpot.TYPE_RES, resCount);
-		}
-
 		for(AbstractController c: controllers) c.spotsChanged();
     }
 
@@ -242,6 +228,7 @@ public class Model extends AbstractModel implements Runnable {
 		stop();
 		init();
 		notifyViews();
+		for(AbstractController c: controllers) c.simStopped();
 	}
 
 	public void clearSpots() {
@@ -381,6 +368,24 @@ public class Model extends AbstractModel implements Runnable {
         numberOfOpenSpots++;
         return car;
     }
+
+    public void setSelectedSpotType(int type) {
+    	selectedSpotType = type;
+    }
+    public int getSelectedSpotType() {
+    	return selectedSpotType;
+    }
+
+	public void clickedSpot(Location location) {
+		if (isRunning())
+			return;
+		if (isInSim()) {
+			ParkingSpot spot = getParkingSpotAt(location);
+			if (spot.getCar() != null)
+				return;
+		}
+		setSpotType(location, getSelectedSpotType());
+	}
 
     public void setTickPause(int tickPause){
     	this.tickPause = tickPause;
@@ -575,6 +580,7 @@ public class Model extends AbstractModel implements Runnable {
     		try {
 				addArrivingCars(numberOfCars, ParkingSpot.TYPE_AD_HOC);
 			} catch (ParkeerException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
     		counter++;
@@ -848,7 +854,6 @@ public class Model extends AbstractModel implements Runnable {
     	switch(type) {
     	case ParkingSpot.TYPE_AD_HOC: 
             for (int i = 0; i < numberOfCars; i++) {
-        		
             	if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
             		entranceCarQueue.addCar(new AdHocCar());
             		totalAdhocCar++;
@@ -857,7 +862,7 @@ public class Model extends AbstractModel implements Runnable {
             		
             		missedCars.addCar(new AdHocCar());
             		if (steps > 150) { // speelt de audio file om de 150 stappen af en niet elke stap
-            		
+                		
             		playSound("queuefull.wav");
             		steps = 0;
             		}
@@ -913,6 +918,7 @@ public class Model extends AbstractModel implements Runnable {
 			inSim = true;
 			run = true;
 			new Thread(this).start();
+			for(AbstractController c: controllers) c.simStarted();
 		}
 	}
 
@@ -944,7 +950,7 @@ public class Model extends AbstractModel implements Runnable {
 
 	@Override
 	public void run() {
-		for(AbstractController c: controllers) c.simStarted();
+		for(AbstractController c: controllers) c.runStarted();
 		while(run) {
 			if (tickCount > 0) {
 				tickCount--; 
@@ -957,6 +963,6 @@ public class Model extends AbstractModel implements Runnable {
 			secondStep();
 			notifyViews();
 		}
-		for(AbstractController c: controllers) c.simStopped();
+		for(AbstractController c: controllers) c.runStopped();
 	}
 }

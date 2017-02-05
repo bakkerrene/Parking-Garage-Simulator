@@ -12,13 +12,12 @@ public abstract class AbstractController extends JPanel {
 
 	public AbstractController(Model model) {
 		this.model = model;
+		model.addController(this);
 	}
 
-	public void clickedSpot(Location location) {}
-
 	public void simStarted() {}
-	
 	public void simStopped() {}
-
+	public void runStarted() {}
+	public void runStopped() {}
 	public void spotsChanged() {}
 }

@@ -86,11 +86,11 @@ public class Controller extends AbstractController implements ActionListener {
 		reset.setEnabled(value);
 	}
 
-	public void simStarted() {
+	public void runStarted() {
 		enableOrDisable(false);
 	}
 
-	public void simStopped() {
+	public void runStopped() {
 		enableOrDisable(true);
 	}
 }

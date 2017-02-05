@@ -1,5 +1,5 @@
-package parkeersimulator.view;
 
+package parkeersimulator.view;
 
 import java.awt.*;
 import java.awt.Color;
@@ -9,13 +9,66 @@ import java.awt.event.MouseEvent;
 
 import parkeersimulator.Location;
 import parkeersimulator.ParkingSpot;
+import parkeersimulator.Rect;
 import parkeersimulator.car.AbstractCar;
-import parkeersimulator.controller.AbstractController;
 import parkeersimulator.model.Model;
 
 @SuppressWarnings("serial")
 public class CarParkView extends AbstractView {
 	Color color = new Color(0,0,0);
+
+	private Rect getRectForLocation(Location location, boolean breed) {
+    	int x = 40 + 260 * location.getFloor() + 75 * (int)Math.floor(0.5 * location.getRow()) + 20 * (location.getRow() % 2);
+    	int y = 10 + 11 * location.getPlace();
+    	int w = 20-1;
+    	int h = 10-1;
+    	if(breed) {
+			w += 10;
+    		if(location.getRow() % 2 == 0) {
+    			x -= 10;
+    		}
+    	}
+    	return new Rect(x, y, w, h);
+	}
+
+	/*
+    private Location getLocationForPoint(int x, int y) {
+    	int floor = (x - 40) / 260;
+    	int floorX = (x - 40) % 260;
+    	int block = floorX / 75; 
+    	int blockX = floorX % 75;
+    	int row = 2 * block + (blockX / 20);
+    	int place = (y - 10) / 11;
+    	Location location = new Location(floor, row, place);
+    	if(getModel().locationIsValid(location))
+    	{
+    		int rectX0 = 40 + 260 * floor + 75 * (int)Math.floor(0.5 * row) + 20 * (row % 2);
+    		int rectY0 = 10 + 11 * place;
+    		int rectX1 = rectX0 + 20 - 1;
+    		int rectY1 = rectY0 + 10 - 1;
+    		if (rectX0 <= x && rectY0 <= y && x < rectX1 && y < rectY1)
+    			return location;
+    	}
+    	return null;
+    }
+    */
+
+	/* TODO: Verbeteren; dit is super inefficient */
+	private Location getLocationForPoint(int x, int y) {
+        for(int floor = 0; floor < model.getNumberOfFloors(); floor++) {
+            for(int row = 0; row < model.getNumberOfRows(); row++) {
+                for(int place = 0; place < model.getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                	ParkingSpot spot = model.getParkingSpotAt(location);
+                    boolean breed = (spot.getType() == ParkingSpot.TYPE_HANDI);
+                    Rect rect = getRectForLocation(location, breed);
+                    if(rect.x <= x && rect.y <= y && x < rect.x+rect.w && y < rect.y+rect.h)
+                    	return location;
+                }
+            }
+        }
+        return null;
+	}
 
 	public CarParkView(Model model) {
 
@@ -30,10 +83,10 @@ public class CarParkView extends AbstractView {
 				} else if (e.getButton() == MouseEvent.BUTTON3) {
 				}
 				*/
-				Location location = getLocationForPoint(e.getX(), e.getY());
-				if (location != null) {
-					for(AbstractController c: controllers) c.clickedSpot(location);
-				}
+	    		Location location = getLocationForPoint(e.getX(), e.getY());
+	    		if(location != null) {
+	    			model.clickedSpot(location);
+	    		}
 			}
 		});
 	}
@@ -62,14 +115,15 @@ public class CarParkView extends AbstractView {
                 for(int place = 0; place < model.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
                     AbstractCar car = model.getCarAt(location);
+                	ParkingSpot spot = model.getParkingSpotAt(location);
                     if (car == null) {
-                    	ParkingSpot spot = model.getParkingSpotAt(location);
                     	color = spot.getColor();
                     }
                     else {
                     	color = car.getColor();
                     }
-                    drawPlace(graphics, location, color);
+                    boolean breed = (spot.getType() == ParkingSpot.TYPE_HANDI);
+                    drawPlace(graphics, location, color, breed);
                 }
             }
         }
@@ -86,33 +140,9 @@ public class CarParkView extends AbstractView {
         g.dispose();
     }
 
-    private Location getLocationForPoint(int x, int y) {
-    	int floor = (x - 40) / 260;
-    	int floorX = (x - 40) % 260;
-    	int block = floorX / 75; 
-    	int blockX = floorX % 75;
-    	int row = 2 * block + (blockX / 20);
-    	int place = (y - 10) / 11;
-    	Location location = new Location(floor, row, place);
-    	if(getModel().locationIsValid(location))
-    	{
-    		int rectX0 = 40 + 260 * floor + 75 * (int)Math.floor(0.5 * row) + 20 * (row % 2);
-    		int rectY0 = 10 + 11 * place;
-    		int rectX1 = rectX0 + 20 - 1;
-    		int rectY1 = rectY0 + 10 - 1;
-    		if (rectX0 <= x && rectY0 <= y && x < rectX1 && y < rectY1)
-    			return location;
-    	}
-    	return null;
-    }
-
-    private void drawPlace(Graphics graphics, Location location, Color color) {
+    private void drawPlace(Graphics graphics, Location location, Color color, boolean breed) {
+    	Rect rect = getRectForLocation(location, breed);
         graphics.setColor(color);
-        graphics.fillRect(
-                40 + 260 * location.getFloor() + 75 * (int)Math.floor(0.5 * location.getRow()) + 20 * (location.getRow() % 2),
-                10 + 11 * location.getPlace(),
-                20 - 1,
-                10 - 1); // TODO use dynamic size or constants
+        graphics.fillRect(rect.x, rect.y, rect.w, rect.h);
     }
-
 }

@@ -23,12 +23,12 @@ import parkeersimulator.model.Model;
 @SuppressWarnings("serial")
 public class LineGraphView extends AbstractView {
 	
-	private int hour = 25;
-	private int maxValue = model.getNumberOfOpenSpots();
-	private int minValue = 0;
-    private int padding = 15;
-    private int labelPadding = 15;
-    
+	private int hour;// = 25;
+	private int maxValue;// = model.getNumberOfOpenSpots();
+	private int minValue;// = 0;
+    private int padding;// = 15;
+    private int labelPadding;// = 15;
+
     private int diff;
     
     private JLabel lbl1;
@@ -46,10 +46,10 @@ public class LineGraphView extends AbstractView {
     HashMap<String, Integer> carCounter;
     
     private Color hocCarLine = new Color(255, 0, 0);
-    private Color passCarLine = new Color (0, 0, 255);
-    private Color resCarLine = new Color (255, 255, 0);
-    
-    private Color moneyLine = new Color (0, 255, 0);
+    private Color passCarLine = new Color(0, 0, 255);
+    private Color resCarLine = new Color(255, 255, 0);
+
+    private Color moneyLine = new Color(0, 255, 0);
 
     private static final Stroke GRAPH_STROKE = new BasicStroke(4f);
 	final static String MONEY = "money";
@@ -57,26 +57,38 @@ public class LineGraphView extends AbstractView {
 
 	List<Integer> hocCarData, passCarData, resCarData;  
 	List<Integer> moneyPerHourData;
-	
-	public LineGraphView(Model model) {
-		super(model);
+
+	private void init()
+	{
 		hocCarData = new ArrayList<Integer>();
 		passCarData = new ArrayList<Integer>();
 		resCarData = new ArrayList<Integer>();
 		moneyPerHourData = new ArrayList<Integer>();
-		
-		diff = 18;		
+
+		hour = 25;
+		maxValue = model.getNumberOfOpenSpots();
+		minValue = 0;
+	    padding = 15;
+	    labelPadding = 15;
+
+		diff = 18;
+	}
+
+	public LineGraphView(Model model) {
+		super(model);
+		init();
 		setLayout(null);
 		for(int i = 0; i < collection.length; i++) {
 			collection[i] = new JLabel("0");
 			add(collection[i]);
 			collection[i].setBounds(5, 0 + (i * diff), 35, 30 );
 		}
-		
-		
 	}
-		
+
     public void paintComponent(Graphics g) {
+    	if(!model.isInSim()) {
+    		init();
+    	}
        	super.paintComponent(g);
        	Graphics2D g2 = (Graphics2D) g;
        	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -121,22 +133,15 @@ public class LineGraphView extends AbstractView {
        		drawGraph(g2, resCarData, resCarLine);
        	}
        	else if(type_Graph.equals(MONEY)) {
-       		
-
-       		
        		if (model.getHour() != hour || moneyPerHourData.size() == 0) {
-
        			if (moneyPerHourData.size() > 168) {
-
        			}
        		}
        		hour = model.getHour();
-       		
        		maxValue = Collections.max(moneyPerHourData);
-       		
        		drawGraph(g2, moneyPerHourData, moneyLine);
        	}
-       	
+
         g2.setColor(Color.BLACK);
         g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
         g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
@@ -155,10 +160,7 @@ public class LineGraphView extends AbstractView {
         for (int i = 0; i <8; i++) {
         	 g2.drawLine(padding + labelPadding + (i * (8+(getWidth() / 8))), getHeight() - padding - labelPadding, padding + labelPadding  + (i * (8+(getWidth() / 8))), padding);
         }
-        
-        
     }
-        
 
 	private void drawGraph(Graphics2D g2, List<Integer> list, Color lineColor) {
         
@@ -171,8 +173,6 @@ public class LineGraphView extends AbstractView {
             int y1 = (int) ((maxValue - list.get(i)) * yScale + padding);
             graphPoints.add(new Point(x1, y1));
         }
-
-
         
         Stroke oldStroke = g2.getStroke();
         g2.setColor(lineColor);
@@ -194,9 +194,5 @@ public class LineGraphView extends AbstractView {
             int ovalH = 4;
             g2.fillOval(x, y, ovalW, ovalH);
         }
-        
-
-
     }
-    
 }

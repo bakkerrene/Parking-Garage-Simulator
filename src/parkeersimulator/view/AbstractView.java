@@ -13,12 +13,10 @@ import parkeersimulator.model.Model;
 public abstract class AbstractView extends JPanel {
 
 	protected Model model;
-	protected List<AbstractController> controllers;
 
 	public AbstractView(Model model) {
 		this.model = model;
 		model.addView(this);
-		controllers = new ArrayList<AbstractController>();
 	}
 
 	public void setModel(Model model) {
@@ -31,9 +29,5 @@ public abstract class AbstractView extends JPanel {
 
     public void updateView() {
     	repaint();
-    }
-
-    public void addController(AbstractController controller) {
-    	controllers.add(controller);
     }
 }

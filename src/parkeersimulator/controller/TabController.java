@@ -1,7 +1,6 @@
+
 package parkeersimulator.controller;
 
-
-import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -11,8 +10,7 @@ import parkeersimulator.model.Model;
 import parkeersimulator.view.LineGraphView;
 
 public class TabController extends AbstractController {
-		private LineGraphView graph;
-	
+	private LineGraphView graph;
 
 	public TabController(Model model) {
 		super(model);
@@ -26,15 +24,13 @@ public class TabController extends AbstractController {
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
 
-
-protected static ImageIcon createImageIcon(String path) {
-    java.net.URL imgURL = TabController.class.getResource(path);
-    if (imgURL != null) {
-        return new ImageIcon(imgURL);
-    } else {
-        System.err.println("Couldn't find file: " + path);
-        return null;
-    }
+	protected static ImageIcon createImageIcon(String path) {
+		java.net.URL imgURL = TabController.class.getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
+	}
 }
-}
-	

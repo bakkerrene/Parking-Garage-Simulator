@@ -3,6 +3,7 @@ package parkeersimulator.model;
 
 import java.util.*;
 
+import parkeersimulator.Location;
 import parkeersimulator.controller.AbstractController;
 import parkeersimulator.view.AbstractView;
 
@@ -27,4 +28,6 @@ public abstract class AbstractModel {
 	public void notifyViews() {
 		for(AbstractView v: views) v.updateView();
 	}
+	
+	public void clickedSpot(Location location) {}
 }
