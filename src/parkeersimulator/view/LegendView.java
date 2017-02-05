@@ -4,7 +4,7 @@ import parkeersimulator.model.Model;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.*;
+
 
 @SuppressWarnings("serial")
 public class LegendView extends AbstractView {

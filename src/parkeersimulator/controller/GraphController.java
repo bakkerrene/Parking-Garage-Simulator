@@ -6,12 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
 import parkeersimulator.model.Model;
 
+@SuppressWarnings("serial")
 public class GraphController extends AbstractController implements ActionListener {
 
 	final static String MONEY = "money";

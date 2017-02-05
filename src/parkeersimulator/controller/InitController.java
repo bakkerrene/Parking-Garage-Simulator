@@ -4,8 +4,6 @@ package parkeersimulator.controller;
 
 import javax.swing.*;
 
-import parkeersimulator.Location;
-import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
 import java.awt.*;
 import java.awt.event.*;

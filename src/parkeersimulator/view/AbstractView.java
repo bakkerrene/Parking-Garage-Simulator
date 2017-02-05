@@ -1,12 +1,8 @@
 package parkeersimulator.view;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JPanel;
 
-import parkeersimulator.controller.AbstractController;
 import parkeersimulator.model.Model;
 
 @SuppressWarnings("serial")

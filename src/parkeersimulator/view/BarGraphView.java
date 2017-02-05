@@ -34,7 +34,6 @@ public class BarGraphView extends AbstractView {
 
 		int nonFreeSpots = (int) ((height / totalPlaces) * y);
 
-		int redSize = (int) ((height / totalPlaces) * y);
 
 		int redCount = carCounter.get("adhoc");
 		int blueCount = carCounter.get("pass");

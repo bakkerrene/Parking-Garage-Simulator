@@ -4,7 +4,6 @@ package parkeersimulator.car;
 import java.awt.Color;
 
 import parkeersimulator.Location;
-import parkeersimulator.ParkingSpot;
 
 public abstract class AbstractCar {
 

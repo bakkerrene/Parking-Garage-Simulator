@@ -3,9 +3,10 @@ package parkeersimulator.controller;
 
 import javax.swing.*;
 
-import parkeersimulator.Location;
+
 import parkeersimulator.model.Model;
 
+@SuppressWarnings("serial")
 public abstract class AbstractController extends JPanel {
 
 	protected Model model;

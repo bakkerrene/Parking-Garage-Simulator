@@ -3,7 +3,6 @@ package parkeersimulator.view;
 
 import javax.swing.*;
 
-import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
 
 import java.awt.*;

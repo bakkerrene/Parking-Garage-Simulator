@@ -12,7 +12,6 @@ import parkeersimulator.car.*;
 import parkeersimulator.controller.AbstractController;
 import parkeersimulator.exception.ParkeerException;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 

@@ -9,6 +9,7 @@ import javax.swing.JTabbedPane;
 import parkeersimulator.model.Model;
 import parkeersimulator.view.LineGraphView;
 
+@SuppressWarnings("serial")
 public class TabController extends AbstractController {
 	private LineGraphView graph;
 
