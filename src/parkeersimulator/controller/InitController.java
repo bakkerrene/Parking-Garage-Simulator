@@ -26,6 +26,12 @@ public class InitController extends AbstractController implements ActionListener
     private JFormattedTextField abonneeTarief;
     private JFormattedTextField normaalTarief;
     private JFormattedTextField reserveringsTarief;
+
+    private JLabel lblWeek, lblDag, lblUur;
+    private JFormattedTextField resWeek;
+    private JComboBox<String> resDag;
+    private JComboBox<Integer> resUur;
+
     private JButton initButton;
     private JButton resetValues;
 
@@ -78,6 +84,16 @@ public class InitController extends AbstractController implements ActionListener
     	normaalTarief = new JFormattedTextField();   
     	reserveringsTarief = new JFormattedTextField();
 
+        lblWeek = new JLabel("Reservering Week");
+        lblDag = new JLabel("Reservering Dag");
+        lblUur = new JLabel("Reservering Uur");
+
+        resWeek = new JFormattedTextField("0");
+        String[] dagStrings = { "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag" };
+        resDag = new JComboBox<String>(dagStrings);
+        Integer[] uurInts = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
+        resUur = new JComboBox<Integer>(uurInts);
+
     	initFocusListener(multiplierAmount);
     	initFocusListener(aantalReserveringen);
     	initFocusListener(aantalAbonnees);
@@ -113,23 +129,17 @@ public class InitController extends AbstractController implements ActionListener
 		GridLayout gridLayout = new GridLayout(0,2);
 		panel.setLayout(gridLayout);
 
-		panel.add(multiplier);
-		panel.add(multiplierAmount);
-		panel.add(maxRes);
-		panel.add(aantalReserveringen);
-		panel.add(maxAbo);
-		panel.add(aantalAbonnees);
-		panel.add(perInv);
-		panel.add(percentageInvalidenplekken);
-		panel.add(aboTa);
-		panel.add(abonneeTarief);
-		panel.add(norTa);
-		panel.add(normaalTarief);
-		panel.add(resTa);
-		panel.add(reserveringsTarief);
-		panel.add(initButton);
-		panel.add(resetValues);
-
+		panel.add(multiplier); panel.add(multiplierAmount);
+		panel.add(maxRes); panel.add(aantalReserveringen);
+		panel.add(maxAbo); panel.add(aantalAbonnees);
+		panel.add(perInv); panel.add(percentageInvalidenplekken);
+		panel.add(aboTa); panel.add(abonneeTarief);
+		panel.add(norTa); panel.add(normaalTarief);
+		panel.add(resTa); panel.add(reserveringsTarief);
+		panel.add(lblWeek); panel.add(resWeek);
+		panel.add(lblDag); panel.add(resDag);
+		panel.add(lblUur); panel.add(resUur);
+		panel.add(initButton); panel.add(resetValues);
 		add(panel);
 
     	setVisible(true);
@@ -146,7 +156,10 @@ public class InitController extends AbstractController implements ActionListener
 				model.setAbonneeTarief(getAboneeTarief());
 				model.setNormaalTarief(getNormaalTarief());
 				model.setReserveringTarief(getReserveringTarief());
-				model.initDefaultSpots();
+				int dag = resDag.getSelectedIndex();
+				int uur = resUur.getSelectedIndex();
+				model.setSpecialReservering(getResWeek(), dag, uur);
+				model.reset();
 			} else if (sourceObject == resetValues) {
 				setDefaultValues();
 			}
@@ -183,6 +196,10 @@ public class InitController extends AbstractController implements ActionListener
 		return Integer.parseInt(reserveringsTarief.getText());
 	}
 
+	private int getResWeek() throws NumberFormatException {
+		return Integer.parseInt(resWeek.getText());
+	}
+
 	private void enableOrDisable(boolean value) {
 		multiplierAmount.setEnabled(value);
 		aantalReserveringen.setEnabled(value);
@@ -193,6 +210,9 @@ public class InitController extends AbstractController implements ActionListener
 		reserveringsTarief.setEnabled(value);
 	    initButton.setEnabled(value);
 	    resetValues.setEnabled(value);
+	    resWeek.setEnabled(value);;
+	    resDag.setEnabled(value);;
+	    resUur.setEnabled(value);;
 	}
 
 	public void simStarted() {

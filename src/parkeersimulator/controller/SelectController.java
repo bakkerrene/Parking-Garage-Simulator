@@ -1,13 +1,10 @@
+
 package parkeersimulator.controller;
 
-
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -19,15 +16,13 @@ import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
 
 @SuppressWarnings("serial")
-public class SelectController extends AbstractController implements ActionListener {
+public class SelectController extends AbstractController {
 
 	private JLabel label;
 
 	private DefaultListModel<String> listModel;
 	private JList<String> list;
 	private JScrollPane scrollPane;
-
-    private JButton clearButton;
 
     public SelectController(Model model) {
 
@@ -64,40 +59,19 @@ public class SelectController extends AbstractController implements ActionListen
 		};
 		list.addListSelectionListener(selectionListener);
 
-    	clearButton = new JButton("Verwijder Plekken");
-    	clearButton.addActionListener(this);
-    	clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(clearButton);
-
     	setVisible(true);
     }
 
     private void updateList() {
     	int selectedIndex = list.getSelectedIndex();
     	listModel.clear();
-    	listModel.addElement("Clear");
-    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_PASS) + " Abonnees");
-    	listModel.addElement(model.getSpotCountForType(ParkingSpot.TYPE_HANDI) + " Invaliden");
+    	listModel.addElement("Normaal");
+    	listModel.addElement("Abonnees");
+    	listModel.addElement("Invaliden");
     	list.setSelectedIndex(selectedIndex);
     }
 
-    public void actionPerformed(ActionEvent e) {
-		try {
-			//Object sourceObject = e.getSource();
-			//if (sourceObject == clearButton) {
-				if (!model.isInSim()) {
-					model.clearSpots();
-					model.initDefaultSpots();
-					updateList();
-				}
-			//}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
 	private void enableOrDisable(boolean value) {
-		clearButton.setEnabled(value);
 		list.setEnabled(value);
 		scrollPane.setEnabled(value);
 	}

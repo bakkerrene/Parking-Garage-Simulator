@@ -80,13 +80,13 @@ public class MvcSimulator  {
 						screen.getContentPane().add(managerView);
 						managerView.setBackground(SystemColor.control);
 						initController = new InitController(model);
-						initController.setBounds(1055, 235, 260, 225);
+						initController.setBounds(1055, 215, 260, 305);
 						screen.getContentPane().add(initController);
 						queueView = new QueueView(model);
 						queueView.setBounds(1080, 655, 235, 200);
 						screen.getContentPane().add(queueView);
 						selectController = new SelectController(model);
-						selectController.setBounds(1055, 120, 260, 100);
+						selectController.setBounds(1055, 120, 260, 75);
 						screen.getContentPane().add(selectController);
 
 										carParkView = new CarParkView(model);
