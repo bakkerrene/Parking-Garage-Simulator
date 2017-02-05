@@ -32,7 +32,7 @@ public class MvcSimulator  {
 	private QueueView queueView;
 	private LineGraphView lineGraphView;
 	private JTabbedPane tabbedPane;
-	private LegendaView legenda;
+	private LegendView legenda;
 
 	public MvcSimulator() {
 
@@ -47,8 +47,8 @@ public class MvcSimulator  {
 
 		Container contentPane = screen.getContentPane();
 
-		legenda = new LegendaView(model);
-		legenda.setBounds(810, 120, 240, 380);
+		legenda = new LegendView(model);
+		legenda.setBounds(810, 120, 200, 200);
 		screen.getContentPane().add(legenda);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);

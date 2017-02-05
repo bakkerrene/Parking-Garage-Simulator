@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import java.awt.event.*;
 
 @SuppressWarnings("serial")
-public class LegendaView extends AbstractView {
+public class LegendView extends AbstractView {
 
 	/*
 	 * rood is regulier
@@ -23,7 +23,7 @@ public class LegendaView extends AbstractView {
 	JLabel label0, label1, label2, label3;
 	JLabel label4, label5, label6, label7;
 
-	public LegendaView(Model model) {
+	public LegendView(Model model) {
 
 		super(model);
 		this.setLayout(null);
@@ -31,25 +31,25 @@ public class LegendaView extends AbstractView {
 		int y = 10;
 
 		/* Parkeerplaatsen */
-		label0 = new JLabel("Reguliere parkeerplaats");
+		label0 = new JLabel("Normale Plek");
 		label0.setBounds(60, y, 200, 15);
 		add(label0);
 		y += 20;
-		label1 = new JLabel("Abonnement parkeerplaats");
+		label1 = new JLabel("Abonnements Plek");
 		label1.setBounds(60, y, 200, 15);
 		add(label1);
 		y += 20;
-		label2 = new JLabel("Invalide parkeerplaats");
+		label2 = new JLabel("Invalide Plek");
 		label2.setBounds(60, y, 200, 15);
 		add(label2);
 		y += 20;
-		label3 = new JLabel("Gereserveerde parkeerplaats");
+		label3 = new JLabel("Gereserveerde Plek");
 		label3.setBounds(60, y, 200, 15);
 		add(label3);
 		y += 40;
 
 		/* Auto's */
-		label4 = new JLabel("Regulieren");
+		label4 = new JLabel("Normalen");
 		label4.setBounds(60, y, 200, 15);
 		add(label4);
 		y += 20;
@@ -82,32 +82,32 @@ public class LegendaView extends AbstractView {
         /* Parkeerplaatsen */
         // case TYPE_AD_HOC
         g.setColor(new Color(255, 255, 255, 255));
-        g.fillRect(10, y, 40, 15);
+        g.fillRect(10, y, 30, 15);
         y += 20;
     	// case TYPE_PASS
         g.setColor(new Color(0, 0, 255, 64));
-        g.fillRect(10, y, 40, 15);
+        g.fillRect(10, y, 30, 15);
         y += 20;
     	// case TYPE_HANDI
     	g.setColor(new Color(0, 255, 0, 64));
-    	g.fillRect(10, y, 40, 15);
+    	g.fillRect(10, y, 30, 15);
         y += 20;
     	// case TYPE_RES
     	g.setColor(new Color(255, 255, 0, 64));
-    	g.fillRect(10, y, 40, 15);
+    	g.fillRect(10, y, 30, 15);
         y += 40;
 
 		/* Auto's */
         g.setColor(Color.RED);
-        g.fillRect(10,  y,  40, 15);
+        g.fillRect(10,  y, 30, 15);
         y += 20;
         g.setColor(Color.BLUE);
-        g.fillRect(10,  y, 40, 15);
+        g.fillRect(10,  y, 30, 15);
         y += 20;
         g.setColor(Color.GREEN);
-        g.fillRect(10,  y,  40,  15);
+        g.fillRect(10,  y, 30,  15);
         y += 20;
         g.setColor(Color.YELLOW);
-        g.fillRect(10,  y,  40,  15);
+        g.fillRect(10,  y, 30,  15);
 	}
 }
