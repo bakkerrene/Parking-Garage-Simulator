@@ -96,6 +96,7 @@ public class QueueView extends AbstractView {
 		}
 	}
 	
+	
 	private void setQueueColor(Graphics g, CarQueue entrance1Data) {
 		int top = 0;
 		if (entrance1Data == model.getEntrancePassQueueNr()) top = 0;

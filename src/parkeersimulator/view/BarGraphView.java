@@ -2,6 +2,7 @@ package parkeersimulator.view;
 
 
 import java.awt.*;
+import java.util.HashMap;
 
 import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
@@ -10,6 +11,7 @@ import parkeersimulator.model.Model;
 public class BarGraphView extends AbstractView {
 
 	private int totalPlaces;
+	HashMap<String, Integer> carCounter;
 
 	public BarGraphView(Model model) {
 		super(model);
@@ -19,11 +21,13 @@ public class BarGraphView extends AbstractView {
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
-
+		
+		carCounter = model.getTotalCars();
+		
 		int x = model.getNumberOfOpenSpots();
 
 		int y = totalPlaces - x;
-		double height = 400.0;
+		double height = getHeight();
 
 		int freeSpots = (int) ((height / totalPlaces) * x);
 		int topFree = (int) (height - freeSpots);
@@ -32,12 +36,12 @@ public class BarGraphView extends AbstractView {
 
 		int redSize = (int) ((height / totalPlaces) * y);
 
-		int redCount = model.getCarCountForType(ParkingSpot.TYPE_AD_HOC);
-		int blueCount = model.getCarCountForType(ParkingSpot.TYPE_PASS);
-		int greenCount = model.getCarCountForType(ParkingSpot.TYPE_HANDI);
-		int yellowCount = model.getCarCountForType(ParkingSpot.TYPE_RES);
+		int redCount = carCounter.get("adhoc");
+		int blueCount = carCounter.get("pass");
+		int greenCount = carCounter.get("handi");
+		int yellowCount = carCounter.get("res");
 
-		int topNonFreeRed = (int) (height - redCount);
+		int topNonFreeRed = (int) (totalPlaces / height - redCount);
 		int topNonFreeBlue = (int) (height - blueCount);
 		int topNonFreeGreen = (int) (height - greenCount);
 		int topNonFreeYellow = (int) (height - yellowCount);
@@ -46,7 +50,7 @@ public class BarGraphView extends AbstractView {
 		g.fillRect(20, topFree, 20, freeSpots);
 
 		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_AD_HOC));
-		g.fillRect(60, topNonFreeRed, 20, redSize + 100);
+		g.fillRect(60, topNonFreeRed, 20, totalPlaces);
 
 		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_PASS));
 		g.fillRect(100, topNonFreeBlue, 20, nonFreeSpots);

@@ -11,9 +11,13 @@ import parkeersimulator.ParkingSpot;
 import parkeersimulator.car.*;
 import parkeersimulator.controller.AbstractController;
 import parkeersimulator.exception.ParkeerException;
-import parkeersimulator.view.AbstractView;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import java.awt.Image;
+import java.io.File;
 
 public class Model extends AbstractModel implements Runnable {
 
@@ -133,6 +137,28 @@ public class Model extends AbstractModel implements Runnable {
 
 		init();
 	}
+	
+	
+	public void playSound()
+	{
+	    try
+	    {
+	        Clip clip = AudioSystem.getClip();
+	        //clip.open(AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") + "\\src\\audio\\f.wav")));
+	        clip.open(AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") +"\\src\\audio\\warning.wav")));
+	        clip.start();
+	    }
+	    catch (Exception exc)
+	    {
+	        exc.printStackTrace(System.out);
+	    }
+	}
+    
+    
+    
+    
+    
+    
 	
 	public int getSpotCountForType(int type) {
 		return spotCountPerType[type];
@@ -547,7 +573,6 @@ public class Model extends AbstractModel implements Runnable {
     		try {
 				addArrivingCars(numberOfCars, ParkingSpot.TYPE_AD_HOC);
 			} catch (ParkeerException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
     		counter++;
@@ -821,12 +846,15 @@ public class Model extends AbstractModel implements Runnable {
     	switch(type) {
     	case ParkingSpot.TYPE_AD_HOC: 
             for (int i = 0; i < numberOfCars; i++) {
+        		
             	if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
             		entranceCarQueue.addCar(new AdHocCar());
             		totalAdhocCar++;
             	}
             	else {
             		missedCars.addCar(new AdHocCar());
+            		playSound();
+            		
             		//throw new ParkeerException ("Test!"); <-- beetje irritant
             	}
             }
