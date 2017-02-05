@@ -20,7 +20,9 @@ import java.awt.Image;
 import java.io.File;
 
 public class Model extends AbstractModel implements Runnable {
-
+	
+	
+	private int steps = 0;
 	private int counter;
 	private double multiplier;
 	
@@ -139,13 +141,13 @@ public class Model extends AbstractModel implements Runnable {
 	}
 	
 	
-	public void playSound()
+	public void playSound(String file)
 	{
 	    try
 	    {
 	        Clip clip = AudioSystem.getClip();
 	        //clip.open(AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") + "\\src\\audio\\f.wav")));
-	        clip.open(AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") +"\\src\\audio\\warning.wav")));
+	        clip.open(AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") +"\\src\\audio\\" + file)));
 	        clip.start();
 	    }
 	    catch (Exception exc)
@@ -852,8 +854,13 @@ public class Model extends AbstractModel implements Runnable {
             		totalAdhocCar++;
             	}
             	else {
+            		
             		missedCars.addCar(new AdHocCar());
-            		playSound();
+            		if (steps > 150) { // speelt de audio file om de 150 stappen af en niet elke stap
+            		
+            		playSound("queuefull.wav");
+            		steps = 0;
+            		}
             		
             		//throw new ParkeerException ("Test!"); <-- beetje irritant
             	}
@@ -932,6 +939,7 @@ public class Model extends AbstractModel implements Runnable {
 		clearPaymentQueue();
 		carsLeaving();
 		handleEntrance();
+		steps++;
 	}
 
 	@Override

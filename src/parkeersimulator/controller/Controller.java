@@ -62,14 +62,19 @@ public class Controller extends AbstractController implements ActionListener {
 
 		if (sourceObject == plus1) {
 			model.start(1);
+			model.playSound("button.wav");
 		} else if (sourceObject == plus100) {
 			model.start(100);
+			model.playSound("button.wav");
 		} else if (sourceObject == start) {
 			model.start(0);
+			model.playSound("button.wav");
 		} else if (sourceObject == stop) {
 			model.stop();
+			model.playSound("button.wav");
 		} else if (sourceObject == reset) {
 			model.reset();
+			model.playSound("button.wav");
 		}
 	}
 
