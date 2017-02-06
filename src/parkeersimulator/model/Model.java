@@ -906,7 +906,9 @@ public class Model extends AbstractModel implements Runnable {
             	perCarPrice = perCarPrice + 1;
             }
             perCarPrice *= normaalTarief;
-
+            if (car.getType() == ParkingSpot.TYPE_RES) {
+            	perCarPrice += reserveringTarief;
+            }
             carLeavesSpot(car);
             moneyCounter += perCarPrice;
             i++;
