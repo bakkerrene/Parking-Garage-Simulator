@@ -58,7 +58,7 @@ public class Model extends AbstractModel implements Runnable {
     private Random randomGen;
 
     class Reservation {
-    	public Location location;
+    	public Location location;// <--public public public
     	public int timeOfArrival;
     	public int timeOfExpiration;
     }
@@ -105,8 +105,6 @@ public class Model extends AbstractModel implements Runnable {
 
 	private boolean run;
 	private boolean inSim;
-
-
 	
 	private void init() {
 		counter = 0;
@@ -230,13 +228,6 @@ public class Model extends AbstractModel implements Runnable {
 
 		for(AbstractController c: controllers) c.spotsChanged();
 	}
-
-	public void reset() {
-		stop();
-		init();
-		notifyViews();
-		for(AbstractController c: controllers) c.simStopped();
-	}
 	
 	public void resetQueueValues() {
 		weekDayAdArrivals = 100; // average number of arriving cars per hour
@@ -328,8 +319,6 @@ public class Model extends AbstractModel implements Runnable {
         return car;
     }
 
-
-
 	public void clickedSpot(Location location) {
 		if (isRunning())
 			return;
@@ -392,8 +381,6 @@ public class Model extends AbstractModel implements Runnable {
         return true;
     }
 
-    /*--------------------------*/
-
     private void addReservering(int resDay, int resHour, int resMinute) {
     	if(resTimeList.size() + this.getSpotCountForType(ParkingSpot.TYPE_RES) < reserveringMax) {
     		if(freeAdHocSpots > resTimeList.size()) {
@@ -453,63 +440,6 @@ public class Model extends AbstractModel implements Runnable {
 	    }
     }
 
-    private void advanceTime() {
-        // Advance the time by one minute.
-        minute++;
-        while (minute > 59) {
-            minute -= 60;
-            hour++;
-        }
-        while (hour > 23) {
-            hour -= 24;
-            day++;
-        }
-        //while (day > 6) {
-            //day -= 7;
-        //}
-    }
-
-	private void addArrivingCars(int numberOfCars, int type) throws ParkeerException {
-        // Add the cars to the back of the queue.
-    	switch(type) {
-    	case ParkingSpot.TYPE_AD_HOC: 
-            for (int i = 0; i < numberOfCars; i++) {
-            	if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
-            		entranceCarQueue.addCar(new AdHocCar());
-            		totalAdhocCar++;
-            	} else {
-            		missedCars.addCar(new AdHocCar());
-            		if (steps > 150) { // speelt de audio file om de 150 stappen af en niet elke stap
-            			playSound("queuefull.wav");
-            			steps = 0;
-            		}
-            		//throw new ParkeerException ("Test!"); <-- beetje irritant
-            	}
-            }
-            break;
-    	case ParkingSpot.TYPE_HANDI:
-    		for (int i = 0; i < numberOfCars; i++) {
-        		if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
-    				entranceCarQueue.addCar(new HandiCar());
-    				totalHandiCar++;
-    			}
-            	else {
-            		missedCars.addCar(new HandiCar());
-            		//throw new ParkeerException ("Test!");
-            	}
-    		}
-    		break;
-    	case ParkingSpot.TYPE_PASS:
-            for (int i = 0; i < numberOfCars; i++) {
-        		if (totalPassCar < abonneesMax) {
-        			entrancePassQueue.addCar(new ParkingPassCar());
-        			totalPassCar++;
-        		}
-    		}
-            break;	
-    	}
-    }
-
     private int getNumberOfCars(String type) {
 
         // Get the average number of cars that arrive per hour.
@@ -521,8 +451,7 @@ public class Model extends AbstractModel implements Runnable {
         	averageNumberOfCarsPerHour = 20;
         }
         else {        	
-        	if(type == "PASS") {
-        		
+        	if(type == "PASS") {        		
         		if (weekDay <= 4) {
         			averageNumberOfCarsPerHour = weekDayPassArrivals;
         		}
@@ -558,16 +487,56 @@ public class Model extends AbstractModel implements Runnable {
         		}
         	}
         }
-        
-        
-        
-        
         averageNumberOfCarsPerHour *= multiplier;
-
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
         double numberOfCarsPerHour = averageNumberOfCarsPerHour + randomGen.nextGaussian() * standardDeviation;
         return (int)Math.round(numberOfCarsPerHour / 60);	
+    }
+
+    private AbstractCar getFirstLeavingCar() {
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    AbstractCar car = getCarAt(location);
+                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
+                        return car;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private void advanceTime() {
+        // Advance the time by one minute.
+        minute++;
+        while (minute > 59) {
+            minute -= 60;
+            hour++;
+        }
+        while (hour > 23) {
+            hour -= 24;
+            day++;
+        }
+        //while (day > 6) {
+            //day -= 7;
+        //}
+    }
+    
+    private void tick() {
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    AbstractCar car = getCarAt(location);
+                    if (car != null) {
+                        car.tick();
+                    }
+                }
+            }
+        }
     }
 
     private void carsArriving() {
@@ -609,123 +578,53 @@ public class Model extends AbstractModel implements Runnable {
         	addReservering(day, hour, minute);
         //}
     }
-
-    private void carLeavesSpot(AbstractCar car){
-    	Location location = car.getLocation();
-    	removeCarAt(location);
-    	if(car.getType() == ParkingSpot.TYPE_RES) {
-    		this.setSpotType(location, ParkingSpot.TYPE_AD_HOC);
-    	}
-        exitCarQueue.addCar(car);
-    }
-
-    private AbstractCar getFirstLeavingCar() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    AbstractCar car = getCarAt(location);
-                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
-                        return car;
-                    }
-                }
+    
+	private void addArrivingCars(int numberOfCars, int type) throws ParkeerException {
+        // Add the cars to the back of the queue.
+    	switch(type) {
+    	case ParkingSpot.TYPE_AD_HOC: 
+            for (int i = 0; i < numberOfCars; i++) {
+            	if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
+            		entranceCarQueue.addCar(new AdHocCar());
+            		totalAdhocCar++;
+            	} else {
+            		missedCars.addCar(new AdHocCar());
+            		if (steps > 150) { // speelt de audio file om de 150 stappen af en niet elke stap
+            			playSound("queuefull.wav");
+            			steps = 0;
+            		}
+            		//throw new ParkeerException ("Test!"); <-- beetje irritant
+            	}
             }
-        }
-        return null;
-    }
-
-    private void carsReadyToLeave(){
-        // Add leaving cars to the payment queue.
-        AbstractCar car = getFirstLeavingCar();
-        while (car!=null) {
-        	if (car.getHasToPay()){
-	            car.setIsPaying(true);
-	            paymentCarQueue.addCar(car);
-	            paymentCarQueueExtra.addCar(car);
-	        } else {
-	        	carLeavesSpot(car);
-	        }
-            car = getFirstLeavingCar();
-        }
-    }
-
-    private void carsPaying(){
-        // Let cars pay.
-    	int i=0;
-    	int moneyCounter = 0;
-    	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
-            AbstractCar car = paymentCarQueue.removeCar();
-
-            int totalMinutes = car.getTotalMinutes();
-            int perCarPrice = totalMinutes / 30;
-
-            if ((perCarPrice % 30) != 0) {
-            	perCarPrice = perCarPrice + 1;
-            }
-            perCarPrice *= normaalTarief;
-            if (car.getType() == ParkingSpot.TYPE_RES) {
-            	perCarPrice += reserveringTarief;
-            }
-            carLeavesSpot(car);
-            moneyCounter += perCarPrice;
-            i++;
-    	}
-    	setMoneyHour(moneyCounter);
-    }
-
-    private void tick() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    AbstractCar car = getCarAt(location);
-                    if (car != null) {
-                        car.tick();
-                    }
-                }
-            }
-        }
-    }
-
-	private void firstStep() {
-		advanceTime();
-		carsArriving();
-		carsReadyToLeave();
-		carsPaying();
-		tick();
-	}
-
-    /*--------------------------*/
-
-    private void clearPaymentQueue() {
-    	int i = 0;
-    	while (paymentCarQueueExtra.carsInQueue() > 0 && i < paymentSpeed) {
-    		paymentCarQueueExtra.removeCar();
-    		i++;
+            break;
+    	case ParkingSpot.TYPE_HANDI:
+    		for (int i = 0; i < numberOfCars; i++) {
+        		if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
+    				entranceCarQueue.addCar(new HandiCar());
+    				totalHandiCar++;
+    			}
+            	else {
+            		missedCars.addCar(new HandiCar());
+            		//throw new ParkeerException ("Test!");
+            	}
+    		}
+    		break;
+    	case ParkingSpot.TYPE_PASS:
+            for (int i = 0; i < numberOfCars; i++) {
+        		if (totalPassCar < abonneesMax) {
+        			entrancePassQueue.addCar(new ParkingPassCar());
+        			totalPassCar++;
+        		}
+    		}
+            break;	
     	}
     }
-
-    private void carsLeaving(){
-        // Let cars leave.
-    	int i=0;
-    	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
-            AbstractCar car = exitCarQueue.removeCar();
-            if (car.getType() == ParkingSpot.TYPE_RES) {
-            	totalRessCar--;
-            }
-            if (car.getType() == ParkingSpot.TYPE_PASS) {
-            	totalPassCar--;
-            }
-            if (car.getType() == ParkingSpot.TYPE_AD_HOC) {
-            	totalAdhocCar--;
-            }
-            if (car.getType() == ParkingSpot.TYPE_HANDI) {
-            	totalHandiCar--;
-            }
-            i++;
-    	}
+    
+    private void handleEntrance() {
+    	carsEntering(entrancePassQueue);
+    	carsEntering(entranceCarQueue); 
     }
-
+    
     private void carsEntering(CarQueue queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
@@ -750,12 +649,92 @@ public class Model extends AbstractModel implements Runnable {
             i++;
         }
     }
+    
+    private void carsReadyToLeave(){
+        // Add leaving cars to the payment queue.
+        AbstractCar car = getFirstLeavingCar();
+        while (car!=null) {
+        	if (car.getHasToPay()){
+	            car.setIsPaying(true);
+	            paymentCarQueue.addCar(car);
+	            paymentCarQueueExtra.addCar(car);
+	        } else {
+	        	carLeavesSpot(car);
+	        }
+            car = getFirstLeavingCar();
+        }
+    }
+    
+    private void carsPaying(){
+        // Let cars pay.
+    	int i=0;
+    	int moneyCounter = 0;
+    	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
+            AbstractCar car = paymentCarQueue.removeCar();
 
-    private void handleEntrance() {
-    	carsEntering(entrancePassQueue);
-    	carsEntering(entranceCarQueue); 
+            int totalMinutes = car.getTotalMinutes();
+            int perCarPrice = totalMinutes / 30;
+
+            if ((perCarPrice % 30) != 0) {
+            	perCarPrice = perCarPrice + 1;
+            }
+            perCarPrice *= normaalTarief;
+            if (car.getType() == ParkingSpot.TYPE_RES) {
+            	perCarPrice += reserveringTarief;
+            }
+            carLeavesSpot(car);
+            moneyCounter += perCarPrice;
+            i++;
+    	}
+    	setMoneyHour(moneyCounter);
+    }
+    
+    private void clearPaymentQueue() {
+    	int i = 0;
+    	while (paymentCarQueueExtra.carsInQueue() > 0 && i < paymentSpeed) {
+    		paymentCarQueueExtra.removeCar();
+    		i++;
+    	}
+    }
+    
+    private void carLeavesSpot(AbstractCar car){
+    	Location location = car.getLocation();
+    	removeCarAt(location);
+    	if(car.getType() == ParkingSpot.TYPE_RES) {
+    		this.setSpotType(location, ParkingSpot.TYPE_AD_HOC);
+    	}
+        exitCarQueue.addCar(car);
+    }
+    
+    private void carsLeaving(){
+        // Let cars leave.
+    	int i=0;
+    	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
+            AbstractCar car = exitCarQueue.removeCar();
+            if (car.getType() == ParkingSpot.TYPE_RES) {
+            	totalRessCar--;
+            }
+            if (car.getType() == ParkingSpot.TYPE_PASS) {
+            	totalPassCar--;
+            }
+            if (car.getType() == ParkingSpot.TYPE_AD_HOC) {
+            	totalAdhocCar--;
+            }
+            if (car.getType() == ParkingSpot.TYPE_HANDI) {
+            	totalHandiCar--;
+            }
+            i++;
+    	}
     }
 
+    private void firstStep() {
+		advanceTime();
+		carsArriving();
+		carsReadyToLeave();
+		carsPaying();
+		tick();
+	}
+	
 	private void secondStep() {
 		clearPaymentQueue();
 		carsLeaving();
@@ -763,9 +742,14 @@ public class Model extends AbstractModel implements Runnable {
 		checkReserveringen();
 		steps++;
 	}
-
-    /*--------------------------*/
-
+	
+	public void reset() {
+		stop();
+		init();
+		notifyViews();
+		for(AbstractController c: controllers) c.simStopped();
+	}
+	
     public void start(int tickCount) {
 		if(run) {
 			System.out.println("Already running");
@@ -777,17 +761,9 @@ public class Model extends AbstractModel implements Runnable {
 			for(AbstractController c: controllers) c.simStarted();
 		}
 	}
-
+    
 	public void stop() {
 		run = false;
-	}
-
-	public boolean isRunning() {
-		return run;
-	}
-
-	public boolean isInSim() {
-		return inSim;
 	}
 
 	@Override
@@ -807,7 +783,6 @@ public class Model extends AbstractModel implements Runnable {
 		}
 		for(AbstractController c: controllers) c.runStopped();
 	}
-	
 	
 	public HashMap<String, Integer> getTotalCars() {
 		carCounter = new HashMap<>();
@@ -1102,6 +1077,12 @@ public class Model extends AbstractModel implements Runnable {
 	}
 	public String getGraphButtonInput() {
 		return buttonOption;
+	}
+	public boolean isRunning() {
+		return run;
+	}
+	public boolean isInSim() {
+		return inSim;
 	}
 }
 
