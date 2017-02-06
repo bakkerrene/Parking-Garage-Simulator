@@ -11,11 +11,13 @@ import java.awt.event.*;
 @SuppressWarnings("serial")
 public class Controller extends AbstractController implements ActionListener {
 
-	private JButton plus1;
 	private JButton plus100;
+	private JFormattedTextField setSteps;
 	private JButton start;
 	private JButton stop;
 	private JButton reset;
+	
+	private int steps;
 
 	public Controller(Model model) {
 
@@ -27,27 +29,21 @@ public class Controller extends AbstractController implements ActionListener {
 		start = new JButton("Start");
     	start.addActionListener(this);
     	add(start);
-		start.setBounds(259, 10, 70, 30);
+    	
+    	setSteps = new JFormattedTextField("0");
+    	add(setSteps);
 
-		plus1 = new JButton("1 Stap");
-    	plus1.addActionListener(this);    
-    	add(plus1);
-    	plus1.setBounds(50, 10, 70, 30);
-
-    	plus100 = new JButton("100 Stappen");
+    	plus100 = new JButton("Stappen");
     	plus100.addActionListener(this);
     	add(plus100);
-		plus100.setBounds(140, 10, 100, 30);
 
     	stop = new JButton("Stop");
     	stop.addActionListener(this);
     	add(stop);
-		stop.setBounds(349, 10, 70, 30);
 
     	reset = new JButton("Reset");
     	reset.addActionListener(this);
     	add(reset);
-		reset.setBounds(439, 10, 70, 30);
 
 		stop.setEnabled(false);
 		reset.setEnabled(true);
@@ -58,12 +54,11 @@ public class Controller extends AbstractController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		Object sourceObject = e.getSource();
+		steps = getSteps();
 
-		if (sourceObject == plus1) {
-			model.start(1);
-			model.playSound("button.wav");
-		} else if (sourceObject == plus100) {
-			model.start(100);
+
+		if (sourceObject == plus100) {
+			model.start(steps);
 			model.playSound("button.wav");
 		} else if (sourceObject == start) {
 			model.start(0);
@@ -76,9 +71,12 @@ public class Controller extends AbstractController implements ActionListener {
 			model.playSound("button.wav");
 		}
 	}
+	
+	private int getSteps() throws NumberFormatException {
+		return Integer.parseInt(setSteps.getText());
+	}
 
 	private void enableOrDisable(boolean value) {
-		plus1.setEnabled(value);
 		plus100.setEnabled(value);
 		start.setEnabled(value);
 		stop.setEnabled(!value);

@@ -149,6 +149,8 @@ public class InitController extends AbstractController implements ActionListener
 		try {
 			Object sourceObject = e.getSource();
 			if (sourceObject == initButton) {
+				model.playSound("button.wav");
+				
 				model.setMultiplier(getMultiplier());
 				model.setReservering(getReservering());
 				model.setAbonnees(getAbonee());
@@ -156,12 +158,16 @@ public class InitController extends AbstractController implements ActionListener
 				model.setAbonneeTarief(getAboneeTarief());
 				model.setNormaalTarief(getNormaalTarief());
 				model.setReserveringTarief(getReserveringTarief());
+				
 				int dag = resDag.getSelectedIndex();
 				int uur = resUur.getSelectedIndex();
 				model.setSpecialReservering(getResWeek(), dag, uur);
 				model.reset();
 			} else if (sourceObject == resetValues) {
+				model.playSound("button.wav");
+				
 				setDefaultValues();
+				
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
