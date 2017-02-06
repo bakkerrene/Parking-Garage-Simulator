@@ -98,13 +98,14 @@ public class QueueView extends AbstractView {
 		for(int i = 0; i < missedCars.carsInQueue(); i++) {
 			totalMissedCars++;
 			AbstractCar car = missedCars.removeCar();
+			if (car != null) {
 			int totalMinutes = car.getTotalMinutes();
 			int perCarPrice = totalMinutes / 30;
             if ((perCarPrice % 30) != 0) {
             	perCarPrice = perCarPrice + 1;
             }
             totalMissedMoney += perCarPrice;
-		}
+		}}
 	}
 	
 	

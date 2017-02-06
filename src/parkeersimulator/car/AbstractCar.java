@@ -10,7 +10,7 @@ public abstract class AbstractCar {
 	protected int type;
     private Location location;
     private int minutesLeft;
-    private int totalMinutes = 0;
+    private int totalMinutes;
     private boolean isPaying;
     private boolean hasToPay;
 
@@ -67,7 +67,6 @@ public abstract class AbstractCar {
 
     public void tick() {
         minutesLeft--;
-        totalMinutes++;
     }
 
     public abstract Color getColor();
