@@ -48,12 +48,12 @@ public class MvcSimulator  {
 		Container contentPane = screen.getContentPane();
 
 		legenda = new LegendView(model);
-		legenda.setBounds(810, 120, 200, 200);
+		legenda.setBounds(1065, 120, 200, 210);
 		screen.getContentPane().add(legenda);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		tabbedPane.setBounds(10, 620, 800, 240);
+		tabbedPane.setBounds(10, 579, 800, 240);
 		screen.getContentPane().add(tabbedPane);
 				lineGraphView = new LineGraphView(model);
 				tabbedPane.addTab("Lijndiagram", null, lineGraphView, null);
@@ -75,18 +75,18 @@ public class MvcSimulator  {
 		slideController.setLayout(new GridLayout(2, 0, 0, 0));
 
 						managerView = new ManagerView(model);
-						managerView.setBounds(880, 650, 200, 210);
+						managerView.setBounds(820, 331, 200, 210);
 
 						screen.getContentPane().add(managerView);
 						managerView.setBackground(SystemColor.control);
 						initController = new InitController(model);
-						initController.setBounds(1055, 215, 260, 305);
+						initController.setBounds(848, 561, 486, 324);
 						screen.getContentPane().add(initController);
 						queueView = new QueueView(model);
-						queueView.setBounds(1080, 655, 235, 200);
+						queueView.setBounds(820, 120, 235, 200);
 						screen.getContentPane().add(queueView);
 						selectController = new SelectController(model);
-						selectController.setBounds(1055, 120, 260, 75);
+						selectController.setBounds(1053, 466, 212, 75);
 						screen.getContentPane().add(selectController);
 
 										carParkView = new CarParkView(model);

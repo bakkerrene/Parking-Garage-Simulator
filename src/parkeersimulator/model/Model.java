@@ -87,28 +87,31 @@ public class Model extends AbstractModel implements Runnable {
     private int tickCount = 0;
     private int tickPause = 100;
 
-    int weekDayAdArrivals = 100; // average number of arriving cars per hour
-    int weekendAdArrivals = 70; // average number of arriving cars per hour
-    int eventAdArrivals = 300; // average number of arriving cars per hour on events
-    int weekDayPassArrivals = 50; // average number of arriving cars per hour
-    int weekendPassArrivals = 5; // average number of arriving cars per hour
-    int eventPassArrivals = 20; 
-    int weekDayResArrivals = 20;
-    int weekendResArrivals = 50;
-    int eventResArrivals = 300;
+    private int weekDayAdArrivals = 100; // average number of arriving cars per hour
+    private int weekendAdArrivals = 70; // average number of arriving cars per hour
+    private int eventAdArrivals = 300; // average number of arriving cars per hour on events
+    private int weekDayPassArrivals = 50; // average number of arriving cars per hour
+    private int weekendPassArrivals = 5; // average number of arriving cars per hour
+    private int eventPassArrivals = 20; 
+    private int weekDayResArrivals = 20;
+    private int weekendResArrivals = 50;
+    private int eventResArrivals = 300;
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
-
+    
     int selectedSpotType = ParkingSpot.TYPE_AD_HOC;
 
 	private boolean run;
 	private boolean inSim;
 
+
+	
 	private void init() {
 		counter = 0;
-
+		
+		
 		numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
 
 		entranceCarQueue  = new CarQueue();
@@ -136,6 +139,8 @@ public class Model extends AbstractModel implements Runnable {
 	    totalRessCar = 0;
 	    totalAdhocCar = 0;
 	    totalHandiCar = 0;
+	    
+	    resetQueueValues();
 
         inSim = false;
 
@@ -236,7 +241,98 @@ public class Model extends AbstractModel implements Runnable {
 		notifyViews();
 		for(AbstractController c: controllers) c.simStopped();
 	}
+	
+	public void resetQueueValues() {
+		weekDayAdArrivals = 100; // average number of arriving cars per hour
+	    weekendAdArrivals = 70; // average number of arriving cars per hour
+	    eventAdArrivals = 300; // average number of arriving cars per hour on events
+	    weekDayPassArrivals = 50; // average number of arriving cars per hour
+	    weekendPassArrivals = 5; // average number of arriving cars per hour
+	    eventPassArrivals = 20; 
+	    weekDayResArrivals = 20;
+	    weekendResArrivals = 50;
+	    eventResArrivals = 300;
 
+	    enterSpeed = 3; // number of cars that can enter per minute
+	    paymentSpeed = 7; // number of cars that can pay per minute
+	    exitSpeed = 5; // number of cars that can leave per minute
+	}
+	
+    public void setEnterSpeed(int value) {
+    	enterSpeed = value;
+    }
+    public int getEnterSpeed() {
+    	return enterSpeed;
+    }
+    public void setpaymentSpeed(int value) {
+    	paymentSpeed = value;
+    }
+    public int getpaymentSpeed() {
+    	return paymentSpeed;
+    }
+    public void setExitSpeed(int value) {
+    	exitSpeed = value;
+    }
+    public int getExitSpeed() {
+    	return exitSpeed;
+    }
+    public void setWeekDayAdArrivals(int value) {
+    	weekDayAdArrivals = value;
+    }
+    public int getWeekDayAdArrivals() {
+    	return weekDayAdArrivals;
+    }    
+    public void setWeekendAdArrivals(int value) {
+    	weekendAdArrivals = value;
+    }
+    public int getWeekendAdArrivals() {
+    	return weekendAdArrivals;
+    } 
+    public void seteventAdArrivals(int value) {
+    	eventAdArrivals = value;
+    }
+    public int geteventAdArrivals() {
+    	return eventAdArrivals;
+    } 
+        
+    public void setWeekDayPassArrivals(int value) {
+    	weekDayPassArrivals = value;
+    }
+    public int getWeekDayPassArrivals() {
+    	return weekDayPassArrivals;
+    }    
+    public void setWeekendPassArrivals(int value) {
+    	weekendPassArrivals = value;
+    }
+    public int getWeekendPassArrivals() {
+    	return weekendPassArrivals;
+    } 
+    public void seteventPassArrivals(int value) {
+    	eventPassArrivals = value;
+    }
+    public int geteventPassArrivals() {
+    	return eventPassArrivals;
+    } 
+    
+    public void setWeekDayResArrivals(int value) {
+    	weekDayResArrivals = value;
+    }
+    public int getWeekDayResArrivals() {
+    	return weekDayResArrivals;
+    }    
+    public void setWeekendResArrivals(int value) {
+    	weekendResArrivals = value;
+    }
+    public int getWeekendResArrivals() {
+    	return weekendResArrivals;
+    } 
+    public void seteventResArrivals(int value) {
+    	eventResArrivals = value;
+    }
+    public int geteventResArrivals() {
+    	return eventResArrivals;
+    } 
+	
 	public CarQueue getEntranceCarQueueNr() {
 		return entranceCarQueue;
 	}
