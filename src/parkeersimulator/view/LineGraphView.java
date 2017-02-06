@@ -45,6 +45,7 @@ public class LineGraphView extends AbstractView {
     private Color hocCarLine = new Color(255, 0, 0);
     private Color passCarLine = new Color(0, 0, 255);
     private Color resCarLine = new Color(255, 255, 0);
+    private Color handiCarLine = new Color(0, 255, 0);
 
     private Color moneyLine = new Color(0, 255, 0);
 
@@ -52,7 +53,7 @@ public class LineGraphView extends AbstractView {
 	final static String MONEY = "money";
 	final static String CARS = "cars";
 
-	List<Integer> hocCarData, passCarData, resCarData;  
+	List<Integer> hocCarData, passCarData, resCarData, handiCarData;  
 	List<Integer> moneyPerHourData;
 
 	private void init()
@@ -60,6 +61,7 @@ public class LineGraphView extends AbstractView {
 		hocCarData = new ArrayList<Integer>();
 		passCarData = new ArrayList<Integer>();
 		resCarData = new ArrayList<Integer>();
+		handiCarData = new ArrayList<Integer>();
 		moneyPerHourData = new ArrayList<Integer>();
 
 		hour = 25;
@@ -68,6 +70,7 @@ public class LineGraphView extends AbstractView {
 	    padding = 15;
 	    labelPadding = 15;
 
+		//diff = (getHeight() - padding - labelPadding + 10) / 10;
 		diff = 18;
 	}
 
@@ -95,17 +98,21 @@ public class LineGraphView extends AbstractView {
        	int hocCar = carCounter.get("adhoc");
        	int passCar = carCounter.get("pass");
        	int resCar = carCounter.get("res");
+       	int handiCar = carCounter.get("handi");
+       	
        	int moneyLastHour = model.getMoneyLastHour();
        	
        	if (model.getHour() != hour || hocCarData.size() == 0) {
        		hocCarData.add(hocCar);
        		passCarData.add(passCar);
        		resCarData.add(resCar);
+       		handiCarData.add(handiCar);
        		moneyPerHourData.add(moneyLastHour);
        		if (hocCarData.size() > 168) { 
        			hocCarData.remove(0);
        			passCarData.remove(0);
        			resCarData.remove(0);
+       			handiCarData.remove(0);
        			moneyPerHourData.remove(0);
        		}
        	}
@@ -115,6 +122,7 @@ public class LineGraphView extends AbstractView {
        		int maxValueHoc = Collections.max(hocCarData);
        		int maxValuePass = Collections.max(passCarData);
        		int maxValueRes = Collections.max(resCarData);
+       		int maxValueHandi = Collections.max(handiCarData);
        	
        		if (maxValueHoc > maxValuePass || maxValueHoc > maxValueRes) {
        			maxValue = maxValueHoc;
@@ -128,6 +136,7 @@ public class LineGraphView extends AbstractView {
        		drawGraph(g2, hocCarData, hocCarLine);
        		drawGraph(g2, passCarData, passCarLine);
        		drawGraph(g2, resCarData, resCarLine);
+       		drawGraph(g2, handiCarData, handiCarLine);
        	}
        	else if(type_Graph.equals(MONEY)) {
        		if (model.getHour() != hour || moneyPerHourData.size() == 0) {

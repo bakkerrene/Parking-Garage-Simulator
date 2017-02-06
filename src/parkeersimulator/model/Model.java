@@ -698,14 +698,13 @@ public class Model extends AbstractModel implements Runnable {
     	int numberOfCars = 0;
     	int sum = 0;
     	if (percentageHandicap != 0) {
-    		sum = 100 / percentageHandicap;
+    		sum = 10;
     	}
     	if (counter <= sum)   {  	
     		numberOfCars = getNumberOfCars("HOC");
     		try {
 				addArrivingCars(numberOfCars, ParkingSpot.TYPE_AD_HOC);
 			} catch (ParkeerException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
     		counter++;
@@ -714,7 +713,6 @@ public class Model extends AbstractModel implements Runnable {
     		try {
 				addArrivingCars(numberOfCars, ParkingSpot.TYPE_HANDI);
 			} catch (ParkeerException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     		counter = 0;
@@ -724,7 +722,7 @@ public class Model extends AbstractModel implements Runnable {
     		try {
 				addArrivingCars(numberOfCars, ParkingSpot.TYPE_PASS);
 			} catch (ParkeerException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
     	}
