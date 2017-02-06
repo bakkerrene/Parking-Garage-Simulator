@@ -43,7 +43,7 @@ public class Model extends AbstractModel implements Runnable {
 	private CarQueue missedCars;
 	private int entranceCarQueueMax;
 
-	private String[] weekDay = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
+	private String[] weekDayStrings = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
     private int day;
     private int hour;
     private int minute;
@@ -585,9 +585,9 @@ public class Model extends AbstractModel implements Runnable {
             hour -= 24;
             day++;
         }
-        while (day > 6) {
-            day -= 7;
-        }
+        //while (day > 6) {
+            //day -= 7;
+        //}
     }
 
     public String getTime() {
@@ -604,7 +604,7 @@ public class Model extends AbstractModel implements Runnable {
     }
 
     public String getDay() {
-    	return weekDay[day];
+    	return weekDayStrings[day%7];
     }
     
     public int getHour(){
@@ -656,7 +656,7 @@ public class Model extends AbstractModel implements Runnable {
 
         // Get the average number of cars that arrive per hour.
         int averageNumberOfCarsPerHour = 100;
-        
+        int weekDay = day%7;
        // alle autos voor 6 uur
        // als het voor alle autos geld hierin
         if (hour < 6) {
@@ -664,25 +664,25 @@ public class Model extends AbstractModel implements Runnable {
         }
         else {
         	if(test == "PASS") {
-        		if (day > 4) {
+        		if (weekDay > 4) {
         			averageNumberOfCarsPerHour = 10;
         		}
         	}
         	if(test == "HOC") {
         		//Donderdag, Vrijdag, Zaterdag Avond dus normale autos & reserveringen
-        		if (day >= 3 && day < 6 && hour >= 18) {
+        		if (weekDay >= 3 && weekDay < 6 && hour >= 18) {
         			averageNumberOfCarsPerHour = 200;
         		}
         		// normale zaterdag uren voor normale autos
-        		else if(day == 5){
+        		else if(weekDay == 5){
         			averageNumberOfCarsPerHour = 50;
         		}
         		// theater op zondag middag dus normale autos & reserveringen
-        		else if (day == 6 && hour >= 12 && hour < 18) {
+        		else if (weekDay == 6 && hour >= 12 && hour < 18) {
         			averageNumberOfCarsPerHour = 200;
         		}
         		// normale zaterdag uren voor normale autos
-        		else if (day == 6 && hour >= 6) {
+        		else if (weekDay == 6 && hour >= 6) {
         			averageNumberOfCarsPerHour = 50;
         		}
         	}
