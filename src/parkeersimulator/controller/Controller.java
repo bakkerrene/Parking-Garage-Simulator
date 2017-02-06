@@ -8,6 +8,13 @@ import parkeersimulator.model.Model;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
+/**
+ * the main controller on the model view
+ * 
+ * @author Rene Bakker
+ * @version 2017-02-06
+ *
+ */
 @SuppressWarnings("serial")
 public class Controller extends AbstractController implements ActionListener {
 
@@ -19,6 +26,10 @@ public class Controller extends AbstractController implements ActionListener {
 	
 	private int steps;
 
+	/**
+	 * 
+	 * @param model This is the model
+	 */
 	public Controller(Model model) {
 
 		super(model);
@@ -72,10 +83,19 @@ public class Controller extends AbstractController implements ActionListener {
 		}
 	}
 	
+	/**
+	 * This method will return an Int value to set in the model.
+	 * @return Integer This returns the int value from the text given by setSteps
+	 * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+	 */
 	private int getSteps() throws NumberFormatException {
 		return Integer.parseInt(setSteps.getText());
 	}
 
+	/**
+	 * This method will disable the buttons when the simulation is running
+	 * @param value sets the buttos to disable or enable.
+	 */
 	private void enableOrDisable(boolean value) {
 		plus100.setEnabled(value);
 		start.setEnabled(value);

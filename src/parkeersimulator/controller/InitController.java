@@ -9,10 +9,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 
+/**
+ * This class will show the InitController in the tab InitController in the model
+ * 
+ * @author Rene Bakker
+ * @version 2017-02-06
+ *
+ */
 @SuppressWarnings("serial")
 public class InitController extends AbstractController implements ActionListener {
 	
-	private JLabel filler1, filler2;
 	private JLabel multiplier;
 	private JLabel maxRes, maxAbo;
 	private JLabel perInv, aboTa;
@@ -44,9 +50,6 @@ public class InitController extends AbstractController implements ActionListener
     											weekDayPassArrivals, weekendPassArrivals, eventPassArrivals, weekDayResArrivals, weekendResArrivals,
     											eventResArrivals, enterSpeed, paymentSpeed, exitSpeed};
     
-    
-    
-
     private JLabel lblWeek, lblDag, lblUur;
     private JFormattedTextField resWeek;
     private JComboBox<String> resDag;
@@ -218,8 +221,7 @@ public class InitController extends AbstractController implements ActionListener
  		weekDayRes = new JLabel(" WeekDayRes");
  		weekendRes = new JLabel(" WeekendRes");
  		eventRes = new JLabel(" EventRes");
- 		filler1 = new JLabel("");
- 		filler2 = new JLabel("");
+
 
     	BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(boxLayout);
@@ -294,73 +296,182 @@ public class InitController extends AbstractController implements ActionListener
 		}
 	}
 
+    /**
+     * 
+     * @return This returns a Double value to set the value in the model class
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private double getMultiplier() throws NumberFormatException {
 		return Double.parseDouble(multiplierAmount.getText());
 	}
 
+    /**
+     * 
+     * @return This returns a Integer value to set the MaxReservering value in the model class
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getReservering() throws NumberFormatException {
 		return Integer.parseInt(aantalReserveringen.getText());
 	}
-
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the MaxAbonnees in the model class
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getAbonee() throws NumberFormatException {
 		return Integer.parseInt(aantalAbonnees.getText());
 	}
-
+	
+    /**
+     * 
+     * @return This returns a Integer value to set percentage for the amount of handicap spots in the model class
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getHandiPer() throws NumberFormatException {
 		return Integer.parseInt(percentageInvalidenplekken.getText());
 	}
-
+	
+    /**
+     * 
+     * @return This returns a Integer value to set abonneeTarief in the model class
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getAboneeTarief() throws NumberFormatException {
 		return Integer.parseInt(abonneeTarief.getText());
 	}
-
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the normaalTarief in the model class
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getNormaalTarief() throws NumberFormatException {
 		return Integer.parseInt(normaalTarief.getText());
 	}
-
+	
+    /**
+     * 
+     * @return This returns a Integer value to set reserveringTarief in the model class
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getReserveringTarief() throws NumberFormatException {
 		return Integer.parseInt(reserveringsTarief.getText());
 	}
-
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the week a custon reservation is made in the model class
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getResWeek() throws NumberFormatException {
 		return Integer.parseInt(resWeek.getText());
 	}
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the enterspeed in the class model. This allows you to increase the amount of cars that can enter per minute
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getEnterSpeed() throws NumberFormatException {
 		return Integer.parseInt(enterSpeed.getText());
 	}
-
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the PaymentSpeed in the class model. This allows you to increase the amount of cars that can pay per minute
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getPaymentSpeed() throws NumberFormatException {
 		return Integer.parseInt(paymentSpeed.getText());
 	}
-
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the exitspeed in the class model. this Allows you to increase the amount of cars that can leave per minute
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getExitSpeed() throws NumberFormatException {
 		return Integer.parseInt(exitSpeed.getText());
 	}
 	
+    /**
+     * 
+     * @return This returns a Integer value to set getWeekDayAd in the class model. this will allow you to mutate tha amount of normal cars arriving on Weekdays
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getWeekDayAd() throws NumberFormatException {
 		return Integer.parseInt(weekDayAdArrivals.getText());
 	}
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the setWeekendAD in the class model. this will allow you to mutate the amount of normal cars arriving on weekends
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getWeekendAd() throws NumberFormatException {
 		return Integer.parseInt(weekendAdArrivals.getText());
 	}
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the getEventAd in the class model. this will allow you to mutate the amount of normal cars arriving on event days
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getEventAd() throws NumberFormatException {
 		return Integer.parseInt(eventAdArrivals.getText());
 	}
+	
+    /**
+     * 
+     * @return This returns a Integer value to set getWeekDayPass in the class model. this will allow you to mutate the amount of Subsribed cars arriving on Weekdays
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getWeekDayPass() throws NumberFormatException {
 		return Integer.parseInt(weekDayPassArrivals.getText());
 	}
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the setWeekendPass in the class model. this will allow you to mutate the amount of Subscribed cars arriving on weekends
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getWeekendPass() throws NumberFormatException {
 		return Integer.parseInt(weekendPassArrivals.getText());
 	}
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the getEventPass in the class model. this will allow you to mutate the amount of Subscribed cars arriving on event days
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getEventPass() throws NumberFormatException {
 		return Integer.parseInt(eventPassArrivals.getText());
 	}
+	
+    /**
+     * 
+     * @return This returns a Integer value to set getWeekDayRes in the class model. this will allow you to mutate the amount of reservations arriving on Weekdays
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getWeekDayRes() throws NumberFormatException {
 		return Integer.parseInt(weekDayResArrivals.getText());
 	}
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the setWeekendRes in the class model. this will allow you to mutate the amount of Reservations arriving on weekends
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getWeekendRes() throws NumberFormatException {
 		return Integer.parseInt(weekendResArrivals.getText());
 	}
+	
+    /**
+     * 
+     * @return This returns a Integer value to set the getEventRes in the class model. this will allow you to mutate the amount of Reservations arriving on event days
+     * @throws NumberFormatException Thrown to indicate that the application has attempted to convert a string to one of the numeric types, but that the string does not have the appropriate format.
+     */
 	private int getEventRes() throws NumberFormatException {
 		return Integer.parseInt(eventResArrivals.getText());
 	}

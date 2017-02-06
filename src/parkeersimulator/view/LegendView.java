@@ -5,7 +5,11 @@ import parkeersimulator.model.Model;
 import java.awt.Color;
 import java.awt.Graphics;
 
-
+/**
+ * 
+ * @author reneb
+ *
+ */
 @SuppressWarnings("serial")
 public class LegendView extends AbstractView {
 
@@ -23,6 +27,10 @@ public class LegendView extends AbstractView {
 	JLabel label0, label1, label2, label3;
 	JLabel label4, label5, label6, label7;
 
+	/**
+	 * 
+	 * @param model
+	 */
 	public LegendView(Model model) {
 
 		super(model);

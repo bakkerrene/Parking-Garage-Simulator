@@ -10,6 +10,13 @@ import javax.swing.SwingConstants;
 
 import parkeersimulator.model.Model;
 
+/**
+ * this class will mutate the tickPause in the class Model
+ * 
+ * @author Rene Bakker
+ * @Version 2017-02-06
+ *
+ */
 @SuppressWarnings("serial")
 public class SlideController extends AbstractController{
 
@@ -21,6 +28,11 @@ public class SlideController extends AbstractController{
 	private JSlider tickRate;
 	private Hashtable<Integer, JLabel> labels;
 	
+	/**
+	 * 
+	 * @param model This is the model
+	 * 
+	 */
     public SlideController(Model model) {
     	super(model);
 

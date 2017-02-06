@@ -9,6 +9,14 @@ import parkeersimulator.model.Model;
 
 import java.awt.*;
 
+/**
+ * This Class drawes the QueueView in the model and shows the missed cars info
+ * 
+ * @author ReneBakker
+ * @version 2017-02-06
+ * 
+ *
+ */
 @SuppressWarnings("serial")
 public class QueueView extends AbstractView {
 
@@ -27,6 +35,10 @@ public class QueueView extends AbstractView {
 		totalMissedCars = 0;
 	}
 
+	/**
+	 * 
+	 * @param model This is the model
+	 */
 	public QueueView(Model model) {
 
 		super(model);
@@ -93,6 +105,9 @@ public class QueueView extends AbstractView {
 		missedCarsMoney.setText(""+ totalMissedMoney);
 	}
 	
+	/**
+	 * This method sets the amount of missed cars and the oumant of missed money
+	 */
 	private void setMissedCarsInfo() {
 		CarQueue missedCars = model.getmissedCars();
 		for(int i = 0; i < missedCars.carsInQueue(); i++) {
@@ -109,6 +124,11 @@ public class QueueView extends AbstractView {
 	}
 	
 	
+	/**
+	 * 
+	 * @param g gets the Graphics g form the paintComponent
+	 * @param entrance1Data This is a given CarQueue from the method paintComponent to get all the cars in a queue and display this on the screen
+	 */
 	private void setQueueColor(Graphics g, CarQueue entrance1Data) {
 		int top = 0;
 		if (entrance1Data == model.getEntrancePassQueueNr()) top = 0;
@@ -117,7 +137,7 @@ public class QueueView extends AbstractView {
 		if (entrance1Data == model.exitCarQueueNr()) top = 99;
 		for (int i =0; i < entrance1Data.carsInQueue(); i++) {
 			if (entrance1Data.peekCar(i) != null) {
-				AbstractCar car = entrance1Data.peekCar(i);
+				AbstractCar car = entrance1Data.peekCar(i); // <-- This gives an error on high speeds 
 				g.setColor(car.getColor());
 				g.fillRect(0 + (i * 21), top, 20, 10);
 			}

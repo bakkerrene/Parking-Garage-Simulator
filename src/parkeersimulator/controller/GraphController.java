@@ -10,6 +10,13 @@ import javax.swing.JRadioButton;
 
 import parkeersimulator.model.Model;
 
+/**
+ * This class adds two radio buttons to the LineGraphView tab in the model
+ * 
+ * @author Rene Bakker
+ * @version 2017-02-06
+ *
+ */
 @SuppressWarnings("serial")
 public class GraphController extends AbstractController implements ActionListener {
 
@@ -20,6 +27,10 @@ public class GraphController extends AbstractController implements ActionListene
 	private JRadioButton showMoney;
 	private ButtonGroup buttonGroup;
 
+	/**
+	 * 
+	 * @param model This is the model
+	 */
     public GraphController(Model model) {
 
     	super(model);

@@ -3,9 +3,16 @@ package parkeersimulator.view;
 
 import java.awt.*;
 import java.util.HashMap;
-
 import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
+
+/** 
+ * Draws the barGraphView in the model
+ * 
+ * @author Rene Bakker
+ * @version 2017-02-06
+ *
+ */
 
 @SuppressWarnings("serial")
 public class BarGraphView extends AbstractView {
@@ -13,11 +20,19 @@ public class BarGraphView extends AbstractView {
 	private int totalPlaces;
 	private HashMap<String, Integer> carCounter;
 
+	/**
+	 * 
+	 * @param model This is the model
+	 */
 	public BarGraphView(Model model) {
 		super(model);
-		totalPlaces = model.getNumberOfOpenSpots();
+		totalPlaces = model.getTotalSpotCount();
 	}
-
+	
+	/**
+	 * paintComponent draws the view
+	 * 
+	 */
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);

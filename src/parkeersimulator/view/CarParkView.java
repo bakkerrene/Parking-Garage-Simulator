@@ -13,6 +13,13 @@ import parkeersimulator.Rect;
 import parkeersimulator.car.AbstractCar;
 import parkeersimulator.model.Model;
 
+
+/**
+ * 
+ * @author <<<
+ * @version 2017-02-06
+ *
+ */
 @SuppressWarnings("serial")
 public class CarParkView extends AbstractView {
 	Color color = new Color(0,0,0);

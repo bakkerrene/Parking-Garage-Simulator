@@ -7,6 +7,14 @@ import java.util.HashMap;
 import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
 
+
+/**
+ * this Class Draws the pieChart in the view
+ * 
+ * @author Rene Bakker
+ * @version 2017-02-06
+ *
+ */
 @SuppressWarnings("serial")
 public class PieView extends AbstractView {
 	
@@ -24,6 +32,7 @@ public class PieView extends AbstractView {
 		total = model.getNumberOfOpenSpots();
 	}
 
+	
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);

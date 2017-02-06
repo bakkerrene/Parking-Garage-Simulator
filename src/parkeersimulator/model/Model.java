@@ -19,8 +19,8 @@ import java.io.File;
 
 public class Model extends AbstractModel implements Runnable {
 
-	private int steps = 0;
-	private int counter;
+	private int soundSteps = 0; //steps for queue warning sound @addArrivingCars
+	private int counter; //counter for handicap cars
 	private double multiplier;
 	
 	private int numberOfFloors;
@@ -158,6 +158,12 @@ public class Model extends AbstractModel implements Runnable {
         addReservering(7*specialResWeek + specialResDag, specialResUur, 0);
 	}
 
+	/**
+	 * this is the constructor of the Class Model
+	 * @param numberOfFloors the amount of Floors in the parking garage
+	 * @param numberOfRows the amount of rows per floor in the parking garage
+	 * @param numberOfPlacesthe amount of places per row per floor in the parking garage
+	 */
 	public Model(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
 
 		super();
@@ -176,6 +182,10 @@ public class Model extends AbstractModel implements Runnable {
 		init();
 	}
 
+	/**
+	 * this method will paly a sound
+	 * @param file path + filename or filename of the audio file to play the sound
+	 */
 	public void playSound(String file)
 	{
 	    try
@@ -190,6 +200,7 @@ public class Model extends AbstractModel implements Runnable {
 	        exc.printStackTrace(System.out);
 	    }
 	}
+	
 	
 	private void addSpotsOfType(int type, int count) {
 		for (int x = 0; x < count; x++) {
@@ -271,6 +282,11 @@ public class Model extends AbstractModel implements Runnable {
 		return spots[location.getFloor()][location.getRow()][location.getPlace()];
 	}
 
+	/**
+	 * sets a car at a location and returns this
+	 * @param location the location of the car 
+	 * @return the spot of the car
+	 */
 	public AbstractCar getCarAt(Location location) {
     	ParkingSpot spot = getParkingSpotAt(location);
     	if(spot == null) {
@@ -439,7 +455,13 @@ public class Model extends AbstractModel implements Runnable {
 	    	}
 	    }
     }
-
+    
+    
+    /**
+     * this method will calculate the average number of cars arriving per hour
+     * @param type the type of car in string format
+     * @return returns the numer of cars that will arive per type of car
+     */
     private int getNumberOfCars(String type) {
 
         // Get the average number of cars that arrive per hour.
@@ -589,9 +611,9 @@ public class Model extends AbstractModel implements Runnable {
             		totalAdhocCar++;
             	} else {
             		missedCars.addCar(new AdHocCar());
-            		if (steps > 150) { // speelt de audio file om de 150 stappen af en niet elke stap
+            		if (soundSteps > 150) { // speelt de audio file om de 150 stappen af en niet elke stap
             			playSound("queuefull.wav");
-            			steps = 0;
+            			soundSteps = 0;
             		}
             		//throw new ParkeerException ("Test!"); <-- beetje irritant
             	}
@@ -625,6 +647,11 @@ public class Model extends AbstractModel implements Runnable {
     	carsEntering(entranceCarQueue); 
     }
     
+    
+    /**
+     * this method will place the cars in the garage and remove the car from the entrance queue's 
+     * @param queue the queue of the enranceQueue's
+     */
     private void carsEntering(CarQueue queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
@@ -740,7 +767,7 @@ public class Model extends AbstractModel implements Runnable {
 		carsLeaving();
 		handleEntrance();
 		checkReserveringen();
-		steps++;
+		soundSteps++;
 	}
 	
 	public void reset() {
@@ -784,6 +811,11 @@ public class Model extends AbstractModel implements Runnable {
 		for(AbstractController c: controllers) c.runStopped();
 	}
 	
+	
+	/**
+	 * This method returns the total amount of cars to other classes
+	 * @return HashMap a map with the amount of total cars in the garage 
+	 */
 	public HashMap<String, Integer> getTotalCars() {
 		carCounter = new HashMap<>();
 		carCounter.put("adhoc", totalAdhocCar);
@@ -793,6 +825,10 @@ public class Model extends AbstractModel implements Runnable {
 		return carCounter;
 	}
 	
+	/**
+	 * returns the hour and minute in string format
+	 * @return String returns the hour and Minute in string format 00:00
+	 */
 	public String getTime() {
     	String strMinute = ("" + minute);
     	String strHour = ("" + hour);
@@ -802,15 +838,29 @@ public class Model extends AbstractModel implements Runnable {
     	if(hour < 10) {
     		strHour = ("0"+ strHour);
     	}
-    	
     	return (strHour + ":" + strMinute);
     }
+	
+	/**
+	 * this method returns the String array weekDayStrings
+	 * @return String returns a day of the week in stringFormat.
+	 */
     public String getDay() {
     	return weekDayStrings[day%7];
     }
+    
+    /**
+     * this method returns the hour mainly used by the LineGraphView
+     * @return int returns a int value, returns the hour of the day
+     */
     public int getHour(){
     	return hour;
     }
+    
+    /**
+     * This mehtod will calculate the amount of money made in the last Week
+     * @param moneyLastDayP This parameter is the total amount of money made in the last 24 hours, and is used to calculate the amount of money per week
+      */
     private void setMoneyWeek(int moneyLastDayP) {
     	int moneyLastDay = moneyLastDayP;
     	moneyLastWeek = 0;
@@ -827,6 +877,11 @@ public class Model extends AbstractModel implements Runnable {
     		moneyLastWeek += countWeek;
     	}
     }
+    
+    /**
+     * This method will calculate the amount of money made in the last Day
+     * @param moneyLastHourP This parameter is the total amount of money made in the last 60 minutes, and is used to calculate the amount of money per day
+     */
     private void setMoneyDay(int moneyLastHourP) {
     	int moneyLastHour = moneyLastHourP;
     	moneyLastDay = 0;
@@ -847,6 +902,11 @@ public class Model extends AbstractModel implements Runnable {
     		setMoneyWeek(moneyLastDay);
     	}
     }
+    
+    /**
+     * This method will calculate the amount of money made in the last hour.
+     * @param moneyCounter This parameter will take all the money made in the last minute and is used to calculate the amount of money per hour
+     */
     private void setMoneyHour(int moneyCounter) {
     	int moneyLastMinute = moneyCounter;
     	moneyLastHour = 0;
@@ -867,15 +927,35 @@ public class Model extends AbstractModel implements Runnable {
     		setMoneyDay(moneyLastHour);
     	}
     }    
+    
+    /**
+     * This method will return the amount of money made last Hour
+     * @return int moneyLastHour is the amount of money made Last hour
+     */
     public int getMoneyLastHour() {
     	return moneyLastHour;
     }
+    
+    /**
+     * This method will retrun the amount of money made last Day
+     * @return int moneyLastDay this is the mount of money made last Day
+     */
     public int getMoneyLastDay() {
     	return moneyLastDay;
     }
+    
+    /**
+     * This method will return the amount of money made last week
+     * @return int moneyLastWeek this is the amount of money made last Week
+     */
     public int getMoneyLastWeek() {
     	return moneyLastWeek;
     }
+    
+    /**
+     * This method will return the amount of money that is still in the garage
+     * @return int allCarPrice this will return all the money that is still in the garage
+     */
     public int getMoneyInGarage() {
     	int allCarPrice = 0;
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
@@ -900,178 +980,468 @@ public class Model extends AbstractModel implements Runnable {
         }
         return allCarPrice;
     }
+    
+    /**
+     * This method will set the selected spot to a certain type
+     * @param type This will set a spot to a certain type
+     */
     public void setSelectedSpotType(int type) {
     	selectedSpotType = type;
     }
+    
+    /**
+     * This method will return a selectedSpot Type
+     * @return int selectedSpotType This is a int value for a certain type of car/spot
+     */
     public int getSelectedSpotType() {
     	return selectedSpotType;
     }
+    
+    /**
+     * This method will return the value of the amount of spots per type
+     * @param type This is a int value to determine a type
+     * @return returns the total amount of spots per type
+     */
 	public int getSpotCountForType(int type) {
 		return spotCountPerType[type];
 	}
+	
+	/**
+	 * This method will set the amount of cars that can enter per minute per queue
+	 * @param value this is a int value that will set the amount of cars that can enter per minute per queue
+	 */
 	public void setEnterSpeed(int value) {
 		enterSpeed = value;
 	}
+	
+	/**
+	 * This method will return the enterSpeed
+	 * @return This wil return the enterSpeed of the amount of cars that can enter per minute
+	 */
 	public int getEnterSpeed() {
 		return enterSpeed;
 	}
+	
+	/**
+	 * This method will set the amount of cars that can pay per minute
+	 * @param value this is a int value that will set the amount of cars that can pay per minute
+	 */
 	public void setpaymentSpeed(int value) {
 		paymentSpeed = value;
 	}
+	
+	/**
+	 * this method will return the amount of cars that can pay per minute
+	 * @return This will return the payment speed of the amount of cars that can pay per minute
+	 */
 	public int getpaymentSpeed() {
 		return paymentSpeed;
 	}
+	
+	/**
+	 * This method will set the amount of cars that can leave per minute
+	 * @param value this is a int value that will set the amount of cars that can leave per minute
+	 */
 	public void setExitSpeed(int value) {
 		exitSpeed = value;
 	}
+	
+	/**
+	 * This method will return the amount of cars that can leave per minute
+	 * @return this will return the amount of cars that can leave per minute
+	 */
 	public int getExitSpeed() {
 		return exitSpeed;
 	}
+	
+	/**
+	 * This method will set the amount of normal cars that will arive on weekDays
+	 * @param value this is a int value that will set the amount of normal cars that will arrive on weekDays
+	 */
 	public void setWeekDayAdArrivals(int value) {
 		weekDayAdArrivals = value;
 	}
+	
+	/**
+	 * this method will return the amount of normal cars that will arrive on weekDays
+	 * @return int  WeekDayAdArrivals this will return the amount of normal cars that will arrive on weekDays
+	 */
 	public int getWeekDayAdArrivals() {
 		return weekDayAdArrivals;
 	}    
+	
+	/**
+	 * this method will set the amount of normal cars that will arrive on weekends
+	 * @param value this is a int value that will set the amount of normal cars that will arrive on weekends
+	 */
 	public void setWeekendAdArrivals(int value) {
 		weekendAdArrivals = value;
 	}
+	
+	/**
+	 * this method will return the amount of normal cars that will arrive on weekends
+	 * @return int weekendADArrivals this will return the amount of normal cars that will arrive on weekends
+	 */
 	public int getWeekendAdArrivals() {
 		return weekendAdArrivals;
 	} 
+	
+	/**
+	 * this method will set the amount of normal cars that will arrive on events (theater days, and shopping nights)
+	 * @param value this is a int valueue that will set the amount of normal cars that will arrive on event days (theater days, and shopping nights)
+	 */
 	public void seteventAdArrivals(int value) {
 		eventAdArrivals = value;
 	}
+	
+	/**
+	 * this method will return the amount of normal cars that will arrive on events (theater days, and shopping nights)
+	 * @return int eventAdArrivals this will return the amount of normal cars that will arrive on event days (theater days, and shopping nights)
+	 */
 	public int geteventAdArrivals() {
 		return eventAdArrivals;
 	} 
+	
+	/**
+	 * This method will set the amount of Subsribed Cars that will arive on weekDays
+	 * @param value this is a int value that will set the amount of Subsribed cars that will arrive on weekDays
+	 */
 	public void setWeekDayPassArrivals(int value) {
 		weekDayPassArrivals = value;
 	}
+	
+	/**
+	 * this method will return the amount of subscibed cars that will arrive on weekDays
+	 * @return int  WeekDayPassArrivals this will return the amount of subscribed cars that will arrive on weekDays
+	 */
 	public int getWeekDayPassArrivals() {
 		return weekDayPassArrivals;
 	}    
+	
+	/**
+	 * this method will set the amount of subscribed cars that will arrive on weekends
+	 * @param value this is a int value that will set the amount of subscribed cars that will arrive on weekends
+	 */
 	public void setWeekendPassArrivals(int value) {
 		weekendPassArrivals = value;
 	}
+	
+	/**
+	 * this method will return the amount of subscribed cars that will arrive on weekends
+	 * @return int weekendPassArrivals this will return the amount of subscribed cars that will arrive on weekends
+	 */
 	public int getWeekendPassArrivals() {
 		return weekendPassArrivals;
 	} 
+	
+	/**
+	 * this method will set the amount of subscribed cars that will arrive on events (theater days, and shopping nights)
+	 * @param value this is a int value that will set the amount of subscribed cars that will arrive on event days (theater days, and shopping nights)
+	 */
 	public void seteventPassArrivals(int value) {
 		eventPassArrivals = value;
 	}
+	
+	/**
+	 * this method will return the amount of subscribed cars that will arrive on events (theater days, and shopping nights)
+	 * @return int eventPassArrivals this will return the amount of subscribed cars that will arrive on event days (theater days, and shopping nights)
+	 */
 	public int geteventPassArrivals() {
 		return eventPassArrivals;
 	} 
+	
+	/**
+	 * This method will set the amount of Reservations that will arrive on weekDays
+	 * @param value this is a int value that will set the amount of Reservations that will arrive on weekDays
+	 */
 	public void setWeekDayResArrivals(int value) {
 		weekDayResArrivals = value;
 	}
+	
+	/**
+	 * this method will return the amount of Reservations that will arrive on weekDays
+	 * @return int  WeekDayResArrivals this will return the amount of Reservations that will arrive on weekDays
+	 */
 	public int getWeekDayResArrivals() {
 		return weekDayResArrivals;
 	}    
+	
+	/**
+	 * this method will set the amount of Reservations that will arrive on weekends
+	 * @param value this is a int value that will set the amount of Reservations that will arrive on weekends
+	 */
 	public void setWeekendResArrivals(int value) {
 		weekendResArrivals = value;
 	}
+	
+	/**
+	 * this method will return the amount of Reservations that will arrive on weekends
+	 * @return int weekendResArrivals this will return the amount of Reservations that will arrive on weekends
+	 */
 	public int getWeekendResArrivals() {
 		return weekendResArrivals;
 	} 
+	
+	/**
+	 * this method will set the amount of Reservations that will arrive on events (theater days, and shopping nights)
+	 * @param value this is a int value that will set the amount of Reservations that will arrive on event days (theater days, and shopping nights)
+	 */
 	public void seteventResArrivals(int value) {
 		eventResArrivals = value;
 	}
+	
+	/**
+	 * this method will return the amount of Reservations that will arrive on events (theater days, and shopping nights)
+	 * @return int eventResArrivals this will return the amount of Reservations that will arrive on event days (theater days, and shopping nights)
+	 */
 	public int geteventResArrivals() {
 		return eventResArrivals;
 	} 
+	
+	/**
+	 * This method will return the CarQueue entranceCarQueue, this is used by the QueueView to show the amount of cars in the queue
+	 * @return CarQueue entranceCarQueue this is a LinkedList that is used by the QueueView
+	 */
 	public CarQueue getEntranceCarQueueNr() {
 		return entranceCarQueue;
 	}
+	
+	/**
+	 * This method will return the CarQueue entrancePassQueue, this is used by the QueueView to show the amount of cars in the queue
+	 * @return CarQueue entrancePassQueue this is a LinkedList that is used by the QueueView
+	 */
 	public CarQueue getEntrancePassQueueNr() {
 		return entrancePassQueue;
 	}
+	
+	/**
+	 * This method will return the CarQueue paymentCarQueueExtra, this is used by the QueueView to show the amount of cars in the queue
+	 * @return CarQueue paymentCarQueueExtra this is a LinkedList that is used by the QueueView
+	 */
 	public CarQueue getPaymentCarQueueNr() {
 		return paymentCarQueueExtra;
 	}
+	
+	/**
+	 * This method will return the CarQueue exitCarQueue, this is used by the QueueView to show the amount of cars in the queue
+	 * @return CarQueue exitCarQueue this is a LinkedList that is used by the QueueView
+	 */
 	public CarQueue exitCarQueueNr() {
 		return exitCarQueue;
 	}
+	
+	/**
+	 * This method will return the CarQueue missedCars, this is used by the QueueView to calculate the amount of cars missed and money missed
+	 * @return CarQueue exitCarQueue this is a LinkedList that is used by the QueueView
+	 */
 	public CarQueue getmissedCars() {
 		return missedCars;
 	}
+	
+	/**
+	 * this method returns the Dimension ....
+	 * This method is not in use.
+	 * @return Dimension size the size of the model
+	 */
 	public Dimension getSize() {
 		size = new Dimension(800, 400);
 		return  size;
 	}
+	
+	/**
+	 * this method set the size of the model.
+	 * this method is not in use
+	 * @param size the Dimension that is given to set the size of the model
+	 */
 	public void setSize(Dimension size) {
 		this.size = size;
 	}
+	
+	/**
+	 * This method returns the carParkImage for the CarParkView
+	 * @return Image CarParkImage the image for the carParkView
+	 */
 	public Image getCarParkImage() {
 		return carParkImage;
 	}
+	
+	/**
+	 * This method set the CarParkImage
+	 * @param image this is the CarParkImage for the carParKView
+	 */
 	public void setCarParkImage(Image image) {
 		this.carParkImage = image;
 	}
+	
+	/**
+	 * this method will return the number of floors in the Simulator
+	 * @return int NumberOfFloors this is the amount of floors in the parking garage
+	 */
 	public int getNumberOfFloors() {
 		return numberOfFloors;
 	}
+	
+	/**
+	 * this method will get the number of Rows per floor in the simulator
+	 * @return int NumberOfRows this is the amount of Rows per floor in the parking garage
+	 */
 	public int getNumberOfRows() {
 		return numberOfRows;
 	}
+	
+	/**
+	 * This method will get the number of places per row per floor in the simulator
+	 * @return int NumberOFPlaces this is the amount of places per row per floor in the parking garage
+	 */
 	public int getNumberOfPlaces() {
 		return numberOfPlaces;
 	}
+	
+	/**
+	 * This method will get the number of spots that doesn't have a car on it
+	 * @return int numberOfOpenSpots this will return the number of open spots, the spots that doesn't have a car on it
+	 */
 	public int getNumberOfOpenSpots() {
 		return numberOfOpenSpots;
 	}
+	
+	/**
+	 * This method will return the total amount of spots in the parking garage
+	 * @return int totalSpotCount this will return the total amount of places in the parking garage
+	 */
 	public int getTotalSpotCount() {
 		return numberOfFloors*numberOfRows*numberOfPlaces;
 	}
+	
+	/**
+	 * This method will set the thickPause (0 is fast, 999 is slow)
+	 * @param tickPause This is the value set by the controller; SlideController
+	 */
 	public void setTickPause(int tickPause) {
 		this.tickPause = tickPause;
 	}
+	
+	/**
+	 * this method will get the tickpause, this will be called by the SlideController and the model.run()
+	 * @return this will return the tickPause (0 is fast, 999 is slow)
+	 */
 	public int getTickPause(){
 		return tickPause;
 	}
+	
+	/**
+	 * This will set the multiplier, this will increase the amount of total cars for every type of cars
+	 * @param multiplier this will set the multiplier (180 = 180% of the normal cars, 20 = 20% of the normal cars)
+	 */
 	public void setMultiplier(double multiplier) {
 		this.multiplier = multiplier / 100.0;
 	}
+	
+	/**
+	 * This will return the multiplier, 
+	 * @return double multiplier this will return the multiplier
+	 */
 	public double getMultiplier() {
 		return multiplier;
 	}
+	
+	/**
+	 * This method will set the total amount of subscribers
+	 * @param abonnees this will set the total amount of subscibers that are allowed to be created
+	 */
 	public void setAbonnees(int abonnees){
 		this.abonneesMax = abonnees;
 	}
+	
+	/**
+	 * this method will return the allowed number of subscriber cars
+	 * @return int abonneesMax this will return the value of the allowed number of subcriber cars
+	 */
 	public int getAbonnees(){
 		return abonneesMax;
 	}
+	
+	/**
+	 * This method will set the total amount of reservations
+	 * @param reservering this will set the total amount of reservations that are allowed to be created
+	 */
 	public void setReservering(int reservering){
 		this.reserveringMax = reservering;
 	}
+	
+	/**
+	 * this method will return the allowed number of reservations
+	 * @return int reserveringMax this will return the value of the max number of reservations that are allowed
+	 */
 	public int getReservering(){
 		return reserveringMax;
 	}
+	
+	/**
+	 * This method will set the percentage for handicap spots.
+	 * @param percentageHandicap this will set the percentage of handicap spots in the parking garage
+	 */
 	public void setHandicapPercentage(int percentageHandicap){
 		this.percentageHandicap = percentageHandicap;
 	}
+	
+	/**
+	 * this method will return the percentage of handicap spots in the parking garage
+	 * @return int percentageHandiCap this will return the percentage of handicap spots in the parking garage
+	 */
 	public int getHandicapPercentage(){
 		return percentageHandicap;
 	}
+	
+	/**
+	 * this method will set the price that subcribers must pay per month
+	 * @param abonneeTariefthis will set the price subscibers must pay per month
+	 */
 	public void setAbonneeTarief(int abonneeTarief){
 		this.abonneeTarief = abonneeTarief;
 	}
+	
+	/**
+	 * this method will return the price that subscribers must pay per month
+	 * @return this will return the price that subscribers must pay per month
+	 */
 	public int getAbonneeTarief(){
 		return abonneeTarief;
 	}
+	
+	/**
+	 * This method will set the price that cars that has to pay must pay per half hour
+	 * @param normaalTarief this will set the price per half hour that has to be paid by adHocCars, HandiCars and ResCars
+	 */
 	public void setNormaalTarief(int normaalTarief){
 		this.normaalTarief = normaalTarief;
 	}
+	
+	/**
+	 * This method will return the price that cars has to pay per half hour
+	 * @return this will return the price that cars has to pay per half hour
+	 */
 	public int getNormaalTarief(){
 		return normaalTarief;
 	}
+	
+	/** 
+	 * this method will set the price for reservations, reservations pay the normal price + a reservation fee
+	 * @param reserveringTarief this will set the amount reservations has to pay extra
+	 */
 	public void setReserveringTarief(int reserveringTarief){
 		this.reserveringTarief = reserveringTarief;
 	}
+	
+	/**
+	 * this method will return the price reservations has to pay extra
+	 * @return this will return the price that reservations has to pay extra
+	 */
 	public int getReserveringTarief(){
 		return reserveringTarief;
 	}
+	
+	
 	public void setGraphButtonInput(String buttonOption) {
 		this.buttonOption = buttonOption;
 	}
@@ -1081,6 +1451,7 @@ public class Model extends AbstractModel implements Runnable {
 	public boolean isRunning() {
 		return run;
 	}
+
 	public boolean isInSim() {
 		return inSim;
 	}

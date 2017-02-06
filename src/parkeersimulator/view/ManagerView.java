@@ -8,6 +8,12 @@ import parkeersimulator.model.Model;
 import java.awt.*;
 import java.util.HashMap;
 
+
+/**draws the managerView
+ * 
+ * @author reneb
+ *@version 2017-02-06
+ */
 @SuppressWarnings("serial")
 public class ManagerView extends AbstractView {
 
@@ -23,6 +29,10 @@ public class ManagerView extends AbstractView {
 	
 	HashMap<String, Integer> carCounter;
 
+	/**
+	 * 
+	 * @param model This is the model
+	 */
 	public ManagerView(Model model) {
 
 		super(model);
@@ -81,6 +91,9 @@ public class ManagerView extends AbstractView {
 	    setVisible(true);
 	}
 
+	/**
+	 * This method updates the View
+	 */
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);

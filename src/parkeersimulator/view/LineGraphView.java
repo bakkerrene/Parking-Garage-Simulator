@@ -17,6 +17,13 @@ import javax.swing.JLabel;
 
 import parkeersimulator.model.Model;
 
+/**
+ * Draws the Graph in the model
+ * 
+ * @author Rene Bakker
+ * @version 2017-02-06
+ *
+ */
 @SuppressWarnings("serial")
 public class LineGraphView extends AbstractView {
 	
@@ -74,6 +81,10 @@ public class LineGraphView extends AbstractView {
 		diff = 18;
 	}
 
+	/**
+	 * 
+	 * @param model This is the model
+	 */
 	public LineGraphView(Model model) {
 		super(model);
 		init();
@@ -172,6 +183,13 @@ public class LineGraphView extends AbstractView {
         }
     }
 
+    
+    /**
+     * Draws the graph
+     * @param g2 This is a {@link Graphics2D} Method from the java.awt package
+     * @param list This is a list with data from the paintComponent method
+     * @param lineColor This is the color that will be used to draw the graph
+     */
 	private void drawGraph(Graphics2D g2, List<Integer> list, Color lineColor) {
         
 		double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (list.size() - 1);
