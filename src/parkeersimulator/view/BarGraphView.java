@@ -11,7 +11,7 @@ import parkeersimulator.model.Model;
 public class BarGraphView extends AbstractView {
 
 	private int totalPlaces;
-	HashMap<String, Integer> carCounter;
+	private HashMap<String, Integer> carCounter;
 
 	public BarGraphView(Model model) {
 		super(model);
@@ -33,7 +33,6 @@ public class BarGraphView extends AbstractView {
 		int topFree = (int) (height - freeSpots);
 
 		int nonFreeSpots = (int) ((height / totalPlaces) * y);
-
 
 		int redCount = carCounter.get("adhoc");
 		int blueCount = carCounter.get("pass");

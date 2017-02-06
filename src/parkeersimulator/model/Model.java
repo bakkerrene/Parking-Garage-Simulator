@@ -71,7 +71,7 @@ public class Model extends AbstractModel implements Runnable {
 	private int freeAdHocSpots = 0;
 
     private int abonneesMax = 50;
-    private int reserveringMax = 15;
+    private int reserveringMax = 250;
     private int percentageHandicap = 2;
     private int abonneeTarief = 10;
     private int normaalTarief = 1;
@@ -87,10 +87,15 @@ public class Model extends AbstractModel implements Runnable {
     private int tickCount = 0;
     private int tickPause = 100;
 
-    int weekDayArrivals = 100; // average number of arriving cars per hour
-    int weekendArrivals = 200; // average number of arriving cars per hour
+    int weekDayAdArrivals = 100; // average number of arriving cars per hour
+    int weekendAdArrivals = 70; // average number of arriving cars per hour
+    int eventAdArrivals = 300; // average number of arriving cars per hour on events
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
+    int eventPassArrivals = 20; 
+    int weekDayResArrivals = 20;
+    int weekendResArrivals = 50;
+    int eventResArrivals = 300;
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
@@ -652,7 +657,7 @@ public class Model extends AbstractModel implements Runnable {
     	}
     }
 
-    private int getNumberOfCars(String test) {
+    private int getNumberOfCars(String type) {
 
         // Get the average number of cars that arrive per hour.
         int averageNumberOfCarsPerHour = 100;
@@ -662,31 +667,48 @@ public class Model extends AbstractModel implements Runnable {
         if (hour < 6) {
         	averageNumberOfCarsPerHour = 20;
         }
-        else {
-        	if(test == "PASS") {
-        		if (weekDay > 4) {
-        			averageNumberOfCarsPerHour = 10;
+        else {        	
+        	if(type == "PASS") {
+        		
+        		if (weekDay <= 4) {
+        			averageNumberOfCarsPerHour = weekDayPassArrivals;
+        		}
+        		else if ((weekDay >= 3 && weekDay < 6 && hour >= 18) || (weekDay == 6 && hour >= 12 && hour < 18)) {
+        			averageNumberOfCarsPerHour = eventPassArrivals;
+        		} 
+        		else {
+        			averageNumberOfCarsPerHour = weekendPassArrivals;
+        		}
+        	}        	        	
+        	if(type == "HOC" || type =="HANDI") {
+        		//Donderdag, Vrijdag, Zaterdag Avond dus normale autos & reserveringen
+        		if ((weekDay >= 3 && weekDay < 6 && hour >= 18) || (weekDay == 6 && hour >= 12 && hour < 18)) {
+        			averageNumberOfCarsPerHour = eventAdArrivals;
+        		}
+        		// normale zaterdag uren voor normale autos
+        		else if(weekDay <= 4){
+        			averageNumberOfCarsPerHour = weekDayAdArrivals;
+        		}
+        		else {
+        			averageNumberOfCarsPerHour = weekendAdArrivals;
         		}
         	}
-        	if(test == "HOC") {
-        		//Donderdag, Vrijdag, Zaterdag Avond dus normale autos & reserveringen
-        		if (weekDay >= 3 && weekDay < 6 && hour >= 18) {
-        			averageNumberOfCarsPerHour = 200;
+        	if (type == "RES") {
+        		if ((weekDay >= 3 && weekDay < 6 && hour >= 18) || (weekDay == 6 && hour >= 12 && hour < 18)) {
+        			averageNumberOfCarsPerHour = eventResArrivals;
         		}
-        		// normale zaterdag uren voor normale autos
-        		else if(weekDay == 5){
-        			averageNumberOfCarsPerHour = 50;
+        		else if(weekDay <= 4){
+        			averageNumberOfCarsPerHour = weekDayResArrivals;
         		}
-        		// theater op zondag middag dus normale autos & reserveringen
-        		else if (weekDay == 6 && hour >= 12 && hour < 18) {
-        			averageNumberOfCarsPerHour = 200;
-        		}
-        		// normale zaterdag uren voor normale autos
-        		else if (weekDay == 6 && hour >= 6) {
-        			averageNumberOfCarsPerHour = 50;
+        		else {
+        			averageNumberOfCarsPerHour = weekendResArrivals;
         		}
         	}
         }
+        
+        
+        
+        
         averageNumberOfCarsPerHour *= multiplier;
 
         // Calculate the number of cars that arrive this minute.

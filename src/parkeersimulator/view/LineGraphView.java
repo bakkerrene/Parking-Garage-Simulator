@@ -124,15 +124,19 @@ public class LineGraphView extends AbstractView {
        		int maxValueRes = Collections.max(resCarData);
        		int maxValueHandi = Collections.max(handiCarData);
        	
-       		if (maxValueHoc > maxValuePass || maxValueHoc > maxValueRes) {
+       		if (maxValueHoc > maxValuePass && maxValueHoc > maxValueRes && maxValueHoc > maxValueHandi) {
        			maxValue = maxValueHoc;
        		}
-       		else if (maxValuePass > maxValueRes) {
+       		else if (maxValuePass > maxValueRes && maxValuePass > maxValueHandi) {
        			maxValue = maxValuePass;
        		}
-       		else {
+       		else if (maxValueRes > maxValueHandi) {
        			maxValue = maxValueRes;
        		}
+       		else {
+       			maxValue = maxValueHandi;
+       		}
+       		
        		drawGraph(g2, hocCarData, hocCarLine);
        		drawGraph(g2, passCarData, passCarLine);
        		drawGraph(g2, resCarData, resCarLine);

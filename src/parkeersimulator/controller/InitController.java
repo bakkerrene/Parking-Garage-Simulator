@@ -17,7 +17,7 @@ public class InitController extends AbstractController implements ActionListener
 	private JLabel norTa, resTa;
 
 	private JLabel label;
-	private JPanel panel;
+	private JLabel labelFiller;
 
 	private JFormattedTextField multiplierAmount;
 	private JFormattedTextField aantalReserveringen;
@@ -34,6 +34,16 @@ public class InitController extends AbstractController implements ActionListener
 
     private JButton initButton;
     private JButton resetValues;
+    
+    private double defaultMultiplier = model.getMultiplier() * 100;
+    private int defaultReservering = model.getReservering();
+    private int defaultAbonnees = model.getAbonnees();
+    private int defaultAboneeTarief = model.getAbonneeTarief();
+    private int defaultNormaalTarief = model.getNormaalTarief();
+    private int defaultReserveringTarief = model.getReserveringTarief();
+    private int defaultHandicapPercentage = model.getHandicapPercentage();
+    
+    
 
     private void initFocusListener(JFormattedTextField textField)
     {
@@ -51,13 +61,13 @@ public class InitController extends AbstractController implements ActionListener
 
     private void setDefaultValues() {
 
-        model.setMultiplier(100);
-        model.setReservering(15);
-        model.setAbonnees(50);
-        model.setAbonneeTarief(10);
-        model.setNormaalTarief(1);
-        model.setReserveringTarief(10);
-        model.setHandicapPercentage(2);
+        model.setMultiplier(defaultMultiplier);
+        model.setReservering(defaultReservering);
+        model.setAbonnees(defaultAbonnees);
+        model.setAbonneeTarief(defaultAboneeTarief);
+        model.setNormaalTarief(defaultNormaalTarief);
+        model.setReserveringTarief(defaultReserveringTarief);
+        model.setHandicapPercentage(defaultHandicapPercentage);
 
         updateTextFieldValues();
     }
@@ -102,7 +112,7 @@ public class InitController extends AbstractController implements ActionListener
     	initFocusListener(normaalTarief);
     	initFocusListener(reserveringsTarief);
 
-    	setDefaultValues();
+
 
     	initButton = new JButton("Verstuur");
     	initButton.addActionListener(this);
@@ -122,25 +132,28 @@ public class InitController extends AbstractController implements ActionListener
 		setLayout(boxLayout);
 
 		label = new JLabel("Waarden");
+		labelFiller = new JLabel(" ");
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(label);
+		add(labelFiller);
+		
+		
 
-    	panel = new JPanel();
 		GridLayout gridLayout = new GridLayout(0,2);
-		panel.setLayout(gridLayout);
+		setLayout(gridLayout);
 
-		panel.add(multiplier); panel.add(multiplierAmount);
-		panel.add(maxRes); panel.add(aantalReserveringen);
-		panel.add(maxAbo); panel.add(aantalAbonnees);
-		panel.add(perInv); panel.add(percentageInvalidenplekken);
-		panel.add(aboTa); panel.add(abonneeTarief);
-		panel.add(norTa); panel.add(normaalTarief);
-		panel.add(resTa); panel.add(reserveringsTarief);
-		panel.add(lblWeek); panel.add(resWeek);
-		panel.add(lblDag); panel.add(resDag);
-		panel.add(lblUur); panel.add(resUur);
-		panel.add(initButton); panel.add(resetValues);
-		add(panel);
+		add(multiplier); add(multiplierAmount);
+		add(maxRes); add(aantalReserveringen);
+		add(maxAbo); add(aantalAbonnees);
+		add(perInv); add(percentageInvalidenplekken);
+		add(aboTa); add(abonneeTarief);
+		add(norTa); add(normaalTarief);
+		add(resTa); add(reserveringsTarief);
+		add(lblWeek); add(resWeek);
+		add(lblDag); add(resDag);
+		add(lblUur); add(resUur);
+		add(initButton); add(resetValues);
+    	setDefaultValues();
 
     	setVisible(true);
     }
@@ -162,7 +175,6 @@ public class InitController extends AbstractController implements ActionListener
 				int dag = resDag.getSelectedIndex();
 				int uur = resUur.getSelectedIndex();
 				model.setSpecialReservering(getResWeek(), dag, uur);
-				model.reset();
 			} else if (sourceObject == resetValues) {
 				model.playSound("button.wav");
 				
@@ -206,20 +218,22 @@ public class InitController extends AbstractController implements ActionListener
 		return Integer.parseInt(resWeek.getText());
 	}
 
+	/**
 	private void enableOrDisable(boolean value) {
-		multiplierAmount.setEnabled(value);
+		multiplier.setEnabled(value);
 		aantalReserveringen.setEnabled(value);
 		aantalAbonnees.setEnabled(value);
 		percentageInvalidenplekken.setEnabled(value);
 		abonneeTarief.setEnabled(value);
 		normaalTarief.setEnabled(value);
 		reserveringsTarief.setEnabled(value);
-	    initButton.setEnabled(value);
-	    resetValues.setEnabled(value);
+	    //initButton.setEnabled(value);
+
 	    resWeek.setEnabled(value);;
 	    resDag.setEnabled(value);;
 	    resUur.setEnabled(value);;
 	}
+	
 
 	public void simStarted() {
 		enableOrDisable(false);
@@ -228,8 +242,7 @@ public class InitController extends AbstractController implements ActionListener
 	public void simStopped() {
 		enableOrDisable(true);
 	}
+	*/
 
-	public void spotsChanged() {
-		updateTextFieldValues();
-	}
+
 }

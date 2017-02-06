@@ -10,10 +10,18 @@ import parkeersimulator.model.Model;
 @SuppressWarnings("serial")
 public class PieView extends AbstractView {
 	
-	HashMap<String, Integer> carCounter;
-
+	private HashMap<String, Integer> carCounter;
+	private int total;
+	
+    private Color hocCarColor = new Color(255, 0, 0);
+    private Color passCarColor = new Color(0, 0, 255);
+    private Color resCarColor = new Color(255, 255, 0);
+    private Color handiCarColor = new Color(0, 255, 0);
+	
 	public PieView(Model model) {
+		
 		super(model);
+		total = model.getNumberOfOpenSpots();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -37,7 +45,6 @@ public class PieView extends AbstractView {
 			yellowCount++;
 		}
 
-		double total = whiteCount + redCount + blueCount + greenCount + yellowCount;
 		double percent = 360.0 / total;
 
 		whiteCount = (int) (percent * whiteCount);
@@ -52,16 +59,16 @@ public class PieView extends AbstractView {
 		g.setColor(Color.WHITE);
 		g.fillArc(10, 10, 180, 180, sum, whiteCount);
 		sum += whiteCount;
-		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_AD_HOC));
+		g.setColor(hocCarColor);
 		g.fillArc(10, 10, 180, 180, sum, redCount);
 		sum += redCount;
-		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_PASS));
+		g.setColor(passCarColor);
 		g.fillArc(10, 10, 180, 180, sum, blueCount);
 		sum += blueCount;
-		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_HANDI));
+		g.setColor(handiCarColor);
 		g.fillArc(10, 10, 180, 180, sum, greenCount);
 		sum += greenCount;
-		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_RES));
+		g.setColor(resCarColor);
 		g.fillArc(10, 10, 180, 180, sum, yellowCount);
 	}	
 }

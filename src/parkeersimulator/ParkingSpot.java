@@ -20,7 +20,7 @@ public class ParkingSpot {
 	    car = null;
 	}
 
-	public static Color getColorForType(int type) {
+	public static Color getColorForType(int type) {//alle kleuren wijzen hiernaartoe??
     	switch (type) {
     	case TYPE_AD_HOC:
     		return new Color(255, 255, 255, 255);
@@ -29,7 +29,7 @@ public class ParkingSpot {
     	case TYPE_HANDI:
     		return new Color(0, 255, 0, 64);
     	case TYPE_RES:
-    		return new Color(255, 255, 0, 64);
+    		return new Color(255, 255, 0, 64); 
     	}
     	return Color.black;
 	}
