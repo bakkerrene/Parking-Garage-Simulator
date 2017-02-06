@@ -193,10 +193,6 @@ public class Model extends AbstractModel implements Runnable {
 	    }
 	}
 	
-	public int getSpotCountForType(int type) {
-		return spotCountPerType[type];
-	}
-
 	private void addSpotsOfType(int type, int count) {
 		for (int x = 0; x < count; x++) {
 			Location location = getFirstFreeTypeLocation(ParkingSpot.TYPE_AD_HOC);
@@ -258,147 +254,6 @@ public class Model extends AbstractModel implements Runnable {
 	    exitSpeed = 5; // number of cars that can leave per minute
 	}
 	
-    public void setEnterSpeed(int value) {
-    	enterSpeed = value;
-    }
-    public int getEnterSpeed() {
-    	return enterSpeed;
-    }
-    public void setpaymentSpeed(int value) {
-    	paymentSpeed = value;
-    }
-    public int getpaymentSpeed() {
-    	return paymentSpeed;
-    }
-    public void setExitSpeed(int value) {
-    	exitSpeed = value;
-    }
-    public int getExitSpeed() {
-    	return exitSpeed;
-    }
-    public void setWeekDayAdArrivals(int value) {
-    	weekDayAdArrivals = value;
-    }
-    public int getWeekDayAdArrivals() {
-    	return weekDayAdArrivals;
-    }    
-    public void setWeekendAdArrivals(int value) {
-    	weekendAdArrivals = value;
-    }
-    public int getWeekendAdArrivals() {
-    	return weekendAdArrivals;
-    } 
-    public void seteventAdArrivals(int value) {
-    	eventAdArrivals = value;
-    }
-    public int geteventAdArrivals() {
-    	return eventAdArrivals;
-    } 
-        
-    public void setWeekDayPassArrivals(int value) {
-    	weekDayPassArrivals = value;
-    }
-    public int getWeekDayPassArrivals() {
-    	return weekDayPassArrivals;
-    }    
-    public void setWeekendPassArrivals(int value) {
-    	weekendPassArrivals = value;
-    }
-    public int getWeekendPassArrivals() {
-    	return weekendPassArrivals;
-    } 
-    public void seteventPassArrivals(int value) {
-    	eventPassArrivals = value;
-    }
-    public int geteventPassArrivals() {
-    	return eventPassArrivals;
-    } 
-    
-    public void setWeekDayResArrivals(int value) {
-    	weekDayResArrivals = value;
-    }
-    public int getWeekDayResArrivals() {
-    	return weekDayResArrivals;
-    }    
-    public void setWeekendResArrivals(int value) {
-    	weekendResArrivals = value;
-    }
-    public int getWeekendResArrivals() {
-    	return weekendResArrivals;
-    } 
-    public void seteventResArrivals(int value) {
-    	eventResArrivals = value;
-    }
-    public int geteventResArrivals() {
-    	return eventResArrivals;
-    } 
-	
-	public CarQueue getEntranceCarQueueNr() {
-		return entranceCarQueue;
-	}
-
-	public CarQueue getEntrancePassQueueNr() {
-		return entrancePassQueue;
-	}
-
-	public CarQueue getPaymentCarQueueNr() {
-		return paymentCarQueueExtra;
-	}
-
-	public CarQueue exitCarQueueNr() {
-		return exitCarQueue;
-	}	
-
-	public CarQueue getmissedCars() {
-		return missedCars;
-	}
-
-	public Dimension getSize() {
-		size = new Dimension(800, 400);
-		return  size;
-	}
-
-	public void setSize(Dimension size) {
-		this.size = size;
-	}
-
-	public Image getCarParkImage() {
-		return carParkImage;
-	}
-
-	public void setCarParkImage(Image image) {
-		this.carParkImage = image;
-	}
-
-	public int getNumberOfFloors() {
-		return numberOfFloors;
-	}
-
-	public int getNumberOfRows() {
-		return numberOfRows;
-	}
-
-	public int getNumberOfPlaces() {
-		return numberOfPlaces;
-	}
-
-	public int getNumberOfOpenSpots() {
-		return numberOfOpenSpots;
-	}
-
-	public int getTotalSpotCount() {
-		return numberOfFloors*numberOfRows*numberOfPlaces;
-	}
-	
-	public HashMap<String, Integer> getTotalCars() {
-		carCounter = new HashMap<>();
-		carCounter.put("adhoc", totalAdhocCar);
-		carCounter.put("pass", totalPassCar);
-		carCounter.put("handi", totalHandiCar);
-		carCounter.put("res", totalRessCar);
-		return carCounter;
-	}
-
 	private void internalSetSpotType(Location location, int type) {
 		ParkingSpot spot = getParkingSpotAt(location);
 		spotCountPerType[spot.getType()]--;
@@ -473,12 +328,7 @@ public class Model extends AbstractModel implements Runnable {
         return car;
     }
 
-    public void setSelectedSpotType(int type) {
-    	selectedSpotType = type;
-    }
-    public int getSelectedSpotType() {
-    	return selectedSpotType;
-    }
+
 
 	public void clickedSpot(Location location) {
 		if (isRunning())
@@ -499,78 +349,6 @@ public class Model extends AbstractModel implements Runnable {
 	    specialResDag = resDag;
 	    specialResUur = resUur;
 	}
-
-    public void setTickPause(int tickPause) {
-    	this.tickPause = tickPause;
-    }
-
-    public int getTickPause(){
-    	return tickPause;
-    }
-    
-    public void setMultiplier(double multiplier) {
-    	this.multiplier = multiplier / 100.0;
-    }
-    
-    public double getMultiplier() {
-    	return multiplier;
-    }
-
-    public void setAbonnees(int abonnees){
-    	this.abonneesMax = abonnees;
-    }
-
-    public int getAbonnees(){
-		return abonneesMax;
-    }
-
-    public void setReservering(int reservering){
-    	this.reserveringMax = reservering;
-    }
-
-    public int getReservering(){
-		return reserveringMax;
-    }
-
-    public void setHandicapPercentage(int percentageHandicap){
-    	this.percentageHandicap = percentageHandicap;
-    }
-
-    public int getHandicapPercentage(){
-		return percentageHandicap;
-    }
-
-    public void setAbonneeTarief(int abonneeTarief){
-    	this.abonneeTarief = abonneeTarief;
-    }
-
-    public int getAbonneeTarief(){
-		return abonneeTarief;
-    }
-
-    public void setNormaalTarief(int normaalTarief){
-    	this.normaalTarief = normaalTarief;
-    }
-
-    public int getNormaalTarief(){
-		return normaalTarief;
-    }
-
-    public void setReserveringTarief(int reserveringTarief){
-    	this.reserveringTarief = reserveringTarief;
-    }
-
-    public int getReserveringTarief(){
-		return reserveringTarief;
-    }
-    
-    public void setGraphButtonInput(String buttonOption) {
-    	this.buttonOption = buttonOption;
-    }
-    
-    public String getGraphButtonInput() {
-    	return buttonOption;
-    }
 
     private Location getFirstFreeTypeLocation(int type) {
     	if(type == ParkingSpot.TYPE_AD_HOC && freeAdHocSpots <= resTimeList.size()) {
@@ -689,27 +467,6 @@ public class Model extends AbstractModel implements Runnable {
         //while (day > 6) {
             //day -= 7;
         //}
-    }
-
-    public String getTime() {
-    	String strMinute = ("" + minute);
-    	String strHour = ("" + hour);
-    	if(minute < 10) {
-    		strMinute = ("0"+ strMinute);
-    	}
-    	if(hour < 10) {
-    		strHour = ("0"+ strHour);
-    	}
-    	
-    	return (strHour + ":" + strMinute);
-    }
-
-    public String getDay() {
-    	return weekDayStrings[day%7];
-    }
-    
-    public int getHour(){
-    	return hour;
     }
 
 	private void addArrivingCars(int numberOfCars, int type) throws ParkeerException {
@@ -892,102 +649,6 @@ public class Model extends AbstractModel implements Runnable {
         }
     }
 
-    private void setMoneyWeek(int moneyLastDayP) {
-    	int moneyLastDay = moneyLastDayP;
-    	moneyLastWeek = 0;
-    	//money last hour
-    	if (moneyWeekList.size() >= 7) {
-    		moneyWeekList.remove(0);
-    		moneyWeekList.add(moneyLastDay);
-    	}
-    	else {
-    		moneyWeekList.add(moneyLastDay);
-    	}
-    	
-    	for(Integer countWeek : moneyWeekList) {
-    		moneyLastWeek += countWeek;
-    	}
-    }
-
-    private void setMoneyDay(int moneyLastHourP) {
-    	int moneyLastHour = moneyLastHourP;
-    	moneyLastDay = 0;
-    	//money last hour
-    	if (moneyDayList.size() >= 24) {
-    		moneyDayList.remove(0);
-    		moneyDayList.add(moneyLastHour);
-    	}
-    	else {
-    		moneyDayList.add(moneyLastHour);
-    	}
-    	
-    	for(Integer countDay : moneyDayList) {
-    		moneyLastDay += countDay;
-    	}
-    	
-    	if (hour == 0) {
-    		setMoneyWeek(moneyLastDay);
-    	}
-    }
-
-    private void setMoneyHour(int moneyCounter) {
-    	int moneyLastMinute = moneyCounter;
-    	moneyLastHour = 0;
-    	//money last hour
-    	if (moneyHourList.size() >= 60) {
-    		moneyHourList.remove(0);
-    		moneyHourList.add(moneyLastMinute);
-    	}
-    	else {
-    		moneyHourList.add(moneyLastMinute);
-    	}
-    	
-    	for(Integer countHour : moneyHourList) {
-    		moneyLastHour += countHour;
-    	}
-    	
-    	if (minute == 0) {
-    		setMoneyDay(moneyLastHour);
-    	}
-    }
-
-    public int getMoneyLastHour() {
-    	return moneyLastHour;
-    }
-
-    public int getMoneyLastDay() {
-    	return moneyLastDay;
-    }
-
-    public int getMoneyLastWeek() {
-    	return moneyLastWeek;
-    }
-
-    public int getMoneyInGarage() {
-    	int allCarPrice = 0;
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    AbstractCar car = getCarAt(location);
-                    if (car != null) {
-                    	if (car.getHasToPay() == true) {
-                    		int totalMinutes = car.getTotalMinutes();
-                    		int perCarPrice = totalMinutes / 30;
-                        
-                    		if ((perCarPrice % 30) != 0) {
-                    			perCarPrice = perCarPrice + 1;
-                    		}
-                    		perCarPrice *= normaalTarief;
-                    		allCarPrice += perCarPrice;
-                    	}
-                    }
-                }
-            }
-        }
-        return allCarPrice;
-    }
-
     private void carsPaying(){
         // Let cars pay.
     	int i=0;
@@ -1145,6 +806,302 @@ public class Model extends AbstractModel implements Runnable {
 			notifyViews();
 		}
 		for(AbstractController c: controllers) c.runStopped();
+	}
+	
+	
+	public HashMap<String, Integer> getTotalCars() {
+		carCounter = new HashMap<>();
+		carCounter.put("adhoc", totalAdhocCar);
+		carCounter.put("pass", totalPassCar);
+		carCounter.put("handi", totalHandiCar);
+		carCounter.put("res", totalRessCar);
+		return carCounter;
+	}
+	
+	public String getTime() {
+    	String strMinute = ("" + minute);
+    	String strHour = ("" + hour);
+    	if(minute < 10) {
+    		strMinute = ("0"+ strMinute);
+    	}
+    	if(hour < 10) {
+    		strHour = ("0"+ strHour);
+    	}
+    	
+    	return (strHour + ":" + strMinute);
+    }
+    public String getDay() {
+    	return weekDayStrings[day%7];
+    }
+    public int getHour(){
+    	return hour;
+    }
+    private void setMoneyWeek(int moneyLastDayP) {
+    	int moneyLastDay = moneyLastDayP;
+    	moneyLastWeek = 0;
+    	//money last hour
+    	if (moneyWeekList.size() >= 7) {
+    		moneyWeekList.remove(0);
+    		moneyWeekList.add(moneyLastDay);
+    	}
+    	else {
+    		moneyWeekList.add(moneyLastDay);
+    	}
+    	
+    	for(Integer countWeek : moneyWeekList) {
+    		moneyLastWeek += countWeek;
+    	}
+    }
+    private void setMoneyDay(int moneyLastHourP) {
+    	int moneyLastHour = moneyLastHourP;
+    	moneyLastDay = 0;
+    	//money last hour
+    	if (moneyDayList.size() >= 24) {
+    		moneyDayList.remove(0);
+    		moneyDayList.add(moneyLastHour);
+    	}
+    	else {
+    		moneyDayList.add(moneyLastHour);
+    	}
+    	
+    	for(Integer countDay : moneyDayList) {
+    		moneyLastDay += countDay;
+    	}
+    	
+    	if (hour == 0) {
+    		setMoneyWeek(moneyLastDay);
+    	}
+    }
+    private void setMoneyHour(int moneyCounter) {
+    	int moneyLastMinute = moneyCounter;
+    	moneyLastHour = 0;
+    	//money last hour
+    	if (moneyHourList.size() >= 60) {
+    		moneyHourList.remove(0);
+    		moneyHourList.add(moneyLastMinute);
+    	}
+    	else {
+    		moneyHourList.add(moneyLastMinute);
+    	}
+    	
+    	for(Integer countHour : moneyHourList) {
+    		moneyLastHour += countHour;
+    	}
+    	
+    	if (minute == 0) {
+    		setMoneyDay(moneyLastHour);
+    	}
+    }    
+    public int getMoneyLastHour() {
+    	return moneyLastHour;
+    }
+    public int getMoneyLastDay() {
+    	return moneyLastDay;
+    }
+    public int getMoneyLastWeek() {
+    	return moneyLastWeek;
+    }
+    public int getMoneyInGarage() {
+    	int allCarPrice = 0;
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    AbstractCar car = getCarAt(location);
+                    if (car != null) {
+                    	if (car.getHasToPay() == true) {
+                    		int totalMinutes = car.getTotalMinutes();
+                    		int perCarPrice = totalMinutes / 30;
+                        
+                    		if ((perCarPrice % 30) != 0) {
+                    			perCarPrice = perCarPrice + 1;
+                    		}
+                    		perCarPrice *= normaalTarief;
+                    		allCarPrice += perCarPrice;
+                    	}
+                    }
+                }
+            }
+        }
+        return allCarPrice;
+    }
+    public void setSelectedSpotType(int type) {
+    	selectedSpotType = type;
+    }
+    public int getSelectedSpotType() {
+    	return selectedSpotType;
+    }
+	public int getSpotCountForType(int type) {
+		return spotCountPerType[type];
+	}
+	public void setEnterSpeed(int value) {
+		enterSpeed = value;
+	}
+	public int getEnterSpeed() {
+		return enterSpeed;
+	}
+	public void setpaymentSpeed(int value) {
+		paymentSpeed = value;
+	}
+	public int getpaymentSpeed() {
+		return paymentSpeed;
+	}
+	public void setExitSpeed(int value) {
+		exitSpeed = value;
+	}
+	public int getExitSpeed() {
+		return exitSpeed;
+	}
+	public void setWeekDayAdArrivals(int value) {
+		weekDayAdArrivals = value;
+	}
+	public int getWeekDayAdArrivals() {
+		return weekDayAdArrivals;
+	}    
+	public void setWeekendAdArrivals(int value) {
+		weekendAdArrivals = value;
+	}
+	public int getWeekendAdArrivals() {
+		return weekendAdArrivals;
+	} 
+	public void seteventAdArrivals(int value) {
+		eventAdArrivals = value;
+	}
+	public int geteventAdArrivals() {
+		return eventAdArrivals;
+	} 
+	public void setWeekDayPassArrivals(int value) {
+		weekDayPassArrivals = value;
+	}
+	public int getWeekDayPassArrivals() {
+		return weekDayPassArrivals;
+	}    
+	public void setWeekendPassArrivals(int value) {
+		weekendPassArrivals = value;
+	}
+	public int getWeekendPassArrivals() {
+		return weekendPassArrivals;
+	} 
+	public void seteventPassArrivals(int value) {
+		eventPassArrivals = value;
+	}
+	public int geteventPassArrivals() {
+		return eventPassArrivals;
+	} 
+	public void setWeekDayResArrivals(int value) {
+		weekDayResArrivals = value;
+	}
+	public int getWeekDayResArrivals() {
+		return weekDayResArrivals;
+	}    
+	public void setWeekendResArrivals(int value) {
+		weekendResArrivals = value;
+	}
+	public int getWeekendResArrivals() {
+		return weekendResArrivals;
+	} 
+	public void seteventResArrivals(int value) {
+		eventResArrivals = value;
+	}
+	public int geteventResArrivals() {
+		return eventResArrivals;
+	} 
+	public CarQueue getEntranceCarQueueNr() {
+		return entranceCarQueue;
+	}
+	public CarQueue getEntrancePassQueueNr() {
+		return entrancePassQueue;
+	}
+	public CarQueue getPaymentCarQueueNr() {
+		return paymentCarQueueExtra;
+	}
+	public CarQueue exitCarQueueNr() {
+		return exitCarQueue;
+	}
+	public CarQueue getmissedCars() {
+		return missedCars;
+	}
+	public Dimension getSize() {
+		size = new Dimension(800, 400);
+		return  size;
+	}
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
+	public Image getCarParkImage() {
+		return carParkImage;
+	}
+	public void setCarParkImage(Image image) {
+		this.carParkImage = image;
+	}
+	public int getNumberOfFloors() {
+		return numberOfFloors;
+	}
+	public int getNumberOfRows() {
+		return numberOfRows;
+	}
+	public int getNumberOfPlaces() {
+		return numberOfPlaces;
+	}
+	public int getNumberOfOpenSpots() {
+		return numberOfOpenSpots;
+	}
+	public int getTotalSpotCount() {
+		return numberOfFloors*numberOfRows*numberOfPlaces;
+	}
+	public void setTickPause(int tickPause) {
+		this.tickPause = tickPause;
+	}
+	public int getTickPause(){
+		return tickPause;
+	}
+	public void setMultiplier(double multiplier) {
+		this.multiplier = multiplier / 100.0;
+	}
+	public double getMultiplier() {
+		return multiplier;
+	}
+	public void setAbonnees(int abonnees){
+		this.abonneesMax = abonnees;
+	}
+	public int getAbonnees(){
+		return abonneesMax;
+	}
+	public void setReservering(int reservering){
+		this.reserveringMax = reservering;
+	}
+	public int getReservering(){
+		return reserveringMax;
+	}
+	public void setHandicapPercentage(int percentageHandicap){
+		this.percentageHandicap = percentageHandicap;
+	}
+	public int getHandicapPercentage(){
+		return percentageHandicap;
+	}
+	public void setAbonneeTarief(int abonneeTarief){
+		this.abonneeTarief = abonneeTarief;
+	}
+	public int getAbonneeTarief(){
+		return abonneeTarief;
+	}
+	public void setNormaalTarief(int normaalTarief){
+		this.normaalTarief = normaalTarief;
+	}
+	public int getNormaalTarief(){
+		return normaalTarief;
+	}
+	public void setReserveringTarief(int reserveringTarief){
+		this.reserveringTarief = reserveringTarief;
+	}
+	public int getReserveringTarief(){
+		return reserveringTarief;
+	}
+	public void setGraphButtonInput(String buttonOption) {
+		this.buttonOption = buttonOption;
+	}
+	public String getGraphButtonInput() {
+		return buttonOption;
 	}
 }
 
