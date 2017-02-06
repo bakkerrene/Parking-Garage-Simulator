@@ -161,7 +161,7 @@ public class InitController extends AbstractController implements ActionListener
     	eventResArrivals = new JFormattedTextField();
     	
 
-        lblWeek = new JLabel("Reservering");
+        lblWeek = new JLabel(" Reservering (W:D:H)");
         //lblDag = new JLabel("Reservering Dag");
         //lblUur = new JLabel("Reservering Uur");
 
@@ -235,19 +235,16 @@ public class InitController extends AbstractController implements ActionListener
 		
 		a.setLayout(gridLayout1);
 
-		a.add(multiplier); a.add(multiplierAmount); a.add(weekDayAd); a.add(weekDayAdArrivals);
-		a.add(maxRes); a.add(aantalReserveringen); a.add(weekendAd); a.add(weekendAdArrivals);
-		a.add(maxAbo); a.add(aantalAbonnees); a.add(eventAd); a.add(eventAdArrivals);
-		a.add(perInv); a.add(percentageInvalidenplekken); a.add(weekDayPass); a.add(weekDayPassArrivals);
-		a.add(aboTa); a.add(abonneeTarief); a.add(weekendPass); a.add(weekendPassArrivals);
-		a.add(norTa); a.add(normaalTarief); a.add(eventPass); a.add(eventPassArrivals);
-		a.add(resTa); a.add(reserveringsTarief); a.add(weekDayRes); a.add(weekDayResArrivals);
-		a.add(queueEnter); a.add(enterSpeed); a.add(weekendRes); a.add(weekendResArrivals);
-		a.add(queuePayment); a.add(paymentSpeed); a.add(eventRes); a.add(eventResArrivals);
-		a.add(queueExit); a.add(exitSpeed); 
+		a.add(multiplier); a.add(multiplierAmount); a.add(queueEnter); a.add(enterSpeed);  a.add(weekDayPass); a.add(weekDayPassArrivals);
+		a.add(maxRes); a.add(aantalReserveringen); a.add(queuePayment); a.add(paymentSpeed); a.add(weekendPass); a.add(weekendPassArrivals);
+		a.add(maxAbo); a.add(aantalAbonnees); a.add(queueExit); a.add(exitSpeed);  a.add(eventPass); a.add(eventPassArrivals);
+		a.add(perInv); a.add(percentageInvalidenplekken); a.add(weekDayAd); a.add(weekDayAdArrivals); a.add(weekDayRes); a.add(weekDayResArrivals);
+		a.add(norTa); a.add(normaalTarief); a.add(weekendAd); a.add(weekendAdArrivals);  a.add(weekendRes); a.add(weekendResArrivals);
+		a.add(resTa); a.add(reserveringsTarief); a.add(eventAd); a.add(eventAdArrivals);  a.add(eventRes); a.add(eventResArrivals);
+		a.add(aboTa); a.add(abonneeTarief); a.add(lblWeek); a.add(resWeek); a.add(resDag); a.add(resUur);
 		
-		a.add(lblWeek); a.add(resWeek); a.add(resDag); a.add(resUur);
-		
+		 
+		 
 		b.setLayout(gridLayout2);
 		b.add(initButton); b.add(resetValues);
 		add(a);
