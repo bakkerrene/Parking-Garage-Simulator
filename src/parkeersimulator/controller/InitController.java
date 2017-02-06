@@ -199,40 +199,38 @@ public class InitController extends AbstractController implements ActionListener
     	resetValues = new JButton("Reset Waarden");
     	resetValues.addActionListener(this);
 
-    	multiplier = new JLabel("Vermenigvuldiger (%)");
- 		maxRes = new JLabel("Reserveringen");
- 		maxAbo = new JLabel("Abonnees");
- 		perInv = new JLabel("Invaliden (%)");
- 		aboTa = new JLabel("Abonnee Tarief");
- 		norTa = new JLabel("Normaal Tarief");
- 		resTa = new JLabel("Reservering Tarief");
- 		queueEnter = new JLabel("Enter Speed");
- 		queuePayment = new JLabel("Betaal Snelheid");
- 		queueExit = new JLabel("Exit Speed");
- 		weekDayAd = new JLabel("WeekDayAd");
- 		weekendAd = new JLabel("weekendAd");
- 		eventAd = new JLabel("eventAd");
- 		weekDayPass = new JLabel("WeekDayPass");
- 		weekendPass = new JLabel("weekendPass");
- 		eventPass = new JLabel("eventPass");
- 		weekDayRes = new JLabel("WeekDayRes");
- 		weekendRes = new JLabel("weekendRes");
- 		eventRes = new JLabel("eventRes");
+    	multiplier = new JLabel(" Vermenigvuldiger (%)");
+ 		maxRes = new JLabel(" Reserveringen");
+ 		maxAbo = new JLabel(" Abonnees");
+ 		perInv = new JLabel(" Invaliden (%)");
+ 		aboTa = new JLabel(" Abonnee Tarief");
+ 		norTa = new JLabel(" Normaal Tarief");
+ 		resTa = new JLabel(" Reservering Tarief");
+ 		queueEnter = new JLabel(" Enter Speed");
+ 		queuePayment = new JLabel(" Betaal Snelheid");
+ 		queueExit = new JLabel(" Exit Speed");
+ 		weekDayAd = new JLabel(" WeekDayAd");
+ 		weekendAd = new JLabel(" WeekendAd");
+ 		eventAd = new JLabel(" EventAd");
+ 		weekDayPass = new JLabel(" WeekDayPass");
+ 		weekendPass = new JLabel(" WeekendPass");
+ 		eventPass = new JLabel(" EventPass");
+ 		weekDayRes = new JLabel(" WeekDayRes");
+ 		weekendRes = new JLabel(" WeekendRes");
+ 		eventRes = new JLabel(" EventRes");
  		filler1 = new JLabel("");
  		filler2 = new JLabel("");
 
     	BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(boxLayout);
 
-		label = new JLabel("Waarden");
-		label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(label);
+
 
 		
 		
 		a = new JPanel();
 		b = new JPanel();
-		GridLayout gridLayout1 = new GridLayout(0,4);
+		GridLayout gridLayout1 = new GridLayout(0,6);
 		GridLayout gridLayout2 = new GridLayout(0,2);
 		
 		a.setLayout(gridLayout1);
@@ -246,7 +244,7 @@ public class InitController extends AbstractController implements ActionListener
 		a.add(resTa); a.add(reserveringsTarief); a.add(weekDayRes); a.add(weekDayResArrivals);
 		a.add(queueEnter); a.add(enterSpeed); a.add(weekendRes); a.add(weekendResArrivals);
 		a.add(queuePayment); a.add(paymentSpeed); a.add(eventRes); a.add(eventResArrivals);
-		a.add(queueExit); a.add(exitSpeed); a.add(filler1); a.add(filler2);
+		a.add(queueExit); a.add(exitSpeed); 
 		
 		a.add(lblWeek); a.add(resWeek); a.add(resDag); a.add(resUur);
 		

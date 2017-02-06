@@ -55,6 +55,8 @@ public class MvcSimulator  {
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabbedPane.setBounds(10, 579, 800, 240);
 		screen.getContentPane().add(tabbedPane);
+				initController = new InitController(model);
+				tabbedPane.addTab("Init Controller", null, initController, null);
 				lineGraphView = new LineGraphView(model);
 				tabbedPane.addTab("Lijndiagram", null, lineGraphView, null);
 				graphController = new GraphController(model);
@@ -79,9 +81,6 @@ public class MvcSimulator  {
 
 						screen.getContentPane().add(managerView);
 						managerView.setBackground(SystemColor.control);
-						initController = new InitController(model);
-						initController.setBounds(848, 561, 486, 324);
-						screen.getContentPane().add(initController);
 						queueView = new QueueView(model);
 						queueView.setBounds(820, 120, 235, 200);
 						screen.getContentPane().add(queueView);
