@@ -40,7 +40,7 @@ public class BarGraphView extends AbstractView {
 		int greenCount = carCounter.get("handi");
 		int yellowCount = carCounter.get("res");
 
-		int topNonFreeRed = (int) (totalPlaces / height - redCount);
+		double topNonFreeRed = (height - redCount);
 		int topNonFreeBlue = (int) (height - blueCount);
 		int topNonFreeGreen = (int) (height - greenCount);
 		int topNonFreeYellow = (int) (height - yellowCount);
@@ -49,7 +49,7 @@ public class BarGraphView extends AbstractView {
 		g.fillRect(20, topFree, 20, freeSpots);
 
 		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_AD_HOC));
-		g.fillRect(60, topNonFreeRed, 20, totalPlaces);
+		g.fillRect(60, (int) topNonFreeRed, 20, nonFreeSpots);
 
 		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_PASS));
 		g.fillRect(100, topNonFreeBlue, 20, nonFreeSpots);

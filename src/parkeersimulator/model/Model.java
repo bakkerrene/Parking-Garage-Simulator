@@ -361,7 +361,7 @@ public class Model extends AbstractModel implements Runnable {
     	}
         AbstractCar car = spot.getCar();
         if (car == null) {
-            return null;
+            return null;	
         }
         spot.setCar(null);
         car.setLocation(null);
@@ -520,6 +520,7 @@ public class Model extends AbstractModel implements Runnable {
     		if(freeAdHocSpots > resTimeList.size()) {
     			int resTime = 24*60*resDay + 60*resHour + resMinute;
     			resTimeList.add(resTime);
+    			
     		}
     	}
     }
@@ -696,7 +697,7 @@ public class Model extends AbstractModel implements Runnable {
 
     private void carsArriving() {
     	int numberOfCars = 0;
-    	int sum = 0;
+    	int sum = 10;
     	if (percentageHandicap != 0) {
     		sum = 10;
     	}
