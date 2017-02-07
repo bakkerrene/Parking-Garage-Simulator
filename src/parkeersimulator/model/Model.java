@@ -580,9 +580,6 @@ public class Model extends AbstractModel implements Runnable {
             hour -= 24;
             day++;
         }
-        //while (day > 6) {
-            //day -= 7;
-        //}
     }
     
     private void tick() {
@@ -632,11 +629,8 @@ public class Model extends AbstractModel implements Runnable {
 			}
     	}
 
-        //double p = randomGen.nextDouble();
-        //if(p < 0.03) {
         for(int i = 0; i < getNumberOfCars("RES"); i++)
         	addReservering(day, hour, minute);
-        //}
     }
     
 	private void addArrivingCars(int numberOfCars, int type) throws ParkeerException {
