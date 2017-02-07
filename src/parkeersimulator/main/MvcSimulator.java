@@ -48,7 +48,7 @@ public class MvcSimulator  {
 		Container contentPane = screen.getContentPane();
 
 		legenda = new LegendView(model);
-		legenda.setBounds(1065, 120, 200, 210);
+		legenda.setBounds(820, 601, 200, 218);
 		screen.getContentPane().add(legenda);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -77,15 +77,15 @@ public class MvcSimulator  {
 		slideController.setLayout(new GridLayout(2, 0, 0, 0));
 
 						managerView = new ManagerView(model);
-						managerView.setBounds(820, 331, 200, 210);
+						managerView.setBounds(820, 250, 200, 210);
 
 						screen.getContentPane().add(managerView);
 						managerView.setBackground(SystemColor.control);
 						queueView = new QueueView(model);
-						queueView.setBounds(820, 120, 235, 200);
+						queueView.setBounds(1030, 250, 235, 200);
 						screen.getContentPane().add(queueView);
 						selectController = new SelectController(model);
-						selectController.setBounds(1053, 466, 212, 75);
+						selectController.setBounds(820, 120, 200, 75);
 						screen.getContentPane().add(selectController);
 
 										carParkView = new CarParkView(model);
