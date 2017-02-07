@@ -14,7 +14,13 @@ import javax.swing.event.ListSelectionListener;
 
 import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
-
+/**
+ * This class shows the option to select a empty parkingspot and make it available for abbonnees or invalids. 
+ * 
+ * @author stefanlubben
+ * @version 2017-02-06
+ *
+ */
 @SuppressWarnings("serial")
 public class SelectController extends AbstractController {
 

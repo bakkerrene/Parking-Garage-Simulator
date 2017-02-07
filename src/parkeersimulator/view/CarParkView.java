@@ -13,7 +13,6 @@ import parkeersimulator.Rect;
 import parkeersimulator.car.AbstractCar;
 import parkeersimulator.model.Model;
 
-
 /**
  * 
  * @author <<<
