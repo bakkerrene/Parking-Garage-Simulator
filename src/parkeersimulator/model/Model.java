@@ -274,6 +274,16 @@ public class Model extends AbstractModel implements Runnable {
 	    exitSpeed = 5; // number of cars that can leave per minute
 	}
 	
+	public void resetBarGraphData() {
+		int sum = totalPassCarPerDay + totalResCarPerDay + totalAdhocCarPerDay + totalHandiCarPerDay;
+		if (hour == 1 && minute > 30 && sum > 1000) {
+		    totalPassCarPerDay = 0;;
+		    totalResCarPerDay = 0;
+		    totalAdhocCarPerDay = 0;
+		    totalHandiCarPerDay = 0;
+		}
+	}
+	
 	private void internalSetSpotType(Location location, int type) {
 		ParkingSpot spot = getParkingSpotAt(location);
 		spotCountPerType[spot.getType()]--;
@@ -426,7 +436,7 @@ public class Model extends AbstractModel implements Runnable {
     	}
     }
 
-    private void checkReserveringen() {
+    private void checkGeplandeReserveringen() {
 
     	int curTime = 24*60*day + 60*hour + minute;
 
@@ -458,6 +468,10 @@ public class Model extends AbstractModel implements Runnable {
 	            }
 	    	}
 	    }
+    }
+
+    private void checkReserveringen() {
+    	int curTime = 24*60*day + 60*hour + minute;
 
 	    Iterator<Reservation> resIt = resList.iterator();
 	    while(resIt.hasNext()) {
@@ -465,7 +479,10 @@ public class Model extends AbstractModel implements Runnable {
 
 	    	/* Check timeOfArrival eerst, voor auto's die net op tijd komen */
 	    	if(res.timeOfArrival <= curTime) {
-	    	    setCarAt(res.location, new ResCar());
+	    	    //setCarAt(res.location, new ResCar());
+	    		ResCar newCar = new ResCar();
+	    		newCar.setAssignedLocation(res.location);
+	    		entrancePassQueue.addCar(newCar);
 	    	    totalRessCar++;
 	    	    totalResCarPerDay++;
 				resIt.remove();
@@ -554,6 +571,7 @@ public class Model extends AbstractModel implements Runnable {
     private void advanceTime() {
         // Advance the time by one minute.
         minute++;
+        resetBarGraphData();
         while (minute > 59) {
             minute -= 60;
             hour++;
@@ -681,21 +699,26 @@ public class Model extends AbstractModel implements Runnable {
     	while (queue.carsInQueue() > 0 && i < enterSpeed) {
     		AbstractCar car = queue.removeCar();
     		int carType = car.getType();
-    		Location freeLocation = getFirstFreeTypeLocation(carType);
-    		if(freeLocation == null) {
-    			/* Gebruik reguliere parkeerplaatsen als alle invalide plaatsen bezet zijn */
-    			if (car.getType() == ParkingSpot.TYPE_HANDI) {
-    				freeLocation = getFirstFreeTypeLocation(ParkingSpot.TYPE_AD_HOC);
-    			}
+    		Location assignedLocation = car.getAssignedLocation();
+    		if(assignedLocation == null) {
+    			Location freeLocation = getFirstFreeTypeLocation(carType);
     			if(freeLocation == null) {
-    				queue.addCar(car);
-    				/* Dat er geen plaats meer is voor dit type auto betekend niet dat er geen plaats
-    				 * meer is voor andere types, dus geen break hier */
-    				//break;
+    				/* Gebruik reguliere parkeerplaatsen als alle invalide plaatsen bezet zijn */
+    				if (car.getType() == ParkingSpot.TYPE_HANDI) {
+    					freeLocation = getFirstFreeTypeLocation(ParkingSpot.TYPE_AD_HOC);
+    				}
+    				if(freeLocation == null) {
+    					queue.addCar(car);
+    					/* Dat er geen plaats meer is voor dit type auto betekend niet dat er geen plaats
+    					 * meer is voor andere types, dus geen break hier */
+    					//break;
+    				}
     			}
+    			if(freeLocation != null)
+    				setCarAt(freeLocation, car);
+    		} else {
+    			setCarAt(assignedLocation, car);
     		}
-    		if(freeLocation != null)
-    			setCarAt(freeLocation, car);
             i++;
         }
     }
@@ -779,6 +802,7 @@ public class Model extends AbstractModel implements Runnable {
 
     private void firstStep() {
 		advanceTime();
+		checkReserveringen();
 		carsArriving();
 		carsReadyToLeave();
 		carsPaying();
@@ -789,7 +813,7 @@ public class Model extends AbstractModel implements Runnable {
 		clearPaymentQueue();
 		carsLeaving();
 		handleEntrance();
-		checkReserveringen();
+		checkGeplandeReserveringen();
 		soundSteps++;
 	}
 	

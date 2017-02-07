@@ -78,7 +78,7 @@ public class LineGraphView extends AbstractView {
 	    labelPadding = 15;
 
 		//diff = (getHeight() - padding - labelPadding + 10) / 10;
-		diff = 18;
+		diff = 19;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class LineGraphView extends AbstractView {
 		for(int i = 0; i < collection.length; i++) {
 			collection[i] = new JLabel("0");
 			add(collection[i]);
-			collection[i].setBounds(5, 0 + (i * diff), 35, 30 );
+			collection[i].setBounds(5, 6 + (i * diff), 30, 10 );
 		}
 	}
 
