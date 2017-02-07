@@ -9,6 +9,7 @@ public abstract class AbstractCar {
 
 	protected int type;
     private Location location;
+    private Location assignedLocation;
     private int minutesLeft;
     private int totalMinutes;
     private boolean isPaying;
@@ -18,6 +19,8 @@ public abstract class AbstractCar {
      * Constructor for objects of class Car
      */
     public AbstractCar(int type) {
+    	this.location = null;
+    	this.assignedLocation = null;
     	this.type = type;
     }
 
@@ -28,9 +31,15 @@ public abstract class AbstractCar {
     public Location getLocation() {
         return location;
     }
-
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Location getAssignedLocation() {
+    	return assignedLocation;
+    }
+    public void setAssignedLocation(Location assignedLocation) {
+    	this.assignedLocation = assignedLocation;
     }
 
     public int getMinutesLeft() {
