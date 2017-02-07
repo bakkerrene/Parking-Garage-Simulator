@@ -89,8 +89,13 @@ public class Model extends AbstractModel implements Runnable {
     private int totalRessCar;
     private int totalAdhocCar;
     private int totalHandiCar;
+    
+    private int totalPassCarPerDay;
+    private int totalResCarPerDay;
+    private int totalAdhocCarPerDay;
+    private int totalHandiCarPerDay;
 
-    private HashMap<String, Integer> carCounter;
+    private HashMap<String, Integer> carCounter, carPerDayCounter;
 
     private int tickCount = 0;
     private int tickPause = 100;
@@ -145,6 +150,11 @@ public class Model extends AbstractModel implements Runnable {
 	    totalRessCar = 0;
 	    totalAdhocCar = 0;
 	    totalHandiCar = 0;
+	    
+	    totalPassCarPerDay = 0;;
+	    totalResCarPerDay = 0;
+	    totalAdhocCarPerDay = 0;
+	    totalHandiCarPerDay = 0;
 	    
 	    resetQueueValues();
 
@@ -457,6 +467,7 @@ public class Model extends AbstractModel implements Runnable {
 	    	if(res.timeOfArrival <= curTime) {
 	    	    setCarAt(res.location, new ResCar());
 	    	    totalRessCar++;
+	    	    totalResCarPerDay++;
 				resIt.remove();
 	    	} else if(res.timeOfExpiration <= curTime) {
 	    		this.setSpotType(res.location, ParkingSpot.TYPE_AD_HOC);
@@ -618,6 +629,7 @@ public class Model extends AbstractModel implements Runnable {
             	if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
             		entranceCarQueue.addCar(new AdHocCar());
             		totalAdhocCar++;
+            		totalAdhocCarPerDay++;
             	} else {
             		missedCars.addCar(new AdHocCar());
             		if (soundSteps > 150) { // speelt de audio file om de 150 stappen af en niet elke stap
@@ -633,6 +645,7 @@ public class Model extends AbstractModel implements Runnable {
         		if(entranceCarQueue.carsInQueue() < entranceCarQueueMax) {
     				entranceCarQueue.addCar(new HandiCar());
     				totalHandiCar++;
+    				totalHandiCarPerDay++;
     			}
             	else {
             		missedCars.addCar(new HandiCar());
@@ -645,6 +658,7 @@ public class Model extends AbstractModel implements Runnable {
         		if (totalPassCar < abonneesMax) {
         			entrancePassQueue.addCar(new ParkingPassCar());
         			totalPassCar++;
+        			totalPassCarPerDay++;
         		}
     		}
             break;	
@@ -834,6 +848,17 @@ public class Model extends AbstractModel implements Runnable {
 		return carCounter;
 	}
 	
+    public HashMap<String, Integer> getTotalCarsPerDay() {
+    	carPerDayCounter = new HashMap<>();
+    	carPerDayCounter.put("adhoc", totalAdhocCarPerDay);
+    	carPerDayCounter.put("pass", totalPassCarPerDay);
+    	carPerDayCounter.put("handi", totalHandiCarPerDay);
+    	carPerDayCounter.put("res", totalResCarPerDay);
+    	
+    	totalAdhocCarPerDay =  totalPassCarPerDay = totalHandiCarPerDay = totalResCarPerDay = 0;
+		return carPerDayCounter;
+    }
+	
 	/**
 	 * returns the hour and minute in string format
 	 * @return String returns the hour and Minute in string format 00:00
@@ -854,8 +879,12 @@ public class Model extends AbstractModel implements Runnable {
 	 * this method returns the String array weekDayStrings
 	 * @return String returns a day of the week in stringFormat.
 	 */
-    public String getDay() {
+    public String getDayString() {
     	return weekDayStrings[day%7];
+    }
+    
+    public int getDayInt() {
+    	return day%7;
     }
     
     /**

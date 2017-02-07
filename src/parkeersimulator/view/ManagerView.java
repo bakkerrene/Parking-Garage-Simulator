@@ -42,7 +42,7 @@ public class ManagerView extends AbstractView {
 		GridLayout layout = new GridLayout(0,2);
 		this.setLayout(layout);
 
-		time = new JLabel(model.getDay());
+		time = new JLabel(model.getDayString());
 		labelDataTijd = new JLabel("00:00");
 
 		labelUur = new JLabel("Laatse Uur: ");
@@ -105,7 +105,7 @@ public class ManagerView extends AbstractView {
 		int week = model.getMoneyLastWeek();
 		int inGarage = model.getMoneyInGarage();
 
-		time.setText(model.getDay());
+		time.setText(model.getDayString());
 		labelDataTijd.setText(model.getTime());
 		labelDataUur.setText(""+hour);
 		labelDataDag.setText(""+day);

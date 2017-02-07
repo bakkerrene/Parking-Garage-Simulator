@@ -2,9 +2,11 @@ package parkeersimulator.view;
 
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import parkeersimulator.ParkingSpot;
 import parkeersimulator.model.Model;
+import java.util.List;
 
 /** 
  * Draws the barGraphView in the model
@@ -17,9 +19,16 @@ import parkeersimulator.model.Model;
 @SuppressWarnings("serial")
 public class BarGraphView extends AbstractView {
 
+	private int day = 8;
 	private int totalPlaces;
 	private HashMap<String, Integer> carCounter;
-
+	
+    private Color hocCarColor = new Color(255, 0, 0);
+    private Color passCarColor = new Color(0, 0, 255);
+    private Color resCarColor = new Color(255, 255, 0);
+    private Color handiCarColor = new Color(0, 255, 0);
+    
+    List<HashMap<String, Integer>> totalCarPerDay;
 	/**
 	 * 
 	 * @param model This is the model
@@ -27,6 +36,8 @@ public class BarGraphView extends AbstractView {
 	public BarGraphView(Model model) {
 		super(model);
 		totalPlaces = model.getTotalSpotCount();
+		
+		totalCarPerDay = new ArrayList<HashMap<String, Integer>>();
 	}
 	
 	/**
@@ -37,53 +48,53 @@ public class BarGraphView extends AbstractView {
 
 		super.paintComponent(g);
 		
-		carCounter = model.getTotalCars();
+		if(day != model.getDayInt() || totalCarPerDay.size() == 0){
+			totalCarPerDay.add(model.getTotalCarsPerDay());
+			if (totalCarPerDay.size() > 7) {
+				totalCarPerDay.remove(0);
+			}
+		}
+		day = model.getDayInt();
+		drawBars(g, totalCarPerDay);
+	}
+		
+		private void drawBars(Graphics g, List<HashMap<String, Integer>> totalCarPerDay) {
+		
 		double height = getHeight();
-		double sizePerValue = height / totalPlaces;
 		
-		int x = model.getNumberOfOpenSpots();
-
-		int y = totalPlaces - x;
-		
-
-		int freeSpots = (int) ((height / totalPlaces) * x);
-		int topFree = (int) (height - freeSpots);
-
-		int nonFreeSpots = (int) ((height / totalPlaces) * y);
-
+		for (int i=0; i< totalCarPerDay.size(); i++) {
+			carCounter = totalCarPerDay.get(i);	
+			
 		int redCount = carCounter.get("adhoc");
 		int blueCount = carCounter.get("pass");
 		int greenCount = carCounter.get("handi");
 		int yellowCount = carCounter.get("res");
 		
-		System.out.println(sizePerValue);
+		
+		double sizePerValue = height / (redCount + blueCount + greenCount + yellowCount);
 		redCount *= sizePerValue;
-		System.out.println(redCount);
 		blueCount *= sizePerValue;
-		System.out.println(blueCount);
 		greenCount *= sizePerValue;
-		System.out.println(greenCount);
 		yellowCount *= sizePerValue;
-		System.out.println(yellowCount);
 
 		int topNonFreeRed = (int) (height - (redCount));
 		int topNonFreeBlue = (int) (height - (blueCount));
 		int topNonFreeGreen = (int) (height - (greenCount));
 		int topNonFreeYellow = (int) (height - (yellowCount));
 
-		g.setColor(Color.WHITE);
-		g.fillRect(20, topFree, 20, freeSpots);
+		int sum = i * 100;
+		g.setColor(hocCarColor);
+		g.fillRect(sum +20, topNonFreeRed, 20, redCount);
 
-		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_AD_HOC));
-		g.fillRect(60, topNonFreeRed, 20, redCount);
+		g.setColor(passCarColor);
+		g.fillRect(sum +40, topNonFreeBlue, 20, blueCount);
 
-		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_PASS));
-		g.fillRect(100, topNonFreeBlue, 20, blueCount);
+		g.setColor(resCarColor);
+		g.fillRect(sum +60, topNonFreeYellow, 20, yellowCount);
 
-		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_HANDI));
-		g.fillRect(140, topNonFreeGreen, 20, greenCount);
-
-		g.setColor(ParkingSpot.getColorForType(ParkingSpot.TYPE_RES));
-		g.fillRect(180, topNonFreeYellow, 20, yellowCount);
-	}	
+		g.setColor(handiCarColor);
+		g.fillRect(sum +80, topNonFreeGreen, 20, greenCount);
+			}
+		}
+		
 }
