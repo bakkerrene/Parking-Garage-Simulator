@@ -1,5 +1,6 @@
 package parkeersimulator;
 
+
 import java.awt.Color;
 
 import parkeersimulator.car.AbstractCar;
@@ -20,7 +21,7 @@ public class ParkingSpot {
 	    car = null;
 	}
 
-	public static Color getColorForType(int type) {//alle kleuren wijzen hiernaartoe??
+	public static Color getColorForType(int type) {
     	switch (type) {
     	case TYPE_AD_HOC:
     		return new Color(255, 255, 255, 255);
@@ -38,6 +39,7 @@ public class ParkingSpot {
     	color = getColorForType(type);
     	this.type = type;
     }
+    
     public int getType() {
     	return type;
     }
@@ -45,6 +47,7 @@ public class ParkingSpot {
 	public void setCar(AbstractCar new_car) {
 		car = new_car;
 	}
+	
     public AbstractCar getCar() {
     	return car;
     }

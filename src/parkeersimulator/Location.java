@@ -1,5 +1,11 @@
 package parkeersimulator;
 
+/**
+ * This class hold information on de lacation of parkingspots in de garage
+ * 
+ * @author Rick Zwaneveld
+ * @version 07/02/2017
+ */
 
 public class Location {
 

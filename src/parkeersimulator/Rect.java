@@ -8,7 +8,6 @@ package parkeersimulator;
  * @version 07/02/2017
  */
 
-
 public class Rect {
 
 	public int x, y;
