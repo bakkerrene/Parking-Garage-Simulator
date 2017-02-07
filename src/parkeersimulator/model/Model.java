@@ -17,6 +17,14 @@ import javax.sound.sampled.Clip;
 import java.awt.Image;
 import java.io.File;
 
+/**
+ * The Model of the parking Garage Simulator
+ * This class is holding all the data for all the views
+ * 
+ * @author ReneBakker
+ * @version 2017-02-06
+ */
+
 public class Model extends AbstractModel implements Runnable {
 
 	private int soundSteps = 0; //steps for queue warning sound @addArrivingCars
@@ -295,6 +303,7 @@ public class Model extends AbstractModel implements Runnable {
    		return spot.getCar();
     }
 
+	
 	public int getCarCountForType(int type) {
 		return carCountPerType[type];
 	}
