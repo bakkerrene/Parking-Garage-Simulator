@@ -29,6 +29,10 @@ public class ResCar extends AbstractCar {
         this.setHasToPay(true);
 
     }
+	
+    /**
+     * this method gets the color of the car
+     */
     
 	public Color getColor(){
     	return COLOR;

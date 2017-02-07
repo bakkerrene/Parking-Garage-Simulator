@@ -29,6 +29,10 @@ public class ParkingPassCar extends AbstractCar {
         this.setHasToPay(false);
     }
     
+    /**
+     * this method gets the color of the car
+     */
+	
 	public Color getColor(){
     	return COLOR;
     }
