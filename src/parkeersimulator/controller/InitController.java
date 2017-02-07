@@ -212,24 +212,20 @@ public class InitController extends AbstractController implements ActionListener
  		queueEnter = new JLabel(" Enter Speed");
  		queuePayment = new JLabel(" Betaal Snelheid");
  		queueExit = new JLabel(" Exit Speed");
- 		weekDayAd = new JLabel(" WeekDayAd");
- 		weekendAd = new JLabel(" WeekendAd");
- 		eventAd = new JLabel(" EventAd");
- 		weekDayPass = new JLabel(" WeekDayPass");
- 		weekendPass = new JLabel(" WeekendPass");
- 		eventPass = new JLabel(" EventPass");
- 		weekDayRes = new JLabel(" WeekDayRes");
- 		weekendRes = new JLabel(" WeekendRes");
- 		eventRes = new JLabel(" EventRes");
+ 		weekDayAd = new JLabel(" Normaal werkDag");
+ 		weekendAd = new JLabel(" Normaal weekend");
+ 		eventAd = new JLabel(" Normaal speciaal"); // <-- logisch
+ 		weekDayPass = new JLabel(" Abonee werkdag");
+ 		weekendPass = new JLabel(" Abonnee weekend");
+ 		eventPass = new JLabel(" Abonnee speciaal");
+ 		weekDayRes = new JLabel(" Reservering werkdag");
+ 		weekendRes = new JLabel(" Reservering weekend");
+ 		eventRes = new JLabel(" Reservering speciaal");
 
 
     	BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(boxLayout);
 
-
-
-		
-		
 		a = new JPanel();
 		b = new JPanel();
 		GridLayout gridLayout1 = new GridLayout(0,6);
@@ -256,6 +252,9 @@ public class InitController extends AbstractController implements ActionListener
     	setVisible(true);
     }
 
+    /**
+     * This mothod will run when 1 of the buttons are pressed
+     */
     public void actionPerformed(ActionEvent e) {
 		try {
 			Object sourceObject = e.getSource();
