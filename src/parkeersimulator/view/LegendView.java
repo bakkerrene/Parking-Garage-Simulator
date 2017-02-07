@@ -13,17 +13,6 @@ import java.awt.Graphics;
 @SuppressWarnings("serial")
 public class LegendView extends AbstractView {
 
-	/*
-	 * rood is regulier
-	 * blauw is abonnement
-	 * groen is handi
-	 * geel is reservering
-     *
-	 * wit is een reguliere parkeerplaats
-	 * blauw is een parkeerplaats voor abonees
-	 * 
-	 */
-
 	JLabel label0, label1, label2, label3;
 	JLabel label4, label5, label6, label7;
 
@@ -79,11 +68,6 @@ public class LegendView extends AbstractView {
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
-
-		/*
-        g.setColor(Color.GREEN);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
-        */
 
 		int y = 10;
 
