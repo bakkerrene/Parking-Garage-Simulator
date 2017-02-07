@@ -5,7 +5,7 @@ package parkeersimulator;
  * It calculates the parkingspots rectangles
  * 
  * @author Rick Zwaneveld
- * @version 07/03/2017
+ * @version 07/02/2017
  */
 
 
