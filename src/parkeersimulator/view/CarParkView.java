@@ -38,29 +38,6 @@ public class CarParkView extends AbstractView {
     	return new Rect(x, y, w, h);
 	}
 
-	/*
-    private Location getLocationForPoint(int x, int y) {
-    	int floor = (x - 40) / 260;
-    	int floorX = (x - 40) % 260;
-    	int block = floorX / 75; 
-    	int blockX = floorX % 75;
-    	int row = 2 * block + (blockX / 20);
-    	int place = (y - 10) / 11;
-    	Location location = new Location(floor, row, place);
-    	if(getModel().locationIsValid(location))
-    	{
-    		int rectX0 = 40 + 260 * floor + 75 * (int)Math.floor(0.5 * row) + 20 * (row % 2);
-    		int rectY0 = 10 + 11 * place;
-    		int rectX1 = rectX0 + 20 - 1;
-    		int rectY1 = rectY0 + 10 - 1;
-    		if (rectX0 <= x && rectY0 <= y && x < rectX1 && y < rectY1)
-    			return location;
-    	}
-    	return null;
-    }
-    */
-
-	/* TODO: Verbeteren; dit is super inefficient */
 	private Location getLocationForPoint(int x, int y) {
         for(int floor = 0; floor < model.getNumberOfFloors(); floor++) {
             for(int row = 0; row < model.getNumberOfRows(); row++) {
@@ -83,13 +60,6 @@ public class CarParkView extends AbstractView {
 
 	    addMouseListener(new MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
-	        	/*
-				if (e.getButton() == MouseEvent.NOBUTTON) {
-				} else if (e.getButton() == MouseEvent.BUTTON1) {
-				} else if (e.getButton() == MouseEvent.BUTTON2) {
-				} else if (e.getButton() == MouseEvent.BUTTON3) {
-				}
-				*/
 	    		Location location = getLocationForPoint(e.getX(), e.getY());
 	    		if(location != null) {
 	    			model.clickedSpot(location);
